@@ -107,7 +107,7 @@ export default function LeadsPage() {
 
   const handleSelectAll = (selected: boolean) => {
     if (selected) {
-      setSelectedLeads(leads.map((lead: Lead) => lead._id));
+      setSelectedLeads(leads.map((lead: Lead) => lead.id || lead._id));
     } else {
       setSelectedLeads([]);
     }

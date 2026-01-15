@@ -102,22 +102,22 @@ export function LeadsTable({
           <tbody className="divide-y divide-slate-100">
             {leads.map((lead, index) => (
               <tr
-                key={lead._id || lead.id || index}
+                key={lead.id || lead._id || index}
                 className={`hover:bg-slate-50 transition-colors ${
-                  selectedLeads.includes(lead._id) ? "bg-blue-50" : ""
+                  selectedLeads.includes(lead.id || lead._id) ? "bg-blue-50" : ""
                 }`}
               >
                 <td className="px-4 py-3">
                   <Checkbox
-                    checked={selectedLeads.includes(lead._id)}
+                    checked={selectedLeads.includes(lead.id || lead._id)}
                     onCheckedChange={(checked) =>
-                      onSelectLead(lead._id, checked as boolean)
+                      onSelectLead(lead.id || lead._id, checked as boolean)
                     }
                   />
                 </td>
                 <td className="px-4 py-3">
                   <Link
-                    href={`/leads/${lead._id}`}
+                    href={`/leads/${lead.id || lead._id}`}
                     className="font-medium text-blue-950 hover:text-blue-600"
                   >
                     {lead.name}
@@ -143,7 +143,7 @@ export function LeadsTable({
                   <LeadStatusBadge
                     status={lead.status}
                     editable={true}
-                    onStatusChange={(status) => onStatusChange(lead._id, status)}
+                    onStatusChange={(status) => onStatusChange(lead.id || lead._id, status)}
                   />
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell">
@@ -169,7 +169,7 @@ export function LeadsTable({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/leads/${lead._id}`}>
+                        <Link href={`/leads/${lead.id || lead._id}`}>
                           <Eye className="h-4 w-4 mr-2" />
                           View Details
                         </Link>

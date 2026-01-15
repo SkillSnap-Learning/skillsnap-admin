@@ -83,10 +83,10 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {leads.map((lead, index) => (
-                <tr key={lead._id || lead.id || index} className="hover:bg-slate-50 transition-colors">
+                <tr key={lead.id || lead._id || index} className="hover:bg-slate-50 transition-colors">
                   <td className="px-4 py-3">
                     <Link
-                      href={`/leads/${lead._id}`}
+                      href={`/leads/${lead.id || lead._id}`}
                       className="font-medium text-blue-950 hover:text-blue-600"
                     >
                       {lead.name}

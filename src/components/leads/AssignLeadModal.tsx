@@ -53,7 +53,7 @@ export function AssignLeadModal({
 
     setIsSubmitting(true);
     try {
-      await onAssign(lead._id, selectedUserId);
+      await onAssign(lead.id || lead._id, selectedUserId);
       onOpenChange(false);
       setSelectedUserId("");
     } finally {
