@@ -141,7 +141,7 @@ export function TeamMembersModal({
               </SelectTrigger>
               <SelectContent>
                 {filteredAvailableUsers?.map((user: User) => (
-                  <SelectItem key={user._id || user.id} value={user._id || user.id}>
+                  <SelectItem key={user._id || user.id!} value={user._id || user.id!}>
                     <div className="flex items-center gap-2">
                       <span>{user.name}</span>
                       <span className="text-xs text-slate-400 capitalize">
@@ -204,7 +204,7 @@ export function TeamMembersModal({
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50"
-                    onClick={() => handleRemoveMember(member._id || member.id)}
+                    onClick={() => handleRemoveMember(member._id || member.id!)}
                     disabled={removeMemberMutation.isPending}
                   >
                     <X className="h-4 w-4" />
