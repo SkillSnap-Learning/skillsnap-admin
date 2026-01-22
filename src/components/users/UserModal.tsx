@@ -33,6 +33,7 @@ interface UserModalProps {
 }
 
 export interface UserFormData {
+  [key: string]: string | UserRole | UserStatus | undefined; // Add this
   name: string;
   email: string;
   phone: string;
