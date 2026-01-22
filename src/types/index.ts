@@ -158,6 +158,7 @@ export interface LoginResponse {
 
 // Filter types
 export interface LeadFilters {
+  [key: string]: string | number | undefined; // Add this line
   status?: LeadStatus | "";
   source?: LeadSource | "";
   assignedTo?: string;
