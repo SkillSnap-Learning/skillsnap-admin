@@ -122,7 +122,7 @@ export default function TeamsPage() {
   const handleSubmitTeam = async (data: TeamFormData) => {
     if (selectedTeam) {
       await updateMutation.mutateAsync({
-        id: selectedTeam._id || selectedTeam.id || "",
+        id: selectedTeam._id || selectedTeam.id!,
         data,
       });
     } else {
@@ -132,7 +132,7 @@ export default function TeamsPage() {
 
   const handleConfirmDelete = () => {
     if (selectedTeam) {
-      deleteMutation.mutate(selectedTeam._id || selectedTeam.id || "");
+      deleteMutation.mutate(selectedTeam._id || selectedTeam.id!);
     }
   };
 

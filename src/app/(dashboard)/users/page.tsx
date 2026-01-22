@@ -143,7 +143,7 @@ export default function UsersPage() {
   const handleSubmitUser = async (data: UserFormData) => {
     if (selectedUser) {
       await updateMutation.mutateAsync({
-        id: selectedUser._id || selectedUser.id,
+        id: selectedUser._id || selectedUser.id!,
         data,
       });
     } else {
@@ -153,13 +153,13 @@ export default function UsersPage() {
 
   const handleConfirmDelete = () => {
     if (selectedUser) {
-      deleteMutation.mutate(selectedUser._id || selectedUser.id);
+      deleteMutation.mutate(selectedUser._id || selectedUser.id!);
     }
   };
 
   const handleConfirmResetPassword = () => {
     if (selectedUser) {
-      resetPasswordMutation.mutate(selectedUser._id || selectedUser.id);
+      resetPasswordMutation.mutate(selectedUser._id || selectedUser.id!);
     }
   };
 
