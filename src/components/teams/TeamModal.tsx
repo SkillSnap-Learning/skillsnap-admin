@@ -34,8 +34,9 @@ interface TeamModalProps {
 }
 
 export interface TeamFormData {
+  [key: string]: string | undefined; // Add this
   name: string;
-  description: string;
+  description?: string;
   teamLead?: string;
   status: TeamStatus;
 }
