@@ -181,7 +181,7 @@ export function TeamModal({
                 <p className="text-xs text-red-500">{errors.description}</p>
               )}
               <p className="text-xs text-slate-400 ml-auto">
-                {formData.description.length}/200
+                {formData.description?.length || 0}/200
               </p>
             </div>
           </div>
