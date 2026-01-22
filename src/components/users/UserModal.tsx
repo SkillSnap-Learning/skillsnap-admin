@@ -277,24 +277,28 @@ export function UserModal({
           {/* Team */}
           <div className="space-y-2">
             <Label>Team</Label>
-            <Select
-              value={formData.team || "none"}
-              onValueChange={(value) =>
-                handleChange("team", value === "none" ? "" : value)
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select team (optional)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">No Team</SelectItem>
-                {teams?.map((team: any) => (
-                  <SelectItem key={team._id} value={team._id}>
-                    {team.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {teams ? (
+              <Select
+                value={formData.team || "none"}
+                onValueChange={(value) =>
+                  handleChange("team", value === "none" ? "" : value)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select team (optional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">No Team</SelectItem>
+                  {teams.map((team: any) => (
+                    <SelectItem key={team.id} value={team.id}>
+                      {team.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <div className="h-10 w-full rounded-md border border-input bg-muted animate-pulse" />
+            )}
           </div>
         </div>
 
