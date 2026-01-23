@@ -203,7 +203,7 @@ export function TeamModal({
                 <SelectContent>
                   <SelectItem value="none">No Lead</SelectItem>
                   {users?.map((user: any) => (
-                    <SelectItem key={user._id} value={user._id}>
+                    <SelectItem key={user.id} value={user.id}>
                       {user.name}
                     </SelectItem>
                   ))}
