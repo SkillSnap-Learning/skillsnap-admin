@@ -1,7 +1,7 @@
 # SKILLSNAP ADMIN PANEL - PROJECT OVERVIEW
 
 ## Project Summary
-A comprehensive Next.js-based admin panel for SkillSnap Learning CRM. Features multi-role authentication, lead management, user management, team management, and role-based access control. Designed to work with the SkillSnap Backend API.
+A comprehensive Next.js-based admin panel for SkillSnap Learning CRM. Features multi-role authentication, lead management, user management, team management, **admission management with installment payment tracking**, and role-based access control. Designed to work with the SkillSnap Backend API.
 
 ---
 
@@ -26,7 +26,6 @@ A comprehensive Next.js-based admin panel for SkillSnap Learning CRM. Features m
 ---
 
 ## Project Structure
-
 ```
 skillsnap-admin/
 ├── src/
@@ -39,6 +38,10 @@ skillsnap-admin/
 │   │   │   │   ├── page.tsx          # Leads listing
 │   │   │   │   └── [id]/
 │   │   │   │       └── page.tsx      # Lead detail page
+│   │   │   ├── admissions/           ⭐ NEW
+│   │   │   │   ├── page.tsx          # Admissions listing
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx      # Admission detail page
 │   │   │   ├── users/
 │   │   │   │   └── page.tsx          # Users management
 │   │   │   └── teams/
@@ -58,7 +61,7 @@ skillsnap-admin/
 │   │   ├── layout/
 │   │   │   ├── AuthGuard.tsx         # Authentication wrapper
 │   │   │   ├── Header.tsx            # Page header with user menu
-│   │   │   └── Sidebar.tsx           # Navigation sidebar
+│   │   │   └── Sidebar.tsx           # Navigation sidebar (includes Admissions) ✅ UPDATED
 │   │   ├── leads/
 │   │   │   ├── AssignLeadModal.tsx   # Lead assignment modal
 │   │   │   ├── AssignmentHistory.tsx # Assignment history display
@@ -67,6 +70,11 @@ skillsnap-admin/
 │   │   │   ├── LeadStatusBadge.tsx   # Status badge with dropdown
 │   │   │   ├── LeadsTable.tsx        # Main leads table
 │   │   │   └── NotesTimeline.tsx     # Notes timeline with add form
+│   │   ├── admissions/               ⭐ NEW
+│   │   │   ├── AdmissionFilters.tsx  # Search & filter controls
+│   │   │   ├── AdmissionsTable.tsx   # Main admissions table
+│   │   │   ├── AddPaymentModal.tsx   # Record payment modal
+│   │   │   └── PaymentTimeline.tsx   # Payment history display
 │   │   ├── providers/
 │   │   │   └── QueryProvider.tsx     # React Query provider
 │   │   ├── teams/
@@ -95,14 +103,14 @@ skillsnap-admin/
 │   │       └── textarea.tsx
 │   │
 │   ├── lib/
-│   │   ├── api.ts                    # Axios client & API functions
+│   │   ├── api.ts                    # Axios client & API functions (includes admissionsApi) ✅ UPDATED
 │   │   └── utils.ts                  # Utility functions (cn, formatters)
 │   │
 │   ├── stores/
 │   │   └── authStore.ts              # Zustand auth store
 │   │
 │   └── types/
-│       └── index.ts                  # TypeScript interfaces
+│       └── index.ts                  # TypeScript interfaces (includes Admission types) ✅ UPDATED
 │
 ├── public/
 ├── .env.local                        # Environment variables
@@ -115,6 +123,8 @@ skillsnap-admin/
 ├── tsconfig.json
 └── PROJECT_OVERVIEW.md               # This file
 ```
+
+**Legend:** ⭐ NEW | ✅ UPDATED
 
 ---
 
@@ -136,6 +146,8 @@ SuperAdmin (System Owner)
 | Dashboard | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Leads | ✅ All | ✅ All | ✅ All | ✅ Team + Unassigned | ✅ Own |
 | Lead Detail | ✅ | ✅ | ✅ | ✅ Team | ✅ Own |
+| Admissions | ✅ All | ✅ All | ✅ All | ✅ All | ✅ All |
+| Admission Detail | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Users | ✅ | ✅ | ✅ Team | ❌ | ❌ |
 | Teams | ✅ | ✅ | ✅ | ❌ | ❌ |
 
@@ -152,6 +164,8 @@ SuperAdmin (System Owner)
 | Export Leads | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Update Status | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Add Notes | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Record Payment | ✅ | ✅ | ✅ | ❌ | ❌ |
+| View Admissions | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -217,7 +231,108 @@ SuperAdmin (System Owner)
   - Assignment reason (manual/auto/reassigned)
   - Who assigned & when
 
-### 5. Users Page (`/users`)
+### 5. Admissions Page (`/admissions`) ⭐ NEW
+- **Stats Cards (canViewReports only):**
+  - Total Admissions
+  - Fully Paid (with total revenue)
+  - Partial Payment (with pending amount)
+  - Unpaid
+- **Filters:**
+  - Search (student name, admission ID)
+  - Status (pending, payment_initiated, paid, enrolled, expired, payment_failed, cancelled)
+  - Payment Status (unpaid, partial, paid)
+- **Table Display:**
+  - Admission ID
+  - Student name & date of birth
+  - Parent name & phone
+  - Class
+  - Payment progress bar with percentage
+  - Amount (paid/total with pending)
+  - Status badge
+  - Created date
+- **Row Actions:**
+  - View admission details
+- **Export:**
+  - Export button (coming soon)
+- **Pagination:**
+  - 20 items per page
+  - Page navigation
+
+### 6. Admission Detail Page (`/admissions/[id]`) ⭐ NEW
+- **Header:**
+  - Admission ID as title
+  - Student name and class as description
+  - Back to Admissions button
+  - Status badge
+  - Download Invoice button (when available)
+  
+- **Student Information Card:**
+  - Name, date of birth, gender
+  - Class, board
+  - School name (if provided)
+  - Icon: GraduationCap
+
+- **Parent Information Card:**
+  - Name, relationship
+  - Phone, email
+  - WhatsApp phone (if different)
+  - Address (if provided)
+  - Icon: User
+
+- **Technology Access Card:**
+  - Device type (Laptop, Tablet, Mobile, Desktop)
+  - Internet availability (Stable, Moderate, Limited)
+  - Icon: Wifi
+
+- **Payment Summary Card:**
+  - Progress bar (visual representation)
+  - Payment progress percentage
+  - Three amount boxes:
+    - Total Amount (₹23,999)
+    - Paid (green, with amount)
+    - Pending (orange, with amount)
+  - Add Payment button (canManageUsers permission only)
+  - Disabled when fully paid
+  - Student account status indicator (when enrolled)
+
+- **Payment Timeline Card:**
+  - Chronological list of all installments (newest first)
+  - Each installment shows:
+    - Amount (green, prominent)
+    - Payment date and time
+    - Payment method badge
+    - Transaction ID (if provided)
+    - Recorded by (user name)
+    - Recorded date
+    - Notes (if provided)
+  - Visual timeline indicator with icons
+  - Empty state when no payments recorded
+
+- **Add Payment Modal (canManageUsers only):**
+  - Payment summary (total, paid, remaining)
+  - Amount input with validation
+    - Required
+    - Must be > 0
+    - Cannot exceed pending balance
+  - Payment method dropdown
+    - Cash, Bank Transfer, UPI, Razorpay, Other
+    - Required
+  - Transaction ID input (optional)
+  - Payment date picker
+    - Required
+    - Cannot be future date
+    - Defaults to today
+  - Notes textarea (optional, max 500 chars)
+  - Real-time validation
+  - Auto-refresh on success
+  - Success message with enrollment status
+
+- **Auto-enrollment Notification:**
+  - Displayed when payment is fully completed
+  - Shows student account created message
+  - Indicates credentials sent to parent's email
+
+### 7. Users Page (`/users`)
 - **Filters:**
   - Search by name/email
   - Role filter
@@ -241,7 +356,7 @@ SuperAdmin (System Owner)
   - Team assignment
   - Status selection
 
-### 6. Teams Page (`/teams`)
+### 8. Teams Page (`/teams`)
 - **Filters:**
   - Search by name
   - Status filter
@@ -290,6 +405,10 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1
 | | `/admin/leads/stats` | GET | Get statistics |
 | | `/admin/leads/export` | GET | Export CSV |
 | | `/admin/leads/auto-assign` | POST | Auto-assign |
+| **Admissions** | `/admin/admissions` | GET | List admissions |
+| | `/admin/admissions/stats` | GET | Get statistics |
+| | `/admin/admissions/:id` | GET | Get admission details |
+| | `/admin/admissions/:id/payment` | POST | Record payment |
 | **Users** | `/admin/users` | GET | List users |
 | | `/admin/users` | POST | Create user |
 | | `/admin/users/:id` | PATCH | Update user |
@@ -339,8 +458,157 @@ interface AuthState {
 
 ---
 
-## Environment Variables
+## TypeScript Types
 
+### Core Types
+```typescript
+export type UserRole =
+  | "superadmin"
+  | "admin"
+  | "sales-manager"
+  | "team-lead"
+  | "sales"
+  | "support"
+  | "instructor"
+  | "student";
+
+export type LeadStatus = "new" | "contacted" | "converted" | "lost";
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  permissions: UserPermissions;
+  team?: Team | null;
+  status: UserStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Lead {
+  _id: string;
+  name: string;
+  email?: string;
+  phone: string;
+  message?: string;
+  source: LeadSource;
+  status: LeadStatus;
+  assignedTo?: User | null;
+  team?: Team | null;
+  notes?: LeadNote[];
+  assignmentHistory?: AssignmentHistoryItem[];
+  createdAt: string;
+  updatedAt: string;
+}
+```
+
+### Admission Types ⭐ NEW
+```typescript
+export type AdmissionStatus = 
+  | "pending" 
+  | "payment_initiated" 
+  | "paid" 
+  | "enrolled" 
+  | "expired" 
+  | "payment_failed" 
+  | "cancelled";
+
+export type PaymentMethod = 
+  | "cash" 
+  | "bank_transfer" 
+  | "upi" 
+  | "razorpay" 
+  | "other";
+
+export type StudentGender = 
+  | "Male" 
+  | "Female" 
+  | "Other" 
+  | "Prefer not to say";
+
+export type StudentClass = "6" | "7" | "8" | "9" | "10";
+
+export interface PaymentInstallment {
+  _id?: string;
+  amount: number;
+  method: PaymentMethod;
+  transactionId?: string;
+  recordedBy: User | string;
+  recordedAt: string;
+  paidAt: string;
+  notes?: string;
+  receiptUrl?: string;
+}
+
+export interface AdmissionPayment {
+  totalAmount: number;
+  originalAmount: number;
+  paidAmount: number;
+  pendingAmount: number;
+  currency: string;
+  installments: PaymentInstallment[];
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  razorpaySignature?: string;
+}
+
+export interface StudentInfo {
+  name: string;
+  dateOfBirth: string;
+  gender: StudentGender;
+  class: StudentClass;
+  schoolName?: string;
+  board: EducationBoard;
+}
+
+export interface Parent {
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+  relationship: ParentRelationship;
+  whatsappPhone?: string;
+  address?: ParentAddress;
+}
+
+export interface Admission {
+  _id: string;
+  admissionId: string;
+  parent: Parent;
+  student: StudentInfo;
+  technology: TechnologyInfo;
+  status: AdmissionStatus;
+  payment: AdmissionPayment;
+  invoice?: Invoice;
+  userId?: User | string | null;
+  source: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RecordPaymentData {
+  amount: number;
+  method: PaymentMethod;
+  transactionId?: string;
+  paidAt?: string;
+  notes?: string;
+}
+
+export interface AdmissionFilters {
+  status?: AdmissionStatus | "";
+  paymentStatus?: "unpaid" | "partial" | "paid" | "";
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}
+```
+
+---
+
+## Environment Variables
 ```bash
 # .env.local
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
@@ -417,29 +685,102 @@ A       admin   76.76.19.19                        600
 | Sales | `bg-green-100` | `text-green-700` |
 | Support | `bg-yellow-100` | `text-yellow-700` |
 
+### Admission Status Colors ⭐ NEW
+| Status | Background | Text |
+|--------|------------|------|
+| Pending | `bg-gray-100` | `text-gray-700` |
+| Payment Initiated | `bg-blue-100` | `text-blue-700` |
+| Paid | `bg-green-100` | `text-green-700` |
+| Enrolled | `bg-purple-100` | `text-purple-700` |
+| Expired | `bg-red-100` | `text-red-700` |
+| Payment Failed | `bg-orange-100` | `text-orange-700` |
+| Cancelled | `bg-slate-100` | `text-slate-700` |
+
+### Payment Method Colors ⭐ NEW
+| Method | Background | Text |
+|--------|------------|------|
+| Cash | `bg-green-100` | `text-green-700` |
+| Bank Transfer | `bg-blue-100` | `text-blue-700` |
+| UPI | `bg-purple-100` | `text-purple-700` |
+| Razorpay | `bg-orange-100` | `text-orange-700` |
+| Other | `bg-gray-100` | `text-gray-700` |
+
+---
+
+## Key Features
+
+### Lead Management
+- Role-based lead visibility
+- Bulk selection and assignment
+- Inline status updates
+- Assignment history tracking
+- Notes timeline
+- Auto-assignment via round-robin
+- CSV export
+
+### User Management
+- Multi-role support (8 roles)
+- Team assignment
+- Password reset
+- Role-based permissions
+- Status management
+
+### Team Management
+- Dynamic team creation
+- Team lead assignment
+- Member management
+- Team-based filtering
+
+### Admission Management ⭐ NEW
+- Complete student and parent information display
+- Payment installment tracking
+- Visual payment progress indicators
+- Flexible installment recording (any amount, any time)
+- Payment timeline with full audit trail
+- Payment method tracking
+- Transaction ID recording
+- Notes for each payment
+- Auto-enrollment on full payment
+- Role-based payment recording permissions
+- Real-time statistics (total, paid, partial, unpaid)
+- Advanced filtering (status, payment status, search)
+- Invoice download integration
+
 ---
 
 ## Future Enhancements
 
-### Phase 2 (Planned)
+### Phase 2 ✅ COMPLETE
+- [x] Admissions management page ⭐
+- [x] Admission detail page ⭐
+- [x] Payment recording system ⭐
+- [x] Payment timeline ⭐
 - [ ] Change Password modal
 - [ ] Date range filter for leads
 - [ ] Export improvements (custom columns)
 - [ ] Bulk status update
 - [ ] Lead import (CSV)
+- [ ] Admissions export (CSV)
 
-### Phase 3 (Future)
+### Phase 3 (Next Priority)
 - [ ] Real-time notifications (WebSocket)
 - [ ] Activity logs / Audit trail
 - [ ] Advanced analytics dashboard
+- [ ] Payment reminders
+- [ ] Refund management
 - [ ] Email integration
 - [ ] WhatsApp integration
+- [ ] Payment receipt upload
+- [ ] Admission status manual update
 
 ### Phase 4 (Future)
 - [ ] Learning Management System
 - [ ] Course management
-- [ ] Student enrollment
-- [ ] Payment integration
+- [ ] Student progress tracking
+- [ ] Certificates
+- [ ] Assignments
+- [ ] Video content management
+- [ ] Student portal integration
 
 ---
 
@@ -450,16 +791,31 @@ A       admin   76.76.19.19                        600
 - Mobile responsive (iOS Safari, Chrome Android)
 
 ### Performance Considerations
-- React Query caching (1 minute stale time)
+- React Query caching (stale time configured per query)
 - Pagination on all list views (20 items/page)
 - Lazy loading of modals
 - Optimized re-renders with proper keys
+- Progressive loading of payment timeline
+
+### Admissions System Notes ⭐ NEW
+- Payment installments tracked with full audit trail
+- Auto-enrollment triggered when full payment received (backend)
+- Email notifications sent for partial and full payments (backend)
+- Invoice generation handled by backend
+- Payment progress bars show real-time status
+- Role-based payment recording (canManageUsers permission)
+- Null-safe rendering for all payment amounts
+- Support for both `totalAmount` and legacy `amount` fields
+- Payment validation prevents over-payment
+- Transaction IDs are optional but recommended for tracking
 
 ### Security Notes
 - JWT tokens stored in localStorage
-- API interceptor adds Authorization header
+- API interceptor adds Authorization header automatically
 - 401 responses trigger automatic logout
-- Role-based UI restrictions (server enforced)
+- Role-based UI restrictions (server-side enforced)
+- Payment recording requires authentication and permissions
+- Sensitive student data only visible to authorized roles
 
 ---
 
@@ -471,6 +827,8 @@ A       admin   76.76.19.19                        600
 - Use Zustand for global state only
 - Prefer server components where possible
 - Use shadcn/ui for consistent UI
+- Always use null-safe operators for optional data
+- Follow established component patterns
 
 ### Component Patterns
 ```typescript
@@ -482,6 +840,9 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 // UI Component
 interface Props { /* typed props */ }
 export function Component({ prop }: Props) { /* render */ }
+
+// Null-safe rendering
+{admission.payment?.totalAmount?.toLocaleString('en-IN') || 0}
 ```
 
 ### Git Workflow
@@ -490,6 +851,17 @@ export function Component({ prop }: Props) { /* render */ }
 git checkout -b feature/feature-name
 git commit -m "feat: add feature description"
 git push origin feature/feature-name
+```
+
+### Commit Message Convention
+```
+feat: New feature
+fix: Bug fix
+docs: Documentation changes
+style: Code style changes (formatting)
+refactor: Code refactoring
+test: Adding tests
+chore: Build/config changes
 ```
 
 ---
@@ -512,10 +884,47 @@ git push origin feature/feature-name
 ## Contributors
 - **Frontend Developer:** Saquelain
 - **Framework:** Next.js 15 + TypeScript
-- **Version:** 1.0.0
+- **Version:** 1.1.0
 - **Last Updated:** January 2025
 
 ---
 
 ## License
 Proprietary - SkillSnap Learning Platform
+
+---
+
+## Changelog
+
+### v1.1.0 (January 2025) ⭐ NEW
+- ✅ Admissions management system
+- ✅ Admission list page with stats and filters
+- ✅ Admission detail page with full information
+- ✅ Payment recording functionality with validation
+- ✅ Payment timeline with installment history
+- ✅ Add payment modal with real-time validation
+- ✅ Payment progress visualization (bars and percentages)
+- ✅ Admission status badges with color coding
+- ✅ Payment method tracking and display
+- ✅ Auto-refresh after payment recording
+- ✅ Role-based payment permissions (canManageUsers)
+- ✅ Sidebar navigation updated with Admissions link
+- ✅ Invoice download integration
+- ✅ Student account creation indicator
+- ✅ Null-safe rendering for all payment data
+- ✅ Support for flexible installment amounts
+- ✅ Transaction ID and notes tracking
+- ✅ Responsive design for all admission pages
+
+### v1.0.0 (January 2025)
+- ✅ Initial release
+- ✅ Login & authentication
+- ✅ Dashboard with statistics
+- ✅ Lead management (list, detail, assign, notes)
+- ✅ User management (CRUD, roles, teams)
+- ✅ Team management (CRUD, members)
+- ✅ Role-based access control
+- ✅ Responsive design
+- ✅ Real-time data updates with React Query
+- ✅ Toast notifications for user feedback
+- ✅ Permission-based UI rendering

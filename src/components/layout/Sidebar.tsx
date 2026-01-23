@@ -9,6 +9,7 @@ import {
   Users,
   UserCircle,
   Building2,
+  GraduationCap,
   LogOut,
   ChevronLeft,
   Menu,
@@ -27,6 +28,12 @@ const navigation = [
     name: "Leads",
     href: "/leads",
     icon: Users,
+    roles: ["superadmin", "admin", "sales-manager", "team-lead", "sales"],
+  },
+  {
+    name: "Admissions",
+    href: "/admissions",
+    icon: GraduationCap,
     roles: ["superadmin", "admin", "sales-manager", "team-lead", "sales"],
   },
   {

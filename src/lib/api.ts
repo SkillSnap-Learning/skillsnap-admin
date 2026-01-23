@@ -1,3 +1,4 @@
+import { RecordPaymentData } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -132,6 +133,21 @@ export const teamsApi = {
 
   removeMember: (teamId: string, userId: string) =>
     api.delete(`/admin/teams/${teamId}/members/${userId}`),
+};
+
+// Admissions API
+export const admissionsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/admissions", { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/admissions/${id}`),
+
+  getStats: () =>
+    api.get("/admin/admissions/stats"),
+
+  recordPayment: (id: string, data: RecordPaymentData) =>
+    api.post(`/admin/admissions/${id}/payment`, data),
 };
 
 export default api;
