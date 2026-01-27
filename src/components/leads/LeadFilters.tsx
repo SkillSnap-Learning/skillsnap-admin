@@ -147,8 +147,9 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Sources</SelectItem>
-                <SelectItem value="website">Website</SelectItem>
                 <SelectItem value="contact_form">Contact Form</SelectItem>
+                <SelectItem value="webinar_registration">Webinar Registration</SelectItem>
+                <SelectItem value="website">Website</SelectItem>
                 <SelectItem value="referral">Referral</SelectItem>
                 <SelectItem value="social">Social</SelectItem>
                 <SelectItem value="whatsapp">WhatsApp</SelectItem>
@@ -171,7 +172,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
                 <SelectItem value="all">All Users</SelectItem>
                 <SelectItem value="unassigned">Unassigned</SelectItem>
                 {salesUsersData?.map((user: any) => (
-                  <SelectItem key={user._id} value={user._id}>
+                  <SelectItem key={user.id} value={user.id}>
                     {user.name}
                   </SelectItem>
                 ))}
@@ -193,7 +194,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
                 <SelectContent>
                   <SelectItem value="all">All Teams</SelectItem>
                   {teamsData?.map((team: any) => (
-                    <SelectItem key={team._id} value={team._id}>
+                    <SelectItem key={team.id} value={team.id}>
                       {team.name}
                     </SelectItem>
                   ))}
