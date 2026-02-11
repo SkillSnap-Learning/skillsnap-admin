@@ -1,4 +1,4 @@
-import { Chapter } from "@/types";
+import { Chapter, Course, Question, NotificationTemplate } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -143,10 +143,10 @@ export const coursesApi = {
   getById: (id: string) =>
     api.get(`/admin/courses/${id}`),
 
-  create: (data: Record<string, unknown>) =>
+  create: (data: Partial<Course>) => 
     api.post("/admin/courses", data),
 
-  update: (id: string, data: Record<string, unknown>) =>
+  update: (id: string, data: Partial<Course>) => 
     api.patch(`/admin/courses/${id}`, data),
 
   delete: (id: string) =>
@@ -183,10 +183,10 @@ export const questionsApi = {
   getById: (id: string) =>
     api.get(`/admin/questions/${id}`),
 
-  create: (data: Record<string, unknown>) =>
+  create: (data: Partial<Question>) =>
     api.post("/admin/questions", data),
 
-  update: (id: string, data: Record<string, unknown>) =>
+  update: (id: string, data: Partial<Question>) =>
     api.patch(`/admin/questions/${id}`, data),
 
   delete: (id: string) =>
@@ -229,10 +229,10 @@ export const notificationTemplatesApi = {
   getById: (id: string) =>
     api.get(`/admin/notification-templates/${id}`),
 
-  create: (data: Record<string, unknown>) =>
+  create: (data: Partial<NotificationTemplate>) =>
     api.post("/admin/notification-templates", data),
 
-  update: (id: string, data: Record<string, unknown>) =>
+  update: (id: string, data: Partial<NotificationTemplate>) =>
     api.patch(`/admin/notification-templates/${id}`, data),
 
   delete: (id: string) =>
