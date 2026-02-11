@@ -1,3 +1,4 @@
+import { Chapter } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -162,10 +163,10 @@ export const chaptersApi = {
   getById: (id: string) =>
     api.get(`/admin/chapters/${id}`),
 
-  create: (data: Record<string, unknown>) =>
+  create: (data: Partial<Chapter>) => 
     api.post("/admin/chapters", data),
 
-  update: (id: string, data: Record<string, unknown>) =>
+  update: (id: string, data: Partial<Chapter>) => 
     api.patch(`/admin/chapters/${id}`, data),
 
   delete: (id: string) =>
