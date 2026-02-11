@@ -85,7 +85,7 @@ export function TemplateModal({ open, onClose, template }: TemplateModalProps) {
         <form onSubmit={handleSubmit((data) => mutation.mutate(data))} className="space-y-4">
           <div>
             <Label>Type *</Label>
-            <Select value={selectedType} onValueChange={(val) => setValue("type", val)}>
+            <Select value={selectedType} onValueChange={(val) => setValue("type", val as TemplateFormData["type"])}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
