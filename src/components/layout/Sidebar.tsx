@@ -12,7 +12,12 @@ import {
   LogOut,
   ChevronLeft,
   Menu,
+  BookOpen,
+  FileText,
+  HelpCircle,
+  Upload,
 } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -41,6 +46,41 @@ const navigation = [
     icon: Building2,
     roles: ["superadmin", "admin", "sales-manager"],
   },
+  {
+    name: "Courses",
+    href: "/courses",
+    icon: BookOpen,
+    roles: ["superadmin", "admin", "instructor"],
+    permission: "canManageContent",
+  },
+  {
+    name: "Chapters",
+    href: "/chapters",
+    icon: FileText,
+    roles: ["superadmin", "admin", "instructor"],
+    permission: "canManageContent",
+  },
+  {
+    name: "Questions",
+    href: "/questions",
+    icon: HelpCircle,
+    roles: ["superadmin", "admin", "instructor"],
+    permission: "canManageContent",
+  },
+  {
+    name: "Content Upload",
+    href: "/content-upload",
+    icon: Upload,
+    roles: ["superadmin", "admin", "instructor"],
+    permission: "canManageContent",
+  },
+  {
+    name: "Notification Templates",
+    href: "/notification-templates",
+    icon: Bell,
+    roles: ["superadmin", "admin"],
+    permission: "canManageContent",
+  },
 ];
 
 export function Sidebar() {
@@ -49,9 +89,17 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const filteredNav = navigation.filter((item) =>
-    item.roles.some((role) => hasRole(role as any))
-  );
+  const filteredNav = navigation.filter((item) => {
+    const hasRequiredRole = item.roles.some((role) => hasRole(role as any));
+    if (!hasRequiredRole) return false;
+    
+    // Check permission if specified
+    if (item.permission) {
+      return useAuthStore.getState().canManageContent();
+    }
+    
+    return true;
+  });
 
   const handleLogout = () => {
     logout();

@@ -171,3 +171,59 @@ export interface LeadFilters {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
 }
+
+// Learning Platform Types
+export interface Course {
+  _id: string;
+  title: string;
+  class: string;
+  subject: string;
+  description?: string;
+  totalChapters: number;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Chapter {
+  _id: string;
+  courseId: string | Course;
+  chapterNumber: number;
+  title: string;
+  description?: string;
+  videoUrl?: string;
+  videoDuration?: number;
+  notesUrl?: string;
+  minimumWatchPercentage: number;
+  minimumTestPercentage: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Question {
+  _id: string;
+  chapterId: string | Chapter;
+  questionText: string;
+  options: string[];
+  correctAnswer: number;
+  explanation?: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  images?: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ClassType = '6' | '7' | '8' | '9' | '10';
+export type SubjectType = 'english' | 'maths' | 'science' | 'social_science';
+export type DifficultyType = 'easy' | 'medium' | 'hard';
+
+export interface NotificationTemplate {
+  _id: string;
+  type: 'achievement' | 'reminder' | 'announcement' | 'instructor_reply' | 'chapter_unlocked' | 'test_passed';
+  title: string;
+  message: string;
+  isActive: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}

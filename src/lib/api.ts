@@ -134,4 +134,108 @@ export const teamsApi = {
     api.delete(`/admin/teams/${teamId}/members/${userId}`),
 };
 
+// Learning Platform API
+export const coursesApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/courses", { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/courses/${id}`),
+
+  create: (data: Record<string, unknown>) =>
+    api.post("/admin/courses", data),
+
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch(`/admin/courses/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/courses/${id}`),
+};
+
+export const chaptersApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/chapters", { params }),
+
+  getByCourse: (courseId: string) =>
+    api.get(`/admin/chapters/course/${courseId}`),
+
+  getById: (id: string) =>
+    api.get(`/admin/chapters/${id}`),
+
+  create: (data: Record<string, unknown>) =>
+    api.post("/admin/chapters", data),
+
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch(`/admin/chapters/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/chapters/${id}`),
+};
+
+export const questionsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/questions", { params }),
+
+  getByChapter: (chapterId: string) =>
+    api.get(`/admin/questions/chapter/${chapterId}`),
+
+  getById: (id: string) =>
+    api.get(`/admin/questions/${id}`),
+
+  create: (data: Record<string, unknown>) =>
+    api.post("/admin/questions", data),
+
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch(`/admin/questions/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/questions/${id}`),
+};
+
+export const contentApi = {
+  uploadVideo: (file: File) => {
+    const formData = new FormData();
+    formData.append('video', file);
+    return api.post("/admin/content/upload/video", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  uploadNotes: (file: File, courseId: string, chapterNumber: number) => {
+    const formData = new FormData();
+    formData.append('pdf', file);
+    formData.append('courseId', courseId);
+    formData.append('chapterNumber', chapterNumber.toString());
+    return api.post("/admin/content/upload/notes", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  uploadQuestionImage: (file: File, questionId: string) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('questionId', questionId);
+    return api.post("/admin/content/upload/question-image", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+};
+
+export const notificationTemplatesApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/notification-templates", { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/notification-templates/${id}`),
+
+  create: (data: Record<string, unknown>) =>
+    api.post("/admin/notification-templates", data),
+
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch(`/admin/notification-templates/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/notification-templates/${id}`),
+};
+
 export default api;

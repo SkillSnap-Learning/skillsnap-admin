@@ -93,6 +93,11 @@ export const useAuthStore = create<AuthState>()(
         const { hasPermission, hasRole } = get();
         return hasPermission("canDeleteLeads") || hasRole("superadmin", "admin");
       },
+
+      canManageContent: () => {
+        const { hasPermission, hasRole } = get();
+        return hasPermission("canManageContent") || hasRole("superadmin", "admin", "instructor");
+      },
     }),
     {
       name: "auth-storage",

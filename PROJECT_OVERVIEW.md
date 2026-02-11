@@ -138,6 +138,11 @@ SuperAdmin (System Owner)
 | Lead Detail | ✅ | ✅ | ✅ | ✅ Team | ✅ Own |
 | Users | ✅ | ✅ | ✅ Team | ❌ | ❌ |
 | Teams | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Courses | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ Instructor |
+| Chapters | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ Instructor |
+| Questions | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ Instructor |
+| Content Upload | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ Instructor |
+| Templates | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 ### Feature Permissions
 
@@ -266,6 +271,61 @@ SuperAdmin (System Owner)
   - Remove members with X button
   - Shows member count
 
+### 7. Courses Page (`/courses`)
+- **Filters:**
+  - Search by title
+  - Class filter (6-10)
+  - Subject filter
+- **Table Display:**
+  - Course title, class, subject
+  - Total chapters count
+  - Created date
+- **Actions:**
+  - Create/Edit/Delete courses
+  - Navigate to chapters
+
+### 8. Chapters Page (`/chapters`)
+- **Filters:**
+  - Search by title
+  - Course filter
+- **Table Display:**
+  - Chapter number, title, course
+  - Video duration, content status
+  - Unlock thresholds (watch/test %)
+- **Actions:**
+  - Create/Edit/Delete chapters
+  - Navigate to questions
+
+### 9. Questions Page (`/questions`)
+- **Filters:**
+  - Search by text
+  - Course/Chapter filters
+  - Difficulty filter
+- **Table Display:**
+  - Question text, chapter
+  - Difficulty, correct answer
+  - Image indicators
+- **Actions:**
+  - Create/Edit/Delete questions (MCQ with 4 options)
+
+### 10. Content Upload Page (`/content-upload`)
+- Select course → chapter
+- Upload video to Cloudflare Stream
+- Upload PDF notes to R2
+- Auto-updates chapter document
+
+### 11. Notification Templates Page (`/notification-templates`)
+- **Table Display:**
+  - Type, title, message preview
+  - Active/Inactive status
+- **Actions:**
+  - Create/Edit templates
+  - Toggle active status
+- **Supported Types:**
+  - achievement, reminder, announcement
+  - instructor_reply, chapter_unlocked, test_passed
+- **Placeholders:** {studentName}, {chapterName}, {courseName}, {score}, {streak}
+
 ---
 
 ## API Integration
@@ -304,6 +364,22 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1
 | | `/admin/teams/active` | GET | Get active teams |
 | | `/admin/teams/:id/members` | POST | Add member |
 | | `/admin/teams/:id/members/:userId` | DELETE | Remove member |
+| **Courses** | `/admin/courses` | GET | List courses |
+| | `/admin/courses` | POST | Create course |
+| | `/admin/courses/:id` | GET/PATCH/DELETE | Manage course |
+| **Chapters** | `/admin/chapters` | GET | List chapters |
+| | `/admin/chapters/course/:id` | GET | Get by course |
+| | `/admin/chapters` | POST | Create chapter |
+| | `/admin/chapters/:id` | GET/PATCH/DELETE | Manage chapter |
+| **Questions** | `/admin/questions` | GET | List questions |
+| | `/admin/questions/chapter/:id` | GET | Get by chapter |
+| | `/admin/questions` | POST | Create question |
+| | `/admin/questions/:id` | GET/PATCH/DELETE | Manage question |
+| **Content** | `/admin/content/upload/video` | POST | Upload to Stream |
+| | `/admin/content/upload/notes` | POST | Upload PDF to R2 |
+| | `/admin/content/upload/question-image` | POST | Upload image to R2 |
+| **Templates** | `/admin/notification-templates` | GET/POST | List/Create |
+| | `/admin/notification-templates/:id` | GET/PATCH/DELETE | Manage template |
 
 ---
 
@@ -512,8 +588,8 @@ git push origin feature/feature-name
 ## Contributors
 - **Frontend Developer:** Saquelain
 - **Framework:** Next.js 15 + TypeScript
-- **Version:** 1.0.0
-- **Last Updated:** January 2025
+- **Version:** 2.0.0  
+- **Last Updated:** February 2026
 
 ---
 
