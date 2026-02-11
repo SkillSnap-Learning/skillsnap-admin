@@ -31,7 +31,7 @@ interface TemplateModalProps {
 }
 
 interface TemplateFormData {
-  type: string;
+  type: "achievement" | "reminder" | "announcement" | "instructor_reply" | "chapter_unlocked" | "test_passed";
   title: string;
   message: string;
   isActive: boolean;
