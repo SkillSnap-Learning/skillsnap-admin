@@ -21,6 +21,7 @@ interface AuthState {
   canExportLeads: () => boolean;
   canViewReports: () => boolean;
   canDeleteLeads: () => boolean;
+  canManageContent: () => boolean; // Add this
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -95,8 +96,9 @@ export const useAuthStore = create<AuthState>()(
       },
 
       canManageContent: () => {
-        const { hasPermission, hasRole } = get();
-        return hasPermission("canManageContent") || hasRole("superadmin", "admin", "instructor");
+        const { user } = get();
+        if (!user) return false;
+        return ["superadmin", "admin", "instructor"].includes(user.role);
       },
     }),
     {
