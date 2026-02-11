@@ -20,8 +20,11 @@ interface ConfirmDialogProps {
   description: string;
   confirmText?: string;
   cancelText?: string;
-  isDestructive?: boolean; // Add this line
+  isDestructive?: boolean;
+  isLoading?: boolean;      // Add this
+  variant?: "default" | "destructive";  // Add this
 }
+
 
 export function ConfirmDialog({
   open,
@@ -31,8 +34,12 @@ export function ConfirmDialog({
   description,
   confirmText,
   cancelText,
-  isDestructive, // Add this to the destructuring
+  isDestructive,
+  isLoading,    // Add this
+  variant,      // Add this
 }: ConfirmDialogProps) {
+  const isDestructiveStyle = isDestructive || variant === "destructive";
+  
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -41,12 +48,15 @@ export function ConfirmDialog({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelText || "Cancel"}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>
+            {cancelText || "Cancel"}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            className={isDestructive ? "bg-red-600 hover:bg-red-700" : ""}
+            disabled={isLoading}
+            className={isDestructiveStyle ? "bg-red-600 hover:bg-red-700" : ""}
           >
-            {confirmText || "Confirm"}
+            {isLoading ? "Loading..." : (confirmText || "Confirm")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
