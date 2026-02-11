@@ -153,10 +153,10 @@ export function QuestionModal({ open, onClose, question, chapters }: QuestionMod
 
           <div className="space-y-3">
             <Label>Options * (Select correct answer)</Label>
-            {[0, 1, 2, 3].map((i) => (
+            {([0, 1, 2, 3] as const).map((i) => (
               <div key={i} className="flex gap-2">
                 <Input
-                  {...register(`options.${i}` as const, { required: true })}
+                  {...register(`options.${i}`, { required: true })}
                   placeholder={`Option ${i + 1}`}
                   className={selectedAnswer === i ? "border-green-500 border-2" : ""}
                 />
@@ -174,7 +174,7 @@ export function QuestionModal({ open, onClose, question, chapters }: QuestionMod
               </div>
             ))}
           </div>
-
+          
           <div>
             <Label>Explanation (optional)</Label>
             <Textarea
