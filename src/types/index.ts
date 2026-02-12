@@ -219,7 +219,7 @@ export type DifficultyType = 'easy' | 'medium' | 'hard';
 
 export interface NotificationTemplate {
   _id: string;
-  type: 'achievement' | 'reminder' | 'announcement' | 'instructor_reply' | 'chapter_unlocked' | 'test_passed';
+  type: 'achievement' | 'reminder' | 'announcement' | 'instructor_reply' | 'chapter_unlocked' | 'test_passed' | 'child_test_passed' | 'child_chapter_unlocked' | 'weekly_progress' | 'parent_announcement';
   title: string;
   message: string;
   isActive: boolean;

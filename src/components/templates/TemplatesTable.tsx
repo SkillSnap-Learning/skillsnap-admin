@@ -28,6 +28,10 @@ const typeLabels: Record<string, string> = {
   instructor_reply: "Instructor Reply",
   chapter_unlocked: "Chapter Unlocked",
   test_passed: "Test Passed",
+  child_test_passed: "Child Test Passed",
+  child_chapter_unlocked: "Child Chapter Unlocked",
+  weekly_progress: "Weekly Progress",
+  parent_announcement: "Parent Announcement",
 };
 
 const typeColors: Record<string, string> = {
@@ -37,6 +41,10 @@ const typeColors: Record<string, string> = {
   instructor_reply: "bg-green-100 text-green-700",
   chapter_unlocked: "bg-cyan-100 text-cyan-700",
   test_passed: "bg-emerald-100 text-emerald-700",
+  child_test_passed: "bg-pink-100 text-pink-700",
+  child_chapter_unlocked: "bg-indigo-100 text-indigo-700",
+  weekly_progress: "bg-orange-100 text-orange-700",
+  parent_announcement: "bg-teal-100 text-teal-700",
 };
 
 export function TemplatesTable({ templates, isLoading, onEdit, onToggleActive }: TemplatesTableProps) {

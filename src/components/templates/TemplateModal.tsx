@@ -31,7 +31,7 @@ interface TemplateModalProps {
 }
 
 interface TemplateFormData {
-  type: "achievement" | "reminder" | "announcement" | "instructor_reply" | "chapter_unlocked" | "test_passed";
+  type: "achievement" | "reminder" | "announcement" | "instructor_reply" | "chapter_unlocked" | "test_passed" | "child_test_passed" | "child_chapter_unlocked" | "weekly_progress" | "parent_announcement";
   title: string;
   message: string;
   isActive: boolean;
@@ -44,8 +44,11 @@ const types = [
   { value: "instructor_reply", label: "Instructor Reply" },
   { value: "chapter_unlocked", label: "Chapter Unlocked" },
   { value: "test_passed", label: "Test Passed" },
+  { value: "child_test_passed", label: "Child Test Passed" },
+  { value: "child_chapter_unlocked", label: "Child Chapter Unlocked" },
+  { value: "weekly_progress", label: "Weekly Progress" },
+  { value: "parent_announcement", label: "Parent Announcement" },
 ];
-
 export function TemplateModal({ open, onClose, template }: TemplateModalProps) {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<TemplateFormData>();
