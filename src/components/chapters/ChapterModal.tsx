@@ -94,7 +94,13 @@ export function ChapterModal({ open, onClose, chapter, courses }: ChapterModalPr
   });
 
   const onSubmit = (data: ChapterFormData) => {
-    mutation.mutate(data);
+    if (chapter) {
+      // Strip fields that shouldn't be updated
+      const { courseId, chapterNumber, ...updateData } = data;
+      mutation.mutate(updateData as ChapterFormData);
+    } else {
+      mutation.mutate(data);
+    }
   };
 
   return (
