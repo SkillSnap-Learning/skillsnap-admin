@@ -198,6 +198,7 @@ export interface Chapter {
   minimumTestPercentage: number;
   createdAt: string;
   updatedAt: string;
+  videoStatus?: 'none' | 'uploading' | 'ready';
 }
 
 export interface Question {

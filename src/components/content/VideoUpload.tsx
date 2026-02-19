@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useState, useRef, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as tus from "tus-js-client";
 import { chaptersApi } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -15,14 +15,34 @@ interface VideoUploadProps {
   chapterTitle: string;
 }
 
+const getUploadKey = (chapterId: string) => `pending_upload_${chapterId}`;
+
 export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [duration, setDuration] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [success, setSuccess] = useState(false);
+  const [pendingUpload, setPendingUpload] = useState(false);
   const uploadRef = useRef<tus.Upload | null>(null);
   const queryClient = useQueryClient();
+
+  const { data: chapterData, isLoading: chapterLoading } = useQuery({
+    queryKey: ["chapter", chapterId],
+    queryFn: async () => {
+      const res = await chaptersApi.getById(chapterId);
+      return res.data.data;
+    },
+  });
+
+  useEffect(() => {
+    const saved = localStorage.getItem(getUploadKey(chapterId));
+    if (saved) {
+      setPendingUpload(true);
+    } else {
+      setPendingUpload(false);
+    }
+  }, [chapterId]);
 
   const handleUpload = async () => {
     if (!file) return;
@@ -32,32 +52,44 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
     setSuccess(false);
 
     try {
-      // Step 1 — Get TUS upload URL from backend
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/video/start`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileSize: file.size,
-          }),
-        }
-      );
+      // Step 1 — Get or reuse TUS upload URL
+      let uploadUrl: string;
+      let streamId: string;
 
-      if (!res.ok) throw new Error("Failed to get upload URL");
-      const { data } = await res.json();
-      const { uploadUrl, streamId } = data;
+      const saved = localStorage.getItem(getUploadKey(chapterId));
+      if (saved) {
+        ({ uploadUrl, streamId } = JSON.parse(saved));
+      } else {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/video/start`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+              fileName: file.name,
+              fileSize: file.size,
+              chapterId,
+            }),
+          }
+        );
+
+        if (!res.ok) throw new Error("Failed to get upload URL");
+        const { data } = await res.json();
+        ({ uploadUrl, streamId } = data);
+
+        // Save for resume on refresh
+        localStorage.setItem(getUploadKey(chapterId), JSON.stringify({ uploadUrl, streamId }));
+      }
 
       // Step 2 — Upload directly to Cloudflare Stream via TUS
       await new Promise<void>((resolve, reject) => {
         const upload = new tus.Upload(file, {
           uploadUrl,
           retryDelays: [0, 3000, 5000, 10000, 20000],
-          chunkSize: 50 * 1024 * 1024, // 50MB chunks instead of default
+          chunkSize: 50 * 1024 * 1024,
           metadata: {
             filename: file.name,
             filetype: file.type,
@@ -74,14 +106,11 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
         upload.start();
       });
 
-      // Step 3 — Update chapter with streamId and duration
-      await chaptersApi.update(chapterId, {
-        videoUrl: streamId,
-        ...(duration ? { videoDuration: parseInt(duration) } : {}),
-      });
-
+      localStorage.removeItem(getUploadKey(chapterId));
       queryClient.invalidateQueries({ queryKey: ["chapters"] });
+      queryClient.invalidateQueries({ queryKey: ["chapter", chapterId] });
       setSuccess(true);
+      setPendingUpload(false);
       setFile(null);
       setDuration("");
       setProgress(0);
@@ -98,6 +127,8 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
       uploadRef.current.abort();
       uploadRef.current = null;
     }
+    localStorage.removeItem(getUploadKey(chapterId));
+    setPendingUpload(false);
     setUploading(false);
     setProgress(0);
   };
@@ -105,6 +136,27 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
   return (
     <div className="space-y-4">
       <div>
+        {chapterLoading ? (
+          <p className="text-sm text-slate-500">Loading chapter info...</p>
+        ) : chapterData?.videoStatus === "ready" ? (
+          <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 p-3 rounded mb-2">
+            <CheckCircle2 className="h-4 w-4" />
+            Video uploaded: <strong>{chapterData.videoFileName || chapterData.videoUrl}</strong>
+          </div>
+        ) : chapterData?.videoStatus === "uploading" ? (
+          <div className="flex items-center gap-2 text-sm text-yellow-600 bg-yellow-50 p-3 rounded mb-2">
+            <Upload className="h-4 w-4" />
+            Video is currently processing on Cloudflare...
+          </div>
+        ) : null}
+
+        {pendingUpload && !uploading && (
+          <div className="flex items-center gap-2 text-sm text-orange-600 bg-orange-50 p-3 rounded mb-2">
+            <Upload className="h-4 w-4" />
+            Incomplete upload detected. Re-select the same video file to resume.
+          </div>
+        )}
+
         <Label htmlFor="video">Select Video File</Label>
         <Input
           id="video"
@@ -135,12 +187,16 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
 
       {file && (
         <div className="text-sm text-slate-600 bg-slate-50 p-3 rounded">
-          <p><strong>File:</strong> {file.name}</p>
-          <p><strong>Size:</strong> {(file.size / 1024 / 1024 / 1024).toFixed(2)} GB ({(file.size / 1024 / 1024).toFixed(0)} MB)</p>
+          <p>
+            <strong>File:</strong> {file.name}
+          </p>
+          <p>
+            <strong>Size:</strong> {(file.size / 1024 / 1024 / 1024).toFixed(2)}{" "}
+            GB ({(file.size / 1024 / 1024).toFixed(0)} MB)
+          </p>
         </div>
       )}
 
-      {/* Progress Bar */}
       {uploading && (
         <div className="space-y-2">
           <div className="flex justify-between text-sm text-slate-600">
@@ -163,7 +219,11 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
           className="flex-1"
         >
           <Upload className="h-4 w-4 mr-2" />
-          {uploading ? `Uploading ${progress}%` : "Upload Video"}
+          {uploading
+            ? `Uploading ${progress}%`
+            : pendingUpload
+            ? "Resume Upload"
+            : "Upload Video"}
         </Button>
 
         {uploading && (
@@ -177,7 +237,8 @@ export function VideoUpload({ chapterId, chapterTitle }: VideoUploadProps) {
       {success && (
         <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 p-3 rounded">
           <CheckCircle2 className="h-4 w-4" />
-          Video uploaded and chapter updated successfully
+          Video uploaded to Cloudflare. Status will update once processing is
+          complete.
         </div>
       )}
     </div>
