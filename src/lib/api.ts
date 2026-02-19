@@ -202,11 +202,12 @@ export const contentApi = {
     });
   },
 
-  uploadNotes: (file: File, courseId: string, chapterNumber: number) => {
+  uploadNotes: (file: File, courseId: string, chapterNumber: number, chapterId: string) => {
     const formData = new FormData();
     formData.append('pdf', file);
     formData.append('courseId', courseId);
     formData.append('chapterNumber', chapterNumber.toString());
+    formData.append('chapterId', chapterId);
     return api.post("/admin/content/upload/notes", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });

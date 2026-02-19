@@ -113,6 +113,7 @@ export default function ContentUploadPage() {
                 courseId={selectedCourse}
                 chapterNumber={selectedChapterData.chapterNumber}
                 chapterTitle={selectedChapterData.title}
+                chapterId={selectedChapter}
               />
             </CardContent>
           </Card>
