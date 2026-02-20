@@ -83,6 +83,8 @@ export interface Lead {
   phone: string;
   message?: string;
   source: LeadSource;
+  board?: 'CBSE' | 'ICSE' | 'State Board' | null;
+  stateBoardName?: string | null;
   status: LeadStatus;
   assignedTo?: User | null;
   assignedBy?: User | null;
@@ -161,6 +163,7 @@ export interface LeadFilters {
   [key: string]: string | number | undefined; // Add this line
   status?: LeadStatus | "";
   source?: LeadSource | "";
+  board?: 'CBSE' | 'ICSE' | 'State Board' | '';
   assignedTo?: string;
   team?: string;
   search?: string;

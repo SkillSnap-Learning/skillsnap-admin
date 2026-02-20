@@ -50,6 +50,22 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
           </div>
         </div>
 
+        {lead.board && (
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-slate-100 rounded-lg">
+              <Building2 className="h-4 w-4 text-slate-600" />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500">Board</p>
+              <p className="font-medium">
+                {lead.board === 'State Board' && lead.stateBoardName
+                  ? `State Board (${lead.stateBoardName})`
+                  : lead.board}
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center gap-3">
           <div className="p-2 bg-slate-100 rounded-lg">
             <Calendar className="h-4 w-4 text-slate-600" />

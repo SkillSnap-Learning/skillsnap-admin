@@ -87,6 +87,9 @@ export function LeadsTable({
               <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Source
               </th>
+              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+                Board
+              </th>
               <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
                 Status
               </th>
@@ -137,6 +140,11 @@ export function LeadsTable({
                 <td className="px-4 py-3 hidden lg:table-cell">
                   <span className="text-sm text-slate-600 capitalize">
                     {lead.source?.replace("_", " ") || "-"}
+                  </span>
+                </td>
+                <td className="px-4 py-3 hidden lg:table-cell">
+                  <span className="text-sm text-slate-600">
+                    {lead.board || "-"}
                   </span>
                 </td>
                 <td className="px-4 py-3">

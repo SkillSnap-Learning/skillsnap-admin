@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LeadFilters as LeadFiltersType } from "@/types";
-import { Search, X, Filter } from "lucide-react";
+import { Search, X, Filter, Calendar } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { teamsApi, usersApi } from "@/lib/api";
 import { useAuthStore } from "@/stores/authStore";
@@ -76,7 +76,10 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
     filters.source ||
     filters.assignedTo ||
     filters.team ||
-    filters.search;
+    filters.search ||
+    filters.board ||
+    filters.startDate ||
+    filters.endDate;
 
   return (
     <div className="space-y-4">
@@ -114,7 +117,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
       {/* Filter Dropdowns */}
       {showFilters && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-slate-50 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-4 bg-slate-50 rounded-lg">
           {/* Status Filter */}
           <div className="space-y-1">
             <label className="text-xs font-medium text-slate-500">Status</label>
@@ -202,6 +205,53 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
               </Select>
             </div>
           )}
+
+          {/* Board Filter */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-slate-500">Board</label>
+            <Select
+              value={filters.board || "all"}
+              onValueChange={(value) => handleFilterChange("board", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="All Boards" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Boards</SelectItem>
+                <SelectItem value="CBSE">CBSE</SelectItem>
+                <SelectItem value="ICSE">ICSE</SelectItem>
+                <SelectItem value="State Board">State Board</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Start Date Filter */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-slate-500">From Date</label>
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Input
+                type="date"
+                value={filters.startDate || ""}
+                onChange={(e) => handleFilterChange("startDate", e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+
+          {/* End Date Filter */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-slate-500">To Date</label>
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Input
+                type="date"
+                value={filters.endDate || ""}
+                onChange={(e) => handleFilterChange("endDate", e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
