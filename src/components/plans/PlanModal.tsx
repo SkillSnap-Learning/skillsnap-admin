@@ -38,6 +38,7 @@ interface PlanFormData {
   price: {
     amount: number;
     originalAmount: number;
+    currency: string;
   };
   isActive: boolean;
 }
@@ -64,20 +65,21 @@ export function PlanModal({ open, onClose, plan }: PlanModalProps) {
         description: plan.description || "",
         isGuestPlan: plan.isGuestPlan,
         price: {
-          amount: plan.price.amount,
-          originalAmount: plan.price.originalAmount,
+            amount: plan.price.amount,
+            originalAmount: plan.price.originalAmount,
+            currency: plan.price.currency || "INR",
         },
         isActive: plan.isActive,
-      });
+        });
     } else {
       reset({
         name: "",
         slug: "",
         description: "",
         isGuestPlan: false,
-        price: { amount: 0, originalAmount: 0 },
+        price: { amount: 0, originalAmount: 0, currency: "INR" },
         isActive: true,
-      });
+        });
     }
   }, [plan, reset]);
 
