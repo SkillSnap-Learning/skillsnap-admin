@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { chaptersApi } from "@/lib/api";
-import { Chapter } from "@/types";
+import { topicsApi } from "@/lib/api";
+import { Topic } from "@/types";
 import {
   Dialog,
   DialogContent,
@@ -24,27 +24,29 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 
-interface ChapterModalProps {
+interface TopicModalProps {
   open: boolean;
   onClose: () => void;
-  chapter?: Chapter | null;
-  subjectId: string;
+  topic?: Topic | null;
+  chapterId: string;
 }
 
-interface ChapterFormData {
-  subjectId: string;
-  chapterNumber: number;
+interface TopicFormData {
+  chapterId: string;
+  topicNumber: number;
   title: string;
   description?: string;
+  minimumWatchPercentage: number;
+  minimumTestPercentage: number;
   isActive: boolean;
 }
 
-export function ChapterModal({
+export function TopicModal({
   open,
   onClose,
-  chapter,
-  subjectId,
-}: ChapterModalProps) {
+  topic,
+  chapterId,
+}: TopicModalProps) {
   const queryClient = useQueryClient();
   const {
     register,
@@ -53,38 +55,40 @@ export function ChapterModal({
     setValue,
     watch,
     formState: { errors },
-  } = useForm<ChapterFormData>();
+  } = useForm<TopicFormData>();
 
   const isActive = watch("isActive");
 
   useEffect(() => {
-    if (chapter) {
+    if (topic) {
       reset({
-        subjectId,
-        chapterNumber: chapter.chapterNumber,
-        title: chapter.title,
-        description: chapter.description || "",
-        isActive: chapter.isActive,
+        chapterId,
+        topicNumber: topic.topicNumber,
+        title: topic.title,
+        description: topic.description || "",
+        minimumWatchPercentage: topic.minimumWatchPercentage,
+        minimumTestPercentage: topic.minimumTestPercentage,
+        isActive: topic.isActive,
       });
     } else {
       reset({
-        subjectId,
-        chapterNumber: 1,
+        chapterId,
+        topicNumber: 1,
         title: "",
         description: "",
+        minimumWatchPercentage: 85,
+        minimumTestPercentage: 85,
         isActive: true,
       });
     }
-  }, [chapter, subjectId, reset]);
+  }, [topic, chapterId, reset]);
 
   const mutation = useMutation({
-    mutationFn: (data: ChapterFormData) =>
-      chapter
-        ? chaptersApi.update(chapter._id, data)
-        : chaptersApi.create(data),
+    mutationFn: (data: TopicFormData) =>
+      topic ? topicsApi.update(topic._id, data) : topicsApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chapters", subjectId] });
-      toast.success(chapter ? "Chapter updated" : "Chapter created");
+      queryClient.invalidateQueries({ queryKey: ["topics", chapterId] });
+      toast.success(topic ? "Topic updated" : "Topic created");
       onClose();
     },
     onError: (error: Error) => {
@@ -92,10 +96,10 @@ export function ChapterModal({
     },
   });
 
-  const onSubmit = (data: ChapterFormData) => {
-    if (chapter) {
-      const { subjectId: _, chapterNumber: __, ...updateData } = data;
-      mutation.mutate(updateData as ChapterFormData);
+  const onSubmit = (data: TopicFormData) => {
+    if (topic) {
+      const { chapterId: _, topicNumber: __, ...updateData } = data;
+      mutation.mutate(updateData as TopicFormData);
     } else {
       mutation.mutate(data);
     }
@@ -105,26 +109,24 @@ export function ChapterModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>
-            {chapter ? "Edit Chapter" : "Add Chapter"}
-          </DialogTitle>
+          <DialogTitle>{topic ? "Edit Topic" : "Add Topic"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Label>Chapter Number *</Label>
+            <Label>Topic Number *</Label>
             <Input
               type="number"
               min="1"
-              {...register("chapterNumber", {
-                required: "Chapter number is required",
+              {...register("topicNumber", {
+                required: "Topic number is required",
                 valueAsNumber: true,
                 min: 1,
               })}
-              disabled={!!chapter}
+              disabled={!!topic}
             />
-            {errors.chapterNumber && (
+            {errors.topicNumber && (
               <p className="text-sm text-red-600 mt-1">
-                {errors.chapterNumber.message}
+                {errors.topicNumber.message}
               </p>
             )}
           </div>
@@ -133,7 +135,7 @@ export function ChapterModal({
             <Label>Title *</Label>
             <Input
               {...register("title", { required: "Title is required" })}
-              placeholder="e.g., Introduction to Algebra"
+              placeholder="e.g., Introduction to Variables"
             />
             {errors.title && (
               <p className="text-sm text-red-600 mt-1">
@@ -146,9 +148,40 @@ export function ChapterModal({
             <Label>Description</Label>
             <Textarea
               {...register("description")}
-              placeholder="Brief description of the chapter"
-              rows={3}
+              placeholder="Brief description of the topic"
+              rows={2}
             />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Min Watch % *</Label>
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                {...register("minimumWatchPercentage", {
+                  required: true,
+                  valueAsNumber: true,
+                  min: 0,
+                  max: 100,
+                })}
+              />
+            </div>
+            <div>
+              <Label>Min Test % *</Label>
+              <Input
+                type="number"
+                min="0"
+                max="100"
+                {...register("minimumTestPercentage", {
+                  required: true,
+                  valueAsNumber: true,
+                  min: 0,
+                  max: 100,
+                })}
+              />
+            </div>
           </div>
 
           <div>
@@ -172,11 +205,7 @@ export function ChapterModal({
               Cancel
             </Button>
             <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending
-                ? "Saving..."
-                : chapter
-                ? "Update"
-                : "Create"}
+              {mutation.isPending ? "Saving..." : topic ? "Update" : "Create"}
             </Button>
           </div>
         </form>

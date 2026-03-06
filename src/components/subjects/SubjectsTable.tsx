@@ -1,6 +1,6 @@
 "use client";
 
-import { Chapter } from "@/types";
+import { Subject } from "@/types";
 import {
   Table,
   TableBody,
@@ -16,23 +16,31 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
-interface ChaptersTableProps {
-  chapters: Chapter[];
+interface SubjectsTableProps {
+  subjects: Subject[];
   isLoading: boolean;
   planId: string;
-  subjectId: string;
-  onEdit: (chapter: Chapter) => void;
-  onDelete: (chapter: Chapter) => void;
+  onEdit: (subject: Subject) => void;
+  onDelete: (subject: Subject) => void;
 }
 
-export function ChaptersTable({
-  chapters,
+const subjectColors: Record<string, string> = {
+  maths: "bg-blue-100 text-blue-700",
+  science: "bg-green-100 text-green-700",
+  english: "bg-purple-100 text-purple-700",
+  social_science: "bg-orange-100 text-orange-700",
+  coding: "bg-pink-100 text-pink-700",
+  life_skills: "bg-teal-100 text-teal-700",
+  general: "bg-slate-100 text-slate-700",
+};
+
+export function SubjectsTable({
+  subjects,
   isLoading,
   planId,
-  subjectId,
   onEdit,
   onDelete,
-}: ChaptersTableProps) {
+}: SubjectsTableProps) {
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -43,10 +51,10 @@ export function ChaptersTable({
     );
   }
 
-  if (chapters.length === 0) {
+  if (subjects.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No chapters found</p>
+        <p className="text-slate-500">No subjects found</p>
       </div>
     );
   }
@@ -56,8 +64,8 @@ export function ChaptersTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-16">No.</TableHead>
-            <TableHead>Title</TableHead>
+            <TableHead>Subject</TableHead>
+            <TableHead>Class</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
@@ -65,51 +73,61 @@ export function ChaptersTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {chapters.map((chapter) => (
-            <TableRow key={chapter._id}>
+          {subjects.map((subject) => (
+            <TableRow key={subject._id}>
               <TableCell>
-                <Badge variant="outline">Ch {chapter.chapterNumber}</Badge>
+                <Badge
+                  className={
+                    subjectColors[subject.name] || "bg-slate-100 text-slate-700"
+                  }
+                >
+                  {subject.name
+                    .replace("_", " ")
+                    .replace(/\b\w/g, (l) => l.toUpperCase())}
+                </Badge>
               </TableCell>
-              <TableCell className="font-medium">{chapter.title}</TableCell>
+              <TableCell>
+                <Badge variant="outline">Class {subject.class}</Badge>
+              </TableCell>
               <TableCell className="text-sm text-slate-500 max-w-xs truncate">
-                {chapter.description || "—"}
+                {subject.description || "—"}
               </TableCell>
               <TableCell>
                 <Badge
                   className={
-                    chapter.isActive
+                    subject.isActive
                       ? "bg-green-100 text-green-700"
                       : "bg-slate-100 text-slate-700"
                   }
                 >
-                  {chapter.isActive ? "Active" : "Inactive"}
+                  {subject.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>
               <TableCell className="text-sm text-slate-500">
-                {chapter.createdAt
-                  ? formatDistanceToNow(new Date(chapter.createdAt), { addSuffix: true })
-                  : "—"}
+                {subject.createdAt
+                    ? formatDistanceToNow(new Date(subject.createdAt), { addSuffix: true })
+                    : "—"}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
                   <Link
-                    href={`/plans/${planId}/subjects/${subjectId}/chapters/${chapter._id}/topics`}
+                    href={`/plans/${planId}/subjects/${subject._id}/chapters`}
                   >
-                    <Button variant="ghost" size="sm" title="View Topics">
+                    <Button variant="ghost" size="sm" title="View Chapters">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </Link>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onEdit(chapter)}
+                    onClick={() => onEdit(subject)}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onDelete(chapter)}
+                    onClick={() => onDelete(subject)}
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>

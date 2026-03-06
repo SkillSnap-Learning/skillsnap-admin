@@ -1,4 +1,4 @@
-import { Chapter, Course, Question, NotificationTemplate } from "@/types";
+import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -136,49 +136,96 @@ export const teamsApi = {
 };
 
 // Learning Platform API
-export const coursesApi = {
+// Plans API
+export const plansApi = {
   getAll: (params?: Record<string, unknown>) =>
-    api.get("/admin/courses", { params }),
+    api.get("/admin/plans", { params }),
 
   getById: (id: string) =>
-    api.get(`/admin/courses/${id}`),
+    api.get(`/admin/plans/${id}`),
 
-  create: (data: Partial<Course>) => 
-    api.post("/admin/courses", data),
+  create: (data: Partial<Plan>) =>
+    api.post("/admin/plans", data),
 
-  update: (id: string, data: Partial<Course>) => 
-    api.patch(`/admin/courses/${id}`, data),
+  update: (id: string, data: Partial<Plan>) =>
+    api.patch(`/admin/plans/${id}`, data),
 
   delete: (id: string) =>
-    api.delete(`/admin/courses/${id}`),
+    api.delete(`/admin/plans/${id}`),
 };
 
+// Subjects API
+export const subjectsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/subjects", { params }),
+
+  getByPlan: (planId: string, classFilter?: string) =>
+    api.get(`/admin/subjects/plan/${planId}`, {
+      params: classFilter ? { class: classFilter } : undefined,
+    }),
+
+  getById: (id: string) =>
+    api.get(`/admin/subjects/${id}`),
+
+  create: (data: Partial<Subject>) =>
+    api.post("/admin/subjects", data),
+
+  update: (id: string, data: Partial<Subject>) =>
+    api.patch(`/admin/subjects/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/subjects/${id}`),
+};
+
+// Chapters API (updated)
 export const chaptersApi = {
   getAll: (params?: Record<string, unknown>) =>
     api.get("/admin/chapters", { params }),
 
-  getByCourse: (courseId: string) =>
-    api.get(`/admin/chapters/course/${courseId}`),
+  getBySubject: (subjectId: string) =>
+    api.get(`/admin/chapters/subject/${subjectId}`),
 
   getById: (id: string) =>
     api.get(`/admin/chapters/${id}`),
 
-  create: (data: Partial<Chapter>) => 
+  create: (data: Partial<Chapter>) =>
     api.post("/admin/chapters", data),
 
-  update: (id: string, data: Partial<Chapter>) => 
+  update: (id: string, data: Partial<Chapter>) =>
     api.patch(`/admin/chapters/${id}`, data),
 
   delete: (id: string) =>
     api.delete(`/admin/chapters/${id}`),
 };
 
+// Topics API
+export const topicsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/topics", { params }),
+
+  getByChapter: (chapterId: string) =>
+    api.get(`/admin/topics/chapter/${chapterId}`),
+
+  getById: (id: string) =>
+    api.get(`/admin/topics/${id}`),
+
+  create: (data: Partial<Topic>) =>
+    api.post("/admin/topics", data),
+
+  update: (id: string, data: Partial<Topic>) =>
+    api.patch(`/admin/topics/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/topics/${id}`),
+};
+
+// Questions API (updated)
 export const questionsApi = {
   getAll: (params?: Record<string, unknown>) =>
     api.get("/admin/questions", { params }),
 
-  getByChapter: (chapterId: string) =>
-    api.get(`/admin/questions/chapter/${chapterId}`),
+  getByTopic: (topicId: string) =>
+    api.get(`/admin/questions/topic/${topicId}`),
 
   getById: (id: string) =>
     api.get(`/admin/questions/${id}`),
@@ -193,6 +240,7 @@ export const questionsApi = {
     api.delete(`/admin/questions/${id}`),
 };
 
+// Content API (updated for topics)
 export const contentApi = {
   uploadVideo: (file: File) => {
     const formData = new FormData();
@@ -202,25 +250,55 @@ export const contentApi = {
     });
   },
 
-  uploadNotes: (file: File, courseId: string, chapterNumber: number, chapterId: string) => {
+  uploadNotes: (file: File, topicId: string) => {
     const formData = new FormData();
     formData.append('pdf', file);
-    formData.append('courseId', courseId);
-    formData.append('chapterNumber', chapterNumber.toString());
-    formData.append('chapterId', chapterId);
+    formData.append('topicId', topicId);
     return api.post("/admin/content/upload/notes", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
 
-  uploadQuestionImage: (file: File, questionId: string) => {
+  createVideoUploadUrl: (fileName: string, fileSize: number, topicId: string) =>
+    api.post("/admin/content/upload/video/start", { fileName, fileSize, topicId }),
+
+  uploadNotesWithProgress: (
+    file: File,
+    topicId: string,
+    onProgress: (pct: number) => void
+  ) => {
     const formData = new FormData();
-    formData.append('image', file);
-    formData.append('questionId', questionId);
-    return api.post("/admin/content/upload/question-image", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    formData.append("pdf", file);
+    formData.append("topicId", topicId);
+    return new Promise<{ data: { data: { notesUrl: string } } }>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/notes`);
+
+      const token = localStorage.getItem("token");
+      if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          onProgress(Math.round((e.loaded / e.total) * 100));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          const msg = JSON.parse(xhr.responseText)?.message || "Upload failed";
+          reject(new Error(msg));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error("Network error during upload"));
+      xhr.send(formData);
     });
   },
+
+  getNotesSignedUrl: (s3Key: string) =>
+    api.get("/admin/content/notes/signed-url", { params: { key: s3Key } }),
 };
 
 export const notificationTemplatesApi = {

@@ -188,35 +188,6 @@ export interface Course {
   updatedAt: string;
 }
 
-export interface Chapter {
-  _id: string;
-  courseId: string | Course;
-  chapterNumber: number;
-  title: string;
-  description?: string;
-  videoUrl?: string;
-  videoDuration?: number;
-  notesUrl?: string;
-  minimumWatchPercentage: number;
-  minimumTestPercentage: number;
-  createdAt: string;
-  updatedAt: string;
-  videoStatus?: 'none' | 'uploading' | 'ready';
-}
-
-export interface Question {
-  _id: string;
-  chapterId: string | Chapter;
-  questionText: string;
-  options: string[];
-  correctAnswer: number;
-  explanation?: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  images?: string[];
-  createdAt: string;
-  updatedAt: string;
-}
-
 export type ClassType = '6' | '7' | '8' | '9' | '10';
 export type SubjectType = 'english' | 'maths' | 'science' | 'social_science';
 export type DifficultyType = 'easy' | 'medium' | 'hard';
@@ -228,6 +199,94 @@ export interface NotificationTemplate {
   message: string;
   isActive: boolean;
   createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Plan types
+export interface Plan {
+  _id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  isGuestPlan: boolean;
+  price: {
+    amount: number;
+    originalAmount: number;
+    currency: string;
+  };
+  isActive: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Subject types
+export type SubjectName =
+  | 'maths'
+  | 'science'
+  | 'english'
+  | 'social_science'
+  | 'coding'
+  | 'life_skills'
+  | 'general';
+
+export interface Subject {
+  _id: string;
+  planId: string | Plan;
+  name: SubjectName;
+  class: ClassType;
+  description?: string;
+  isActive: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Topic types
+export interface Topic {
+  _id: string;
+  chapterId: string | Chapter;
+  topicNumber: number;
+  title: string;
+  description?: string;
+  videoUrl?: string;
+  videoStatus: 'none' | 'uploading' | 'ready';
+  videoFileName?: string;
+  videoDuration?: number;
+  notesUrl?: string;
+  notesFileName?: string;
+  minimumWatchPercentage: number;
+  minimumTestPercentage: number;
+  isActive: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Update Chapter type (remove video/notes fields, add subjectId)
+export interface Chapter {
+  _id: string;
+  subjectId: string | Subject;
+  chapterNumber: number;
+  title: string;
+  description?: string;
+  isActive: boolean;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Update Question type (chapterId → topicId)
+export interface Question {
+  _id: string;
+  topicId: string | Topic;
+  questionText: string;
+  options: string[];
+  correctAnswer: number;
+  explanation?: string;
+  difficulty: DifficultyType;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }

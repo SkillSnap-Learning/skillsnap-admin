@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { questionsApi } from "@/lib/api";
-import { Question, Chapter, DifficultyType } from "@/types";
+import { Question, DifficultyType } from "@/types";
 import {
   Dialog,
   DialogContent,
@@ -28,11 +28,11 @@ interface QuestionModalProps {
   open: boolean;
   onClose: () => void;
   question?: Question | null;
-  chapters: Chapter[];
+  topicId: string;
 }
 
 interface QuestionFormData {
-  chapterId: string;
+  topicId: string;
   questionText: string;
   options: [string, string, string, string];
   correctAnswer: number;
@@ -40,25 +40,31 @@ interface QuestionFormData {
   difficulty: DifficultyType;
 }
 
-export function QuestionModal({ open, onClose, question, chapters }: QuestionModalProps) {
+const optionLabels = ["A", "B", "C", "D"];
+
+export function QuestionModal({
+  open,
+  onClose,
+  question,
+  topicId,
+}: QuestionModalProps) {
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<QuestionFormData>();
-  const [selectedChapter, setSelectedChapter] = useState("");
-  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyType>("easy");
-  const [selectedAnswer, setSelectedAnswer] = useState(0);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<QuestionFormData>();
+
+  const difficulty = watch("difficulty");
+  const correctAnswer = watch("correctAnswer");
 
   useEffect(() => {
     if (question) {
-      const chapterId = typeof question.chapterId === 'object' 
-        ? (question.chapterId as Chapter)._id 
-        : question.chapterId;
-      
-      setSelectedChapter(chapterId);
-      setSelectedDifficulty(question.difficulty);
-      setSelectedAnswer(question.correctAnswer);
-      
       reset({
-        chapterId,
+        topicId,
         questionText: question.questionText,
         options: question.options as [string, string, string, string],
         correctAnswer: question.correctAnswer,
@@ -67,24 +73,23 @@ export function QuestionModal({ open, onClose, question, chapters }: QuestionMod
       });
     } else {
       reset({
-        chapterId: "",
+        topicId,
         questionText: "",
         options: ["", "", "", ""],
         correctAnswer: 0,
         explanation: "",
-        difficulty: "easy",
+        difficulty: "medium",
       });
-      setSelectedChapter("");
-      setSelectedDifficulty("easy");
-      setSelectedAnswer(0);
     }
-  }, [question, reset]);
+  }, [question, topicId, reset]);
 
   const mutation = useMutation({
     mutationFn: (data: QuestionFormData) =>
-      question ? questionsApi.update(question._id, data) : questionsApi.create(data),
+      question
+        ? questionsApi.update(question._id, data)
+        : questionsApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["questions"] });
+      queryClient.invalidateQueries({ queryKey: ["questions", topicId] });
       toast.success(question ? "Question updated" : "Question created");
       onClose();
     },
@@ -94,102 +99,112 @@ export function QuestionModal({ open, onClose, question, chapters }: QuestionMod
   });
 
   const onSubmit = (data: QuestionFormData) => {
-    mutation.mutate(data);
+    if (question) {
+      // Strip topicId on update — backend doesn't allow changing it
+      const { topicId: _, ...updateData } = data;
+      mutation.mutate({
+        ...updateData,
+        correctAnswer: Number(data.correctAnswer),
+      } as QuestionFormData);
+    } else {
+      mutation.mutate({
+        ...data,
+        correctAnswer: Number(data.correctAnswer),
+      });
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{question ? "Edit Question" : "Create Question"}</DialogTitle>
+          <DialogTitle>
+            {question ? "Edit Question" : "Add Question"}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label>Chapter *</Label>
-              <Select value={selectedChapter} onValueChange={(val) => {
-                setSelectedChapter(val);
-                setValue("chapterId", val);
-              }}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select chapter" />
-                </SelectTrigger>
-                <SelectContent>
-                  {chapters.map((ch) => (
-                    <SelectItem key={ch._id} value={ch._id}>
-                      Ch {ch.chapterNumber}: {ch.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Difficulty *</Label>
-              <Select value={selectedDifficulty} onValueChange={(val) => {
-                setSelectedDifficulty(val as DifficultyType);
-                setValue("difficulty", val as DifficultyType);
-              }}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="easy">Easy</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="hard">Hard</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
           <div>
-            <Label>Question Text *</Label>
+            <Label>Question *</Label>
             <Textarea
-              {...register("questionText", { required: true })}
+              {...register("questionText", {
+                required: "Question text is required",
+              })}
+              placeholder="Enter the question..."
               rows={3}
-              placeholder="Enter the question"
             />
+            {errors.questionText && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.questionText.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-3">
-            <Label>Options * (Select correct answer)</Label>
-            {([0, 1, 2, 3] as const).map((i) => (
-              <div key={i} className="flex gap-2">
-                <Input
-                  {...register(`options.${i}`, { required: true })}
-                  placeholder={`Option ${i + 1}`}
-                  className={selectedAnswer === i ? "border-green-500 border-2" : ""}
-                />
-                <Button
+            <Label>Options * (select the correct answer)</Label>
+            {optionLabels.map((label, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <button
                   type="button"
-                  variant={selectedAnswer === i ? "default" : "outline"}
-                  onClick={() => {
-                    setSelectedAnswer(i);
-                    setValue("correctAnswer", i);
-                  }}
-                  className="w-32"
+                  onClick={() => setValue("correctAnswer", i)}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 transition-colors ${
+                    Number(correctAnswer) === i
+                      ? "bg-green-600 text-white"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
                 >
-                  {selectedAnswer === i ? "Correct ✓" : "Mark Correct"}
-                </Button>
+                  {label}
+                </button>
+                <Input
+                  {...register(`options.${i}` as `options.${0 | 1 | 2 | 3}`, {
+                    required: "Option is required",
+                  })}
+                  placeholder={`Option ${label}`}
+                />
               </div>
             ))}
+            <p className="text-xs text-slate-500">
+              Click the letter button to mark it as the correct answer
+            </p>
           </div>
-          
+
+          <div>
+            <Label>Difficulty *</Label>
+            <Select
+              value={difficulty}
+              onValueChange={(val) =>
+                setValue("difficulty", val as DifficultyType)
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="easy">Easy</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="hard">Hard</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div>
             <Label>Explanation (optional)</Label>
             <Textarea
               {...register("explanation")}
+              placeholder="Explain why the correct answer is correct..."
               rows={2}
-              placeholder="Explain the correct answer"
             />
           </div>
 
-          <div className="flex gap-3 justify-end pt-4">
+          <div className="flex gap-3 justify-end pt-2">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
             <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? "Saving..." : question ? "Update" : "Create"}
+              {mutation.isPending
+                ? "Saving..."
+                : question
+                ? "Update"
+                : "Create"}
             </Button>
           </div>
         </form>

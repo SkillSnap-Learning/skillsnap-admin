@@ -1,6 +1,6 @@
 "use client";
 
-import { Chapter } from "@/types";
+import { Plan } from "@/types";
 import {
   Table,
   TableBody,
@@ -16,23 +16,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
-interface ChaptersTableProps {
-  chapters: Chapter[];
+interface PlansTableProps {
+  plans: Plan[];
   isLoading: boolean;
-  planId: string;
-  subjectId: string;
-  onEdit: (chapter: Chapter) => void;
-  onDelete: (chapter: Chapter) => void;
+  onEdit: (plan: Plan) => void;
+  onDelete: (plan: Plan) => void;
 }
 
-export function ChaptersTable({
-  chapters,
-  isLoading,
-  planId,
-  subjectId,
-  onEdit,
-  onDelete,
-}: ChaptersTableProps) {
+export function PlansTable({ plans, isLoading, onEdit, onDelete }: PlansTableProps) {
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -43,10 +34,10 @@ export function ChaptersTable({
     );
   }
 
-  if (chapters.length === 0) {
+  if (plans.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No chapters found</p>
+        <p className="text-slate-500">No plans found</p>
       </div>
     );
   }
@@ -56,60 +47,74 @@ export function ChaptersTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-16">No.</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Slug</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Price</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {chapters.map((chapter) => (
-            <TableRow key={chapter._id}>
+          {plans.map((plan) => (
+            <TableRow key={plan._id}>
+              <TableCell className="font-medium">{plan.name}</TableCell>
               <TableCell>
-                <Badge variant="outline">Ch {chapter.chapterNumber}</Badge>
+                <code className="text-xs bg-slate-100 px-2 py-1 rounded">
+                  {plan.slug}
+                </code>
               </TableCell>
-              <TableCell className="font-medium">{chapter.title}</TableCell>
-              <TableCell className="text-sm text-slate-500 max-w-xs truncate">
-                {chapter.description || "—"}
+              <TableCell>
+                {plan.isGuestPlan ? (
+                  <Badge className="bg-orange-100 text-orange-700">Guest</Badge>
+                ) : (
+                  <Badge className="bg-blue-100 text-blue-700">Paid</Badge>
+                )}
+              </TableCell>
+              <TableCell>
+                {plan.isGuestPlan ? (
+                  <span className="text-slate-400 text-sm">Free</span>
+                ) : (
+                  <span className="text-sm">
+                    ₹{plan.price.amount.toLocaleString()}
+                  </span>
+                )}
               </TableCell>
               <TableCell>
                 <Badge
                   className={
-                    chapter.isActive
+                    plan.isActive
                       ? "bg-green-100 text-green-700"
                       : "bg-slate-100 text-slate-700"
                   }
                 >
-                  {chapter.isActive ? "Active" : "Inactive"}
+                  {plan.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>
               <TableCell className="text-sm text-slate-500">
-                {chapter.createdAt
-                  ? formatDistanceToNow(new Date(chapter.createdAt), { addSuffix: true })
-                  : "—"}
+                {plan.createdAt
+                    ? formatDistanceToNow(new Date(plan.createdAt), { addSuffix: true })
+                    : "—"}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
-                  <Link
-                    href={`/plans/${planId}/subjects/${subjectId}/chapters/${chapter._id}/topics`}
-                  >
-                    <Button variant="ghost" size="sm" title="View Topics">
+                  <Link href={`/plans/${plan._id}/subjects`}>
+                    <Button variant="ghost" size="sm" title="View Subjects">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </Link>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onEdit(chapter)}
+                    onClick={() => onEdit(plan)}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onDelete(chapter)}
+                    onClick={() => onDelete(plan)}
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>
