@@ -267,12 +267,13 @@ export interface Topic {
 // Update Chapter type (remove video/notes fields, add subjectId)
 export interface Chapter {
   _id: string;
-  subjectId: string | Subject;
+  subjectId: string;
   chapterNumber: number;
   title: string;
   description?: string;
+  notesUrl?: string;
+  notesFileName?: string;
   isActive: boolean;
-  createdBy: string;
   createdAt: string;
   updatedAt: string;
 }

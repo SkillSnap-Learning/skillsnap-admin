@@ -297,7 +297,42 @@ export const contentApi = {
     });
   },
 
+  uploadChapterNotesWithProgress: (
+    file: File,
+    chapterId: string,
+    onProgress: (pct: number) => void
+  ) => {
+    const formData = new FormData();
+    formData.append("pdf", file);
+    formData.append("chapterId", chapterId);
+    return new Promise<void>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/chapter-notes`);
+      const token = localStorage.getItem("token");
+      if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) resolve();
+        else reject(new Error(JSON.parse(xhr.responseText)?.message || "Upload failed"));
+      };
+      xhr.onerror = () => reject(new Error("Network error"));
+      xhr.send(formData);
+    });
+  },
+
   getNotesSignedUrl: (s3Key: string) =>
+    api.get("/admin/content/notes/signed-url", { params: { key: s3Key } }),
+
+  uploadChapterNotes: (file: File, chapterId: string) => {
+    const formData = new FormData();
+    formData.append("pdf", file);
+    formData.append("chapterId", chapterId);
+    return api.post("/admin/content/upload/chapter-notes", formData);
+  },
+
+  getChapterNotesSignedUrl: (s3Key: string) =>
     api.get("/admin/content/notes/signed-url", { params: { key: s3Key } }),
 };
 
