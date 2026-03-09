@@ -273,6 +273,8 @@ export interface Chapter {
   description?: string;
   notesUrl?: string;
   notesFileName?: string;
+  assessmentUrl?: string;
+  assessmentFileName?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

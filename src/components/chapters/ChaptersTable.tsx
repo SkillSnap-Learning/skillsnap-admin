@@ -71,6 +71,7 @@ export function ChaptersTable({
               <TableHead>Title</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Notes</TableHead>
+              <TableHead>Assessment</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -96,6 +97,17 @@ export function ChaptersTable({
                       }
                     >
                       {chapter.notesUrl ? "Uploaded" : "None"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      className={
+                        chapter.assessmentUrl
+                          ? "bg-green-100 text-green-700"
+                          : "bg-slate-100 text-slate-600"
+                      }
+                    >
+                      {chapter.assessmentUrl ? "Uploaded" : "None"}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -159,7 +171,7 @@ export function ChaptersTable({
                 {/* Inline upload panel */}
                 {uploadingChapterId === chapter._id && (
                   <TableRow key={`${chapter._id}-upload`}>
-                    <TableCell colSpan={7} className="p-3 bg-slate-50">
+                    <TableCell colSpan={8} className="p-3 bg-slate-50">
                       <ChapterNotesUploadPanel
                         chapter={chapter}
                         subjectId={subjectId}
