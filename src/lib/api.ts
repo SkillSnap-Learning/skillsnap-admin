@@ -224,8 +224,8 @@ export const questionsApi = {
   getAll: (params?: Record<string, unknown>) =>
     api.get("/admin/questions", { params }),
 
-  getByTopic: (topicId: string) =>
-    api.get(`/admin/questions/topic/${topicId}`),
+  getByChapter: (chapterId: string) =>
+    api.get(`/admin/questions/chapter/${chapterId}`),
 
   getById: (id: string) =>
     api.get(`/admin/questions/${id}`),

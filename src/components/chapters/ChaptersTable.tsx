@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, ChevronRight, Upload } from "lucide-react";
+import { Pencil, Trash2, ChevronRight, Upload, HelpCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
@@ -143,6 +143,13 @@ export function ChaptersTable({
                       >
                         <Upload className="h-4 w-4" />
                       </Button>
+                      <Link
+                        href={`/plans/${planId}/subjects/${subjectId}/chapters/${chapter._id}/questions`}
+                      >
+                        <Button variant="ghost" size="sm" title="View Questions">
+                          <HelpCircle className="h-4 w-4" />
+                        </Button>
+                      </Link>
                       <Link
                         href={`/plans/${planId}/subjects/${subjectId}/chapters/${chapter._id}/topics`}
                       >

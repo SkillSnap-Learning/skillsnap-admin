@@ -1,6 +1,6 @@
 "use client";
 
-import { Question, Topic } from "@/types";
+import { Question } from "@/types";
 import {
   Table,
   TableBody,

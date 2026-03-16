@@ -11,17 +11,13 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, ChevronRight, Video, FileText, Upload } from "lucide-react";
+import { Pencil, Trash2, Video, FileText, Upload } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
-import Link from "next/link";
 
 interface TopicsTableProps {
   topics: Topic[];
   isLoading: boolean;
-  planId: string;
-  subjectId: string;
-  chapterId: string;
   onEdit: (topic: Topic) => void;
   onDelete: (topic: Topic) => void;
   onUpload: (topic: Topic) => void;
@@ -37,9 +33,6 @@ const videoStatusColors: Record<string, string> = {
 export function TopicsTable({
   topics,
   isLoading,
-  planId,
-  subjectId,
-  chapterId,
   onEdit,
   onDelete,
   onUpload,
@@ -142,13 +135,6 @@ export function TopicsTable({
                 >
                 <Upload className="h-4 w-4" />
                 </Button>
-                <Link
-                href={`/plans/${planId}/subjects/${subjectId}/chapters/${chapterId}/topics/${topic._id}/questions`}
-                >
-                <Button variant="ghost" size="sm" title="View Questions">
-                    <ChevronRight className="h-4 w-4" />
-                </Button>
-                </Link>
                 <Button
                 variant="ghost"
                 size="sm"

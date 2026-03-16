@@ -280,10 +280,9 @@ export interface Chapter {
   updatedAt: string;
 }
 
-// Update Question type (chapterId → topicId)
 export interface Question {
   _id: string;
-  topicId: string | Topic;
+  chapterId: string | Chapter;
   questionText: string;
   options: string[];
   correctAnswer: number;

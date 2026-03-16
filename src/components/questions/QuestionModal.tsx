@@ -28,11 +28,11 @@ interface QuestionModalProps {
   open: boolean;
   onClose: () => void;
   question?: Question | null;
-  topicId: string;
+  chapterId: string;
 }
 
 interface QuestionFormData {
-  topicId: string;
+  chapterId: string;
   questionText: string;
   options: [string, string, string, string];
   correctAnswer: number;
@@ -46,7 +46,7 @@ export function QuestionModal({
   open,
   onClose,
   question,
-  topicId,
+  chapterId,
 }: QuestionModalProps) {
   const queryClient = useQueryClient();
   const {
@@ -64,7 +64,7 @@ export function QuestionModal({
   useEffect(() => {
     if (question) {
       reset({
-        topicId,
+        chapterId,
         questionText: question.questionText,
         options: question.options as [string, string, string, string],
         correctAnswer: question.correctAnswer,
@@ -73,7 +73,7 @@ export function QuestionModal({
       });
     } else {
       reset({
-        topicId,
+        chapterId,
         questionText: "",
         options: ["", "", "", ""],
         correctAnswer: 0,
@@ -81,7 +81,7 @@ export function QuestionModal({
         difficulty: "medium",
       });
     }
-  }, [question, topicId, reset]);
+  }, [question, chapterId, reset]);
 
   const mutation = useMutation({
     mutationFn: (data: QuestionFormData) =>
@@ -89,7 +89,7 @@ export function QuestionModal({
         ? questionsApi.update(question._id, data)
         : questionsApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["questions", topicId] });
+      queryClient.invalidateQueries({ queryKey: ["questions", chapterId] });
       toast.success(question ? "Question updated" : "Question created");
       onClose();
     },
@@ -100,8 +100,8 @@ export function QuestionModal({
 
   const onSubmit = (data: QuestionFormData) => {
     if (question) {
-      // Strip topicId on update — backend doesn't allow changing it
-      const { topicId: _, ...updateData } = data;
+      // Strip chapterId on update — backend doesn't allow changing it
+      const { chapterId: _, ...updateData } = data;
       mutation.mutate({
         ...updateData,
         correctAnswer: Number(data.correctAnswer),

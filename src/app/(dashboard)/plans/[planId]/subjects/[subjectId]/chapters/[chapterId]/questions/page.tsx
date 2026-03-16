@@ -7,10 +7,9 @@ import {
   plansApi,
   subjectsApi,
   chaptersApi,
-  topicsApi,
   questionsApi,
 } from "@/lib/api";
-import { Question, Plan, Subject, Chapter, Topic } from "@/types";
+import { Question, Plan, Subject, Chapter } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Plus, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
@@ -21,18 +20,15 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
 export default function QuestionsPage() {
-  const { planId, subjectId, chapterId, topicId } = useParams<{
+  const { planId, subjectId, chapterId } = useParams<{
     planId: string;
     subjectId: string;
     chapterId: string;
-    topicId: string;
   }>();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
-  const [deletingQuestion, setDeletingQuestion] = useState<Question | null>(
-    null
-  );
+  const [deletingQuestion, setDeletingQuestion] = useState<Question | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -60,18 +56,10 @@ export default function QuestionsPage() {
     },
   });
 
-  const { data: topic } = useQuery({
-    queryKey: ["topics", topicId],
-    queryFn: async () => {
-      const res = await topicsApi.getById(topicId);
-      return res.data.data as Topic;
-    },
-  });
-
   const { data: questions, isLoading } = useQuery({
-    queryKey: ["questions", topicId],
+    queryKey: ["questions", chapterId],
     queryFn: async () => {
-      const res = await questionsApi.getByTopic(topicId);
+      const res = await questionsApi.getByChapter(chapterId);
       return res.data.data as Question[];
     },
   });
@@ -79,7 +67,7 @@ export default function QuestionsPage() {
   const deleteMutation = useMutation({
     mutationFn: (id: string) => questionsApi.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["questions", topicId] });
+      queryClient.invalidateQueries({ queryKey: ["questions", chapterId] });
       toast.success("Question deleted");
       setDeletingQuestion(null);
     },
@@ -102,10 +90,7 @@ export default function QuestionsPage() {
           Plans
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <Link
-          href={`/plans/${planId}/subjects`}
-          className="hover:text-blue-950"
-        >
+        <Link href={`/plans/${planId}/subjects`} className="hover:text-blue-950">
           {plan?.name || "..."}
         </Link>
         <ChevronRight className="h-4 w-4" />
@@ -116,15 +101,8 @@ export default function QuestionsPage() {
           {subjectLabel}
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <Link
-          href={`/plans/${planId}/subjects/${subjectId}/chapters/${chapterId}/topics`}
-          className="hover:text-blue-950"
-        >
-          {chapter ? `Ch ${chapter.chapterNumber}: ${chapter.title}` : "..."}
-        </Link>
-        <ChevronRight className="h-4 w-4" />
         <span className="text-blue-950 font-medium">
-          {topic ? `T${topic.topicNumber}: ${topic.title}` : "..."}
+          {chapter ? `Ch ${chapter.chapterNumber}: ${chapter.title}` : "..."}
         </span>
       </div>
 
@@ -132,7 +110,7 @@ export default function QuestionsPage() {
         <div>
           <h1 className="text-2xl font-bold text-blue-950">Questions</h1>
           <p className="text-sm text-slate-500 mt-1">
-            {topic?.title} — MCQ test questions
+            {chapter?.title} — MCQ test questions
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -172,7 +150,7 @@ export default function QuestionsPage() {
           setEditingQuestion(null);
         }}
         question={editingQuestion}
-        topicId={topicId}
+        chapterId={chapterId}
       />
 
       <ConfirmDialog

@@ -129,9 +129,6 @@ export default function TopicsPage() {
       <TopicsTable
         topics={topics || []}
         isLoading={isLoading}
-        planId={planId}
-        subjectId={subjectId}
-        chapterId={chapterId}
         onEdit={(topic) => {
           setEditingTopic(topic);
           setModalOpen(true);
