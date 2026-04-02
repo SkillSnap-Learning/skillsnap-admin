@@ -292,3 +292,40 @@ export interface Question {
   createdAt: string;
   updatedAt: string;
 }
+
+// Blog types
+export type BlogCategory = 'featured' | 'new' | 'hot';
+export type BlockType = 'paragraph' | 'heading' | 'bullets' | 'numbered' | 'image' | 'quote';
+export type ImageAlignment = 'center' | 'full';
+
+export interface ContentBlock {
+  type: BlockType;
+  text?: string;
+  items?: string[];
+  src?: string;
+  alt?: string;
+  alignment?: ImageAlignment;
+}
+
+export interface Blog {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: BlogCategory;
+  coverImage?: string | null;
+  tags: string[];
+  readTime?: string | null;
+  blocks: ContentBlock[];
+  relatedPosts: Blog[] | string[];
+  isPublished: boolean;
+  publishedAt?: string | null;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BlogsResponse {
+  blogs: Blog[];
+  pagination: PaginationInfo;
+}

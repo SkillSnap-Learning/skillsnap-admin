@@ -1,4 +1,4 @@
-import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate } from "@/types";
+import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -376,6 +376,62 @@ export const notificationTemplatesApi = {
 
   delete: (id: string) =>
     api.delete(`/admin/notification-templates/${id}`),
+};
+
+// Blogs API
+export const blogsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/blogs", { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/blogs/id/${id}`),
+
+  getPublished: () =>
+    api.get("/blogs", { params: { limit: 100 } }),
+
+  create: (data: Partial<Blog>) =>
+    api.post("/admin/blogs", data),
+
+  update: (id: string, data: Partial<Blog>) =>
+    api.patch(`/admin/blogs/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/blogs/${id}`),
+
+  uploadImage: (file: File, blogId: string, onProgress?: (pct: number) => void) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("blogId", blogId);
+
+    return new Promise<{ imageUrl: string }>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/blog-image`);
+
+      const token = localStorage.getItem("token");
+      if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            onProgress(Math.round((e.loaded / e.total) * 100));
+          }
+        };
+      }
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const res = JSON.parse(xhr.responseText);
+          resolve({ imageUrl: res.data.imageUrl });
+        } else {
+          const msg = JSON.parse(xhr.responseText)?.message || "Upload failed";
+          reject(new Error(msg));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error("Network error during upload"));
+      xhr.send(formData);
+    });
+  },
 };
 
 export default api;

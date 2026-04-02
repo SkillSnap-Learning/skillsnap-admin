@@ -16,6 +16,7 @@ import {
   FileText,
   HelpCircle,
   Upload,
+  Newspaper
 } from "lucide-react";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,13 @@ const navigation = [
     name: "Plans",
     href: "/plans",
     icon: BookOpen,
+    roles: ["superadmin", "admin", "instructor"],
+    permission: "canManageContent",
+  },
+  {
+    name: "Blogs",
+    href: "/blogs",
+    icon: Newspaper,
     roles: ["superadmin", "admin", "instructor"],
     permission: "canManageContent",
   },
