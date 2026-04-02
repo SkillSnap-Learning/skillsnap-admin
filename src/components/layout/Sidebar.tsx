@@ -62,6 +62,13 @@ const navigation = [
     permission: "canManageContent",
   },
   {
+    name: "News",
+    href: "/news",
+    icon: Newspaper,
+    roles: ["superadmin", "admin", "instructor"],
+    permission: "canManageContent",
+  },
+  {
     name: "Notification Templates",
     href: "/notification-templates",
     icon: Bell,

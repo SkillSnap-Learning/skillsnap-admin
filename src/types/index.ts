@@ -329,3 +329,27 @@ export interface BlogsResponse {
   blogs: Blog[];
   pagination: PaginationInfo;
 }
+
+// News types
+export interface News {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: BlogCategory;
+  coverImage?: string | null;
+  tags: string[];
+  readTime?: string | null;
+  blocks: ContentBlock[];
+  relatedNews: News[] | string[];
+  isPublished: boolean;
+  publishedAt?: string | null;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewsResponse {
+  news: News[];
+  pagination: PaginationInfo;
+}
