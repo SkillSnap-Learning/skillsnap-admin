@@ -58,15 +58,15 @@ const navigation = [
     name: "Blogs",
     href: "/blogs",
     icon: Newspaper,
-    roles: ["superadmin", "admin", "instructor"],
-    permission: "canManageContent",
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageBlog",
   },
   {
     name: "News",
     href: "/news",
     icon: Newspaper,
-    roles: ["superadmin", "admin", "instructor"],
-    permission: "canManageContent",
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageBlog",
   },
   {
     name: "Notification Templates",
@@ -80,20 +80,34 @@ const navigation = [
 export function Sidebar() {
   const pathname = usePathname();
   const { user, logout, hasRole } = useAuthStore();
+
+  console.log("user role:", user?.role);          // ADD temporarily
+  console.log("canManageBlog:", useAuthStore.getState().canManageBlog());
+
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const filteredNav = navigation.filter((item) => {
     const hasRequiredRole = item.roles.some((role) => hasRole(role as any));
+
+    console.log(item.name, "hasRequiredRole:", hasRequiredRole, "item.roles:", item.roles); // ADD temporarily
+
+
     if (!hasRequiredRole) return false;
     
     // Check permission if specified
-    if (item.permission) {
+    if (item.permission === "canManageBlog") {
+      return useAuthStore.getState().canManageBlog();
+    }
+
+    if (item.permission === "canManageContent") {
       return useAuthStore.getState().canManageContent();
     }
     
     return true;
   });
+
+  console.log("filteredNav:", filteredNav.map(i => i.name)); // ADD temporarily
 
   const handleLogout = () => {
     logout();

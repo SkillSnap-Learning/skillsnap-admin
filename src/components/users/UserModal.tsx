@@ -50,6 +50,7 @@ const roles: { value: UserRole; label: string }[] = [
   { value: "sales", label: "Sales" },
   { value: "support", label: "Support" },
   { value: "instructor", label: "Instructor" },
+  { value: "content-writer", label: "Content Writer" },
   { value: "student", label: "Student" },
 ];
 

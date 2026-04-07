@@ -22,6 +22,7 @@ interface AuthState {
   canViewReports: () => boolean;
   canDeleteLeads: () => boolean;
   canManageContent: () => boolean; // Add this
+  canManageBlog: () => boolean;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -99,6 +100,12 @@ export const useAuthStore = create<AuthState>()(
         const { user } = get();
         if (!user) return false;
         return ["superadmin", "admin", "instructor"].includes(user.role);
+      },
+
+      canManageBlog: () => {           // ADD
+        const { user } = get();
+        if (!user) return false;
+        return ["superadmin", "admin", "content-writer"].includes(user.role);
       },
     }),
     {

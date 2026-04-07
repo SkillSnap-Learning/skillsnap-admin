@@ -7,6 +7,7 @@ export type UserRole =
   | "sales"
   | "support"
   | "instructor"
+  | "content-writer"
   | "student";
 
 export type UserStatus = "active" | "inactive" | "suspended";
@@ -21,6 +22,8 @@ export interface UserPermissions {
   canViewReports: boolean;
   canViewAllReports: boolean;
   canEditSettings: boolean;
+  canManageContent: boolean;   // ADD
+  canManageBlog: boolean;      // ADD
 }
 
 export interface User {
