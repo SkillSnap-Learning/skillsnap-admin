@@ -487,4 +487,59 @@ export const newsApi = {
   },
 };
 
+// Courses API
+export const coursesApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get("/admin/courses", { params }),
+
+  getById: (id: string) =>
+    api.get(`/courses/id/${id}`),
+
+  getByClass: (cls: string) =>
+    api.get(`/courses/class/${cls}`),
+
+  create: (data: Partial<Course>) =>
+    api.post("/admin/courses", data),
+
+  update: (id: string, data: Partial<Course>) =>
+    api.patch(`/admin/courses/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/courses/${id}`),
+
+  uploadImage: (file: File, courseId: string, onProgress?: (pct: number) => void) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("courseId", courseId);
+
+    return new Promise<{ imageUrl: string }>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/course-image`);
+
+      const token = localStorage.getItem("token");
+      if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            onProgress(Math.round((e.loaded / e.total) * 100));
+          }
+        };
+      }
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const res = JSON.parse(xhr.responseText);
+          resolve({ imageUrl: res.data.imageUrl });
+        } else {
+          reject(new Error(JSON.parse(xhr.responseText)?.message || "Upload failed"));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error("Network error during upload"));
+      xhr.send(formData);
+    });
+  },
+};
+
 export default api;

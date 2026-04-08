@@ -55,6 +55,13 @@ const navigation = [
     permission: "canManageContent",
   },
   {
+    name: "Courses",
+    href: "/courses",
+    icon: BookOpen,
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageContent",
+  },
+  {
     name: "Blogs",
     href: "/blogs",
     icon: Newspaper,

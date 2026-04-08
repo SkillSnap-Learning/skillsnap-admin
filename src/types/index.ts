@@ -179,16 +179,32 @@ export interface LeadFilters {
 }
 
 // Learning Platform Types
+// Course types
+export type CoursePlanType = 'core' | 'achiever' | 'future-plus';
+
 export interface Course {
   _id: string;
   title: string;
-  class: string;
-  subject: string;
-  description?: string;
-  totalChapters: number;
+  slug: string;
+  class: ClassType;
+  planType: CoursePlanType;
+  tagline?: string | null;
+  coverImage?: string | null;
+  subjectTags: string[];
+  price: number;
+  originalPrice: number;
+  enrollPoints: string[];
+  blocks: ContentBlock[];
+  faqs: { question: string; answer: string }[];
+  isPublished: boolean;
+  publishedAt?: string | null;
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CoursesResponse {
+  courses: Course[];
 }
 
 export type ClassType = '6' | '7' | '8' | '9' | '10';
