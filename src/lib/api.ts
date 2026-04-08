@@ -1,4 +1,4 @@
-import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News } from "@/types";
+import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News, Course } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
