@@ -1,7 +1,7 @@
 # SKILLSNAP ADMIN PANEL - PROJECT OVERVIEW
 
 ## Project Summary
-A comprehensive Next.js-based admin panel for SkillSnap Learning CRM. Features multi-role authentication, lead management, user management, team management, role-based access control, and a full learning content management system (Plans → Subjects → Chapters → Topics → Questions) with inline video/notes upload and preview.
+A comprehensive Next.js-based admin panel for SkillSnap Learning CRM. Features multi-role authentication, lead management, user management, team management, role-based access control, a full learning content management system (Plans → Subjects → Chapters → Topics → Questions) with inline video/notes upload and preview, and a content publishing system for Blogs, News, and Courses.
 
 ---
 
@@ -57,6 +57,12 @@ skillsnap-admin/
 │   │   │   │                           └── [topicId]/
 │   │   │   │                               └── questions/
 │   │   │   │                                   └── page.tsx  # Questions list
+│   │   │   ├── blogs/
+│   │   │   │   └── page.tsx                    # Blogs listing (search, category, published filter)
+│   │   │   ├── news/
+│   │   │   │   └── page.tsx                    # News listing (identical structure to blogs)
+│   │   │   ├── courses/
+│   │   │   │   └── page.tsx                    # Courses listing (class + planType filter)
 │   │   │   └── notification-templates/
 │   │   │       └── page.tsx                    # Notification templates
 │   │   ├── login/
@@ -108,6 +114,15 @@ skillsnap-admin/
 │   │   ├── questions/
 │   │   │   ├── QuestionsTable.tsx
 │   │   │   └── QuestionModal.tsx
+│   │   ├── blogs/
+│   │   │   ├── BlogsTable.tsx                  # Title+slug, category badge, published badge, tags, readTime
+│   │   │   └── BlogModal.tsx                   # Block builder, cover image upload, related posts, publish toggle
+│   │   ├── news/
+│   │   │   ├── NewsTable.tsx                   # Identical structure to BlogsTable
+│   │   │   └── NewsModal.tsx                   # Identical to BlogModal (uses relatedNews)
+│   │   ├── courses/
+│   │   │   ├── CoursesTable.tsx                # Title+slug, class/planType badges, price, subjectTags
+│   │   │   └── CourseModal.tsx                 # Block builder, enroll points, FAQs, cover image
 │   │   └── ui/                                 # shadcn/ui components
 │   │       ├── alert-dialog.tsx
 │   │       ├── badge.tsx
@@ -156,25 +171,30 @@ skillsnap-admin/
 ```
 SuperAdmin (System Owner)
     └── Admin (Platform Administrator)
-        └── Sales Manager (Team & Lead Manager)
-            └── Team Lead (Team Supervisor)
-                └── Sales (Front-line Sales)
+        ├── Sales Manager (Team & Lead Manager)
+        │   └── Team Lead (Team Supervisor)
+        │       └── Sales (Front-line Sales)
+        ├── Instructor (Content Educator)
+        └── Content Writer (Blog/News Publisher)
 ```
 
 ### Page Access by Role
 
-| Page | SuperAdmin | Admin | Sales Manager | Team Lead | Sales | Instructor |
-|------|------------|-------|---------------|-----------|-------|------------|
-| Dashboard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Leads | ✅ All | ✅ All | ✅ All | ✅ Team | ✅ Own | ❌ |
-| Users | ✅ | ✅ | ✅ Team | ❌ | ❌ | ❌ |
-| Teams | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
-| Plans | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Subjects | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Chapters | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Topics | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Questions | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ |
-| Templates | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Page | SuperAdmin | Admin | Sales Manager | Team Lead | Sales | Instructor | Content Writer |
+|------|------------|-------|---------------|-----------|-------|------------|----------------|
+| Dashboard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Leads | ✅ All | ✅ All | ✅ All | ✅ Team | ✅ Own | ❌ | ❌ |
+| Users | ✅ | ✅ | ✅ Team | ❌ | ❌ | ❌ | ❌ |
+| Teams | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Plans | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Subjects | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Chapters | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Topics | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Questions | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Blogs | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| News | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Courses | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Templates | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ### Feature Permissions
 
@@ -190,6 +210,7 @@ SuperAdmin (System Owner)
 | Update Status | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Add Notes | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Manage Content | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Manage Blog | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 ---
 
@@ -271,7 +292,24 @@ SuperAdmin (System Owner)
 - Actions: create, edit, delete
 - Modal: question textarea, 4 option inputs with clickable letter buttons (click to select correct answer), difficulty select, explanation textarea
 
-### 12. Notification Templates Page (`/notification-templates`)
+### 12. Blogs Page (`/blogs`) — canManageBlog
+- Filters: search, category (featured/new/hot), published status
+- Pagination: 20 items/page
+- Table: title + slug + excerpt, category badge, published badge, tags (first 2 + overflow count), read time, publishedAt, createdAt, edit/delete actions
+- Actions: create, edit, delete
+- Modal (BlogModal): block builder, cover image upload, related posts picker, slug auto-generation, publish toggle
+
+### 13. News Page (`/news`) — canManageBlog
+- Identical structure to Blogs page
+- Uses `relatedNews` instead of `relatedPosts` in the modal
+
+### 14. Courses Page (`/courses`) — canManageContent
+- Filters: class (6–10), planType (core/achiever/future-plus) — no pagination (max 15 documents)
+- Table: title + slug + tagline, class badge, planType badge, price + originalPrice, subjectTags (first 2 + overflow count), published badge, createdAt, edit/delete actions
+- Actions: create, edit, delete
+- Modal (CourseModal): block builder, cover image upload, enroll points list, FAQs list, class + planType (locked on edit), price fields, publish toggle
+
+### 15. Notification Templates Page (`/notification-templates`)
 - Table: type, title, message preview, active/inactive badge
 - Actions: create/edit templates, toggle active status
 - Supported Types: achievement, reminder, announcement, instructor_reply, chapter_unlocked, test_passed, child_test_passed, child_chapter_unlocked, weekly_progress, parent_announcement
@@ -288,6 +326,10 @@ Sidebar: Plans
             → Click → .../chapters         (list chapters)
                 → Click → .../topics       (list topics + inline upload)
                     → Click → .../questions (list + manage questions)
+
+Sidebar: Blogs   → /blogs    (CRUD, block builder, image upload)
+Sidebar: News    → /news     (CRUD, block builder, image upload)
+Sidebar: Courses → /courses  (CRUD, block builder, image upload)
 ```
 
 Each page shows a **breadcrumb** with clickable links to parent levels.
@@ -316,6 +358,19 @@ Each page shows a **breadcrumb** with clickable links to parent levels.
 - **Video**: Cloudflare Stream iframe (`https://iframe.cloudflarestream.com/{streamId}`)
 - **PDF**: `GET /admin/content/notes/signed-url?key=` → signed R2 URL → iframe
 
+### Blog / News / Course Image Upload
+- All three use raw XHR (not axios) to support `onProgress` callbacks
+- Cover image upload is disabled on create (no ID yet) — must save first, then upload
+- R2 key patterns: `blog-images/{blogId}/image-{timestamp}.ext`, same for news and courses
+
+---
+
+## Block Builder (Blog / News / Course Modals)
+
+Block types: `paragraph`, `heading`, `bullets`, `numbered`, `image`, `quote`
+
+Each block is a `ContentBlock` object rendered by a `BlockEditor` sub-component. Blocks can be reordered (ChevronUp/Down), removed (Trash2), and edited inline. Image blocks support file upload via the respective `uploadImage` API method.
+
 ---
 
 ## API Integration
@@ -340,6 +395,9 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1
 | `questionsApi` | `/admin/questions/*`, `/admin/questions/topic/:topicId` | Question CRUD |
 | `contentApi` | `/admin/content/upload/*`, `/admin/content/notes/signed-url` | Upload + preview |
 | `notificationTemplatesApi` | `/admin/notification-templates/*` | Template management |
+| `blogsApi` | `/admin/blogs/*`, `/blogs/*`, `/admin/content/upload/blog-image` | Blog CRUD + image upload |
+| `newsApi` | `/admin/news/*`, `/news/*`, `/admin/content/upload/news-image` | News CRUD + image upload |
+| `coursesApi` | `/admin/courses/*`, `/courses/*`, `/admin/content/upload/course-image` | Course CRUD + image upload |
 
 ### Key API Methods
 
@@ -364,6 +422,21 @@ topicsApi.getByChapter(chapterId)
 
 // Questions filtered by topic
 questionsApi.getByTopic(topicId)
+
+// Blogs
+blogsApi.getAll(params?)           // GET /admin/blogs (search, category, isPublished, page, limit)
+blogsApi.getPublished()            // GET /blogs?limit=100 (for related posts picker)
+blogsApi.uploadImage(file, blogId, onProgress?)  // XHR to /admin/content/upload/blog-image
+
+// News
+newsApi.getAll(params?)
+newsApi.getPublished()             // for related news picker
+newsApi.uploadImage(file, newsId, onProgress?)
+
+// Courses
+coursesApi.getAll(params?)         // filter: class, planType
+coursesApi.getByClass(cls)         // GET /courses/class/:cls
+coursesApi.uploadImage(file, courseId, onProgress?)
 ```
 
 ---
@@ -381,6 +454,24 @@ interface Question { _id, topicId, questionText, options[4], correctAnswer, expl
 type SubjectName = 'maths' | 'science' | 'english' | 'social_science' | 'coding' | 'life_skills' | 'general'
 type ClassType = '6' | '7' | '8' | '9' | '10'
 type DifficultyType = 'easy' | 'medium' | 'hard'
+
+// Content Publishing
+type BlogCategory = 'featured' | 'new' | 'hot'
+type BlockType = 'paragraph' | 'heading' | 'bullets' | 'numbered' | 'image' | 'quote'
+type ImageAlignment = 'center' | 'full'
+type CoursePlanType = 'core' | 'achiever' | 'future-plus'
+
+interface ContentBlock { type: BlockType, text?, items?: string[], src?, alt?, alignment?: ImageAlignment }
+
+interface Blog { _id, title, slug, excerpt, category: BlogCategory, coverImage?, tags: string[], readTime?, blocks: ContentBlock[], relatedPosts: Blog[] | string[], isPublished, publishedAt?, createdBy, createdAt, updatedAt }
+
+interface News { _id, title, slug, excerpt, category: BlogCategory, coverImage?, tags: string[], readTime?, blocks: ContentBlock[], relatedNews: News[] | string[], isPublished, publishedAt?, createdBy, createdAt, updatedAt }
+
+interface Course { _id, title, slug, class: ClassType, planType: CoursePlanType, tagline?, coverImage?, subjectTags: string[], price, originalPrice, enrollPoints: string[], blocks: ContentBlock[], faqs: { question: string, answer: string }[], isPublished, publishedAt?, createdBy, createdAt, updatedAt }
+
+// Permissions
+type UserRole = 'superadmin' | 'admin' | 'sales-manager' | 'team-lead' | 'sales' | 'support' | 'instructor' | 'content-writer'
+interface UserPermissions { canManageUsers, canManageTeams, canViewAllLeads, canAssignLeads, canDeleteLeads, canExportLeads, canViewReports, canManageContent, canManageBlog }
 ```
 
 ---
@@ -400,6 +491,7 @@ interface AuthState {
   canManageUsers: () => boolean;
   canManageTeams: () => boolean;
   canManageContent: () => boolean;
+  canManageBlog: () => boolean;
   canAssignLeads: () => boolean;
   canExportLeads: () => boolean;
 }
@@ -469,6 +561,18 @@ CNAME   admin   cname.vercel-dns.com   600
 | Video None | `bg-slate-100` | `text-slate-600` |
 | Guest Plan | `bg-orange-100` | `text-orange-700` |
 | Paid Plan | `bg-blue-100` | `text-blue-700` |
+| Published | `bg-green-100` | `text-green-700` |
+| Draft | `bg-slate-100` | `text-slate-600` |
+
+### Content Badge Colors
+| Value | Background | Text |
+|-------|------------|------|
+| Category: Featured | `bg-purple-100` | `text-purple-700` |
+| Category: New | `bg-blue-100` | `text-blue-700` |
+| Category: Hot | `bg-red-100` | `text-red-700` |
+| PlanType: Core | `bg-blue-100` | `text-blue-700` |
+| PlanType: Achiever | `bg-purple-100` | `text-purple-700` |
+| PlanType: Future Plus | `bg-orange-100` | `text-orange-700` |
 
 ### Subject Badge Colors
 | Subject | Background | Text |
@@ -490,6 +594,8 @@ CNAME   admin   cname.vercel-dns.com   600
 | Team Lead | `bg-teal-100` | `text-teal-700` |
 | Sales | `bg-green-100` | `text-green-700` |
 | Support | `bg-yellow-100` | `text-yellow-700` |
+| Instructor | `bg-pink-100` | `text-pink-700` |
+| Content Writer | `bg-orange-100` | `text-orange-700` |
 
 ---
 
@@ -526,7 +632,7 @@ CNAME   admin   cname.vercel-dns.com   600
 
 ### Performance Considerations
 - React Query caching (1 minute stale time)
-- Pagination on all list views (20 items/page)
+- Pagination on all list views (20 items/page); Courses page has no pagination (max 15 docs)
 - Lazy loading of modals
 - `createdAt` null-guarded in all tables (avoids `Invalid time value` error on fresh creates)
 
@@ -536,6 +642,8 @@ CNAME   admin   cname.vercel-dns.com   600
 - 401 responses trigger automatic logout
 - Role-based UI restrictions (server enforced)
 - `topicId` stripped from question update payload (cannot change topic after creation)
+- Cover image upload disabled on create for blogs/news/courses (no ID yet — save first, then upload)
+- `class` and `planType` locked on course edit (enforced in UI)
 
 ---
 
@@ -556,6 +664,10 @@ const { planId, subjectId } = useParams<{ planId: string; subjectId: string }>()
 // Table: accepts data + isLoading + onEdit + onDelete + drill-down IDs
 // Modal: accepts open + onClose + entity? + parentId(s)
 // ConfirmDialog: open + onConfirm + title + description + isDestructive
+
+// Block builder pattern (Blog/News/Course modals)
+// BlockEditor sub-component per ContentBlock; reorder with ChevronUp/Down; remove with Trash2
+// Image blocks upload inline via uploadImage XHR method
 ```
 
 ### Git Workflow
@@ -584,12 +696,32 @@ git push origin feature/feature-name
 ## Contributors
 - **Frontend Developer:** Saquelain
 - **Framework:** Next.js 15 + TypeScript
-- **Version:** 3.0.0
-- **Last Updated:** March 2026
+- **Version:** 3.1.0
+- **Last Updated:** April 2026
 
 ---
 
 ## Changelog
+
+### v3.1.0 (April 2026) — Content Publishing Pages
+- ✅ Blogs page (`/blogs`) — search, category filter, published filter, pagination
+- ✅ News page (`/news`) — identical structure to blogs
+- ✅ Courses page (`/courses`) — class + planType filter, no pagination (max 15 docs)
+- ✅ BlogsTable + BlogModal (block builder, cover image, related posts, publish toggle)
+- ✅ NewsTable + NewsModal (identical to Blog; uses relatedNews)
+- ✅ CoursesTable + CourseModal (block builder, enroll points, FAQs, locked class+planType on edit)
+- ✅ ContentBlock block builder shared pattern (paragraph/heading/bullets/numbered/image/quote)
+- ✅ XHR image upload with onProgress for blog, news, course cover images
+- ✅ Cover image upload disabled on create — save first, then upload
+- ✅ blogsApi, newsApi, coursesApi added to src/lib/api.ts
+- ✅ Blog, News, Course, ContentBlock, CoursePlanType, BlogCategory types added to src/types/index.ts
+- ✅ canManageBlog permission helper added to authStore
+- ✅ content-writer role added to UserRole type + UserPermissions interface
+- ✅ Sidebar updated: Blogs, News, Courses nav entries with role/permission gating
+- ✅ Role access table updated with content-writer column
+- ✅ Published/Draft status badges added to design system
+- ✅ Category and planType badge colours added to design system
+- ✅ Instructor and Content Writer role badge colours added
 
 ### v3.0.0 (March 2026) — Content Hierarchy Restructure
 - ✅ Replaced Courses/Chapters/Questions/Content Upload pages with new hierarchy
