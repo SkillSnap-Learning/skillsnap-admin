@@ -281,7 +281,7 @@ export function TipTapEditor({
       {/* Editor area */}
       <EditorContent
         editor={editor}
-        className="prose prose-sm max-w-none p-4 min-h-[300px] focus-within:outline-none text-slate-800
+        className="prose prose-sm max-w-none p-4 min-h-[500px] max-h-[700px] overflow-y-auto focus-within:outline-none text-slate-800
           [&_.ProseMirror]:outline-none
           [&_.ProseMirror_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]
           [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-slate-400
