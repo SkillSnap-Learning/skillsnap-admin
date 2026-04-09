@@ -361,3 +361,15 @@ export interface NewsResponse {
   news: News[];
   pagination: PaginationInfo;
 }
+
+export type BlockType = 'paragraph' | 'heading' | 'bullets' | 'numbered' | 'image' | 'quote';
+export type ImageAlignment = 'center' | 'full';
+
+export interface ContentBlock {
+  type: BlockType;
+  text?: string;
+  items?: string[];
+  src?: string;
+  alt?: string;
+  alignment?: ImageAlignment;
+}
