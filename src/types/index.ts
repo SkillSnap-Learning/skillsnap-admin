@@ -314,17 +314,6 @@ export interface Question {
 
 // Blog types
 export type BlogCategory = 'featured' | 'new' | 'hot';
-export type BlockType = 'paragraph' | 'heading' | 'bullets' | 'numbered' | 'image' | 'quote';
-export type ImageAlignment = 'center' | 'full';
-
-export interface ContentBlock {
-  type: BlockType;
-  text?: string;
-  items?: string[];
-  src?: string;
-  alt?: string;
-  alignment?: ImageAlignment;
-}
 
 export interface Blog {
   _id: string;
@@ -335,7 +324,7 @@ export interface Blog {
   coverImage?: string | null;
   tags: string[];
   readTime?: string | null;
-  blocks: ContentBlock[];
+  content: string;          // was: blocks: ContentBlock[]
   relatedPosts: Blog[] | string[];
   isPublished: boolean;
   publishedAt?: string | null;
@@ -359,7 +348,7 @@ export interface News {
   coverImage?: string | null;
   tags: string[];
   readTime?: string | null;
-  blocks: ContentBlock[];
+  content: string;          // was: blocks: ContentBlock[]
   relatedNews: News[] | string[];
   isPublished: boolean;
   publishedAt?: string | null;
