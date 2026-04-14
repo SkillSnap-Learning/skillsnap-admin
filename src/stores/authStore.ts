@@ -23,6 +23,9 @@ interface AuthState {
   canDeleteLeads: () => boolean;
   canManageContent: () => boolean; // Add this
   canManageBlog: () => boolean;
+  canViewSalesFeedback: () => boolean;
+  canManageOtherFeedback: () => boolean;
+  isSales: () => boolean;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -106,6 +109,20 @@ export const useAuthStore = create<AuthState>()(
         const { user } = get();
         if (!user) return false;
         return ["superadmin", "admin", "content-writer"].includes(user.role);
+      },
+      canViewSalesFeedback: () => {
+        const { hasPermission, hasRole } = get();
+        return hasPermission("canViewSalesFeedback") || hasRole("superadmin", "admin", "sales-manager");
+      },
+
+      canManageOtherFeedback: () => {
+        const { hasPermission, hasRole } = get();
+        return hasPermission("canManageOtherFeedback") || hasRole("superadmin", "admin");
+      },
+
+      isSales: () => {
+        const { hasRole } = get();
+        return hasRole("sales");
       },
     }),
     {

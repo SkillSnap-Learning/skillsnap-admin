@@ -24,6 +24,8 @@ export interface UserPermissions {
   canEditSettings: boolean;
   canManageContent: boolean;   // ADD
   canManageBlog: boolean;      // ADD
+  canViewSalesFeedback: boolean;
+  canManageOtherFeedback: boolean;
 }
 
 export interface User {
@@ -372,4 +374,61 @@ export interface ContentBlock {
   src?: string;
   alt?: string;
   alignment?: ImageAlignment;
+}
+
+// Feedback types
+export interface SalesFeedback {
+  id: string;
+  userId: {
+    _id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+  };
+  date: string;
+  reasonsInterested: string;
+  reasonsNotInterested: string;
+  followUpColdReasons: string;
+  conversionSuggestions: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OtherFeedback {
+  id: string;
+  userId: {
+    _id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+  };
+  message: string;
+  reply: string | null;
+  repliedBy: {
+    _id: string;
+    name: string;
+    email: string;
+  } | null;
+  repliedAt: string | null;
+  status: 'pending' | 'resolved';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SalesDashboardStats {
+  todayFeedbackSubmitted: boolean;
+  totalFeedbacksSubmitted: number;
+  pendingIssues: number;
+  resolvedIssues: number;
+  recentReplies: OtherFeedback[];
+}
+
+export interface SalesFeedbackResponse {
+  feedbacks: SalesFeedback[];
+  pagination: PaginationInfo;
+}
+
+export interface OtherFeedbackResponse {
+  feedbacks: OtherFeedback[];
+  pagination: PaginationInfo;
 }

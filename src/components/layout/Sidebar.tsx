@@ -16,7 +16,8 @@ import {
   FileText,
   HelpCircle,
   Upload,
-  Newspaper
+  Newspaper,
+  MessageSquare
 } from "lucide-react";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,12 @@ const navigation = [
     href: "/leads",
     icon: Users,
     roles: ["superadmin", "admin", "sales-manager", "team-lead", "sales"],
+  },
+  {
+    name: "Feedback",
+    href: "/feedback",
+    icon: MessageSquare,
+    roles: ["sales", "sales-manager", "admin", "superadmin"],
   },
   {
     name: "Users",

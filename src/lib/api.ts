@@ -542,4 +542,37 @@ export const coursesApi = {
   },
 };
 
+// Feedback API
+export const feedbackApi = {
+  // Sales feedback
+  submitSalesFeedback: (data: Record<string, string>) =>
+    api.post("/feedback/sales", data),
+
+  getTodayStatus: () =>
+    api.get("/feedback/sales/today"),
+
+  getMySalesFeedback: () =>
+    api.get("/feedback/sales/my"),
+
+  getAllSalesFeedback: (params?: Record<string, unknown>) =>
+    api.get("/feedback/sales", { params }),
+
+  // Other feedback
+  submitOtherFeedback: (message: string) =>
+    api.post("/feedback/other", { message }),
+
+  getMyOtherFeedback: () =>
+    api.get("/feedback/other/my"),
+
+  getAllOtherFeedback: (params?: Record<string, unknown>) =>
+    api.get("/feedback/other", { params }),
+
+  replyToOtherFeedback: (id: string, reply: string) =>
+    api.patch(`/feedback/other/${id}/reply`, { reply }),
+
+  // Dashboard
+  getSalesDashboardStats: () =>
+    api.get("/feedback/dashboard/stats"),
+};
+
 export default api;
