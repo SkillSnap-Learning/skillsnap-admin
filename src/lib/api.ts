@@ -575,4 +575,18 @@ export const feedbackApi = {
     api.get("/feedback/dashboard/stats"),
 };
 
+export const categoriesApi = {
+  getAll: (params?: { includeInactive?: boolean }) =>
+    api.get('/categories', { params }),
+
+  create: (data: Partial<{ name: string; slug: string; description: string; order: number; isActive: boolean }>) =>
+    api.post('/categories', data),
+
+  update: (id: string, data: Partial<{ name: string; slug: string; description: string; order: number; isActive: boolean }>) =>
+    api.patch(`/categories/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/categories/${id}`),
+};
+
 export default api;

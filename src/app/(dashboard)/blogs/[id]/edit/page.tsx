@@ -4,7 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/layout/Header";
 import { BlogForm, BlogFormData } from "@/components/blogs/BlogForm";
-import { blogsApi } from "@/lib/api";
+import { blogsApi, categoriesApi } from "@/lib/api";
 import { Blog } from "@/types";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
@@ -27,6 +27,14 @@ export default function EditBlogPage() {
     queryFn: async () => {
       const response = await blogsApi.getPublished();
       return response.data.data;
+    },
+  });
+
+  const { data: categoriesData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await categoriesApi.getAll();
+      return res.data.data;
     },
   });
 
@@ -67,6 +75,7 @@ export default function EditBlogPage() {
         <BlogForm
           blog={blogData}
           existingBlogs={allBlogs}
+          categories={categoriesData ?? []}
           onSubmit={async (data) => { await updateMutation.mutateAsync(data); }}
           isSubmitting={updateMutation.isPending}
           onCancel={() => router.push("/blogs")}

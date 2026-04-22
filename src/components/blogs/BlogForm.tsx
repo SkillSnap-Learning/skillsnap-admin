@@ -12,8 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Blog, BlogCategory } from "@/types";
-import { blogsApi } from "@/lib/api";
+import { Blog } from "@/types";
+import { blogsApi, categoriesApi } from "@/lib/api";
 import { toast } from "sonner";
 import { ImageIcon, Loader2 } from "lucide-react";
 import { TipTapEditor } from "@/components/shared/TipTapEditor";
@@ -22,7 +22,7 @@ export interface BlogFormData {
   title: string;
   slug: string;
   excerpt: string;
-  category: BlogCategory;
+  category: string;
   coverImage?: string | null;
   tags: string[];
   readTime?: string;
@@ -34,6 +34,7 @@ export interface BlogFormData {
 interface BlogFormProps {
   blog?: Blog | null;
   existingBlogs: Blog[];
+  categories: { _id: string; name: string; slug: string }[];
   onSubmit: (data: BlogFormData) => Promise<void>;
   isSubmitting: boolean;
   onCancel: () => void;
@@ -49,6 +50,7 @@ const generateSlug = (title: string) =>
 export function BlogForm({
   blog,
   existingBlogs,
+  categories,
   onSubmit,
   isSubmitting,
   onCancel,
@@ -56,7 +58,7 @@ export function BlogForm({
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
-  const [category, setCategory] = useState<BlogCategory>("new");
+  const [category, setCategory] = useState<string>("");
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [tagsInput, setTagsInput] = useState("");
   const [readTime, setReadTime] = useState("");
@@ -73,8 +75,11 @@ export function BlogForm({
       setTitle(blog.title);
       setSlug(blog.slug);
       setExcerpt(blog.excerpt);
-      setCategory(blog.category);
-      setCoverImage(blog.coverImage ?? null);
+      setCategory(
+        typeof blog.category === "object"
+          ? (blog.category as any)._id
+          : blog.category
+      );      setCoverImage(blog.coverImage ?? null);
       setTagsInput(blog.tags.join(", "));
       setReadTime(blog.readTime ?? "");
       setContent(blog.content ?? "");
@@ -177,17 +182,22 @@ export function BlogForm({
           </div>
           <div className="space-y-1.5">
             <Label>Category *</Label>
-            <Select
-              value={category}
-              onValueChange={(val) => setCategory(val as BlogCategory)}
-            >
+            <Select value={category} onValueChange={setCategory}>
               <SelectTrigger>
-                <SelectValue />
+                <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="featured">Featured</SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="hot">Hot</SelectItem>
+                {categories.length === 0 ? (
+                  <div className="px-2 py-3 text-sm text-slate-400 text-center">
+                    No categories yet — create one first
+                  </div>
+                ) : (
+                  categories.map((cat) => (
+                    <SelectItem key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>

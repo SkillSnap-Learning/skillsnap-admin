@@ -17,7 +17,8 @@ import {
   HelpCircle,
   Upload,
   Newspaper,
-  MessageSquare
+  MessageSquare,
+  Tag,
 } from "lucide-react";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -79,6 +80,13 @@ const navigation = [
     name: "News",
     href: "/news",
     icon: Newspaper,
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageBlog",
+  },
+  {
+    name: "Categories",
+    href: "/categories",
+    icon: Tag,
     roles: ["superadmin", "admin", "content-writer"],
     permission: "canManageBlog",
   },
