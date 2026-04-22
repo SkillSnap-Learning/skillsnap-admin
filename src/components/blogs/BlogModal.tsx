@@ -64,7 +64,7 @@ export function BlogModal({
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
-  const [category, setCategory] = useState<BlogCategory>("new");
+  const [category, setCategory] = useState<string>("");
   const [coverImage, setCoverImage] = useState<string | null>(null);
   const [tagsInput, setTagsInput] = useState("");
   const [readTime, setReadTime] = useState("");
@@ -81,8 +81,11 @@ export function BlogModal({
       setTitle(blog.title);
       setSlug(blog.slug);
       setExcerpt(blog.excerpt);
-      setCategory(blog.category);
-      setCoverImage(blog.coverImage ?? null);
+      setCategory(
+        typeof blog.category === "object"
+          ? (blog.category as any)._id
+          : blog.category
+      );      setCoverImage(blog.coverImage ?? null);
       setTagsInput(blog.tags.join(", "));
       setReadTime(blog.readTime ?? "");
       setContent(blog.content ?? "");
@@ -204,8 +207,7 @@ export function BlogModal({
               <Label>Category *</Label>
               <Select
                 value={category}
-                onValueChange={(val) => setCategory(val as BlogCategory)}
-              >
+                onValueChange={setCategory}              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -327,7 +329,7 @@ export function BlogModal({
                     />
                     <span className="text-sm text-slate-700">{b.title}</span>
                     <span className="text-xs text-slate-400 ml-auto capitalize">
-                      {b.category}
+                      {typeof b.category === "object" ? b.category.name : b.category}
                     </span>
                   </label>
                 ))}
