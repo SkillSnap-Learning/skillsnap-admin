@@ -72,7 +72,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
               {/* Category */}
               <TableCell>
                 <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[blog.category] ?? "bg-slate-100 text-slate-700"}`}
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[typeof blog.category === "object" ? blog.category.slug : String(blog.category)] ?? "bg-slate-100 text-slate-700"}`}
                 >
                    {typeof blog.category === "object" ? blog.category.name : blog.category}
                 </span>
