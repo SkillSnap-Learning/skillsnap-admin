@@ -315,7 +315,7 @@ export function BlogForm({
                 />
                 <span className="text-sm text-slate-700">{b.title}</span>
                 <span className="text-xs text-slate-400 ml-auto capitalize">
-                  {b.category}
+                  {typeof b.category === "object" ? b.category.name : b.category}
                 </span>
               </label>
             ))}
