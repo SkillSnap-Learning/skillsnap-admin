@@ -37,7 +37,7 @@ export interface BlogFormData {
   title: string;
   slug: string;
   excerpt: string;
-  category: BlogCategory;
+  category: string;
   coverImage?: string | null;
   tags: string[];
   readTime?: string;
