@@ -315,18 +315,18 @@ export interface Question {
 }
 
 // Blog types
-export type BlogCategory = 'featured' | 'new' | 'hot';
+export type BlogCategory = 'featured' | 'new' | 'hot'; // keep for backward compat
 
 export interface Blog {
   _id: string;
   title: string;
   slug: string;
   excerpt: string;
-  category: BlogCategory;
+  category: string | { _id: string; name: string; slug: string }; // ← updated
   coverImage?: string | null;
   tags: string[];
   readTime?: string | null;
-  content: string;          // was: blocks: ContentBlock[]
+  content: string;
   relatedPosts: Blog[] | string[];
   isPublished: boolean;
   publishedAt?: string | null;
