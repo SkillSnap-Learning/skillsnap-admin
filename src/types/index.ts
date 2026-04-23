@@ -330,6 +330,8 @@ export interface Blog {
   relatedPosts: Blog[] | string[];
   faqs: { question: string; answer: string }[];
   faqsTitle?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   isPublished: boolean;
   publishedAt?: string | null;
   createdBy: string;

@@ -31,6 +31,8 @@ export interface BlogFormData {
   isPublished: boolean;
   faqs: { question: string; answer: string }[];
   faqsTitle: string;
+  metaTitle: string;
+  metaDescription: string;
 }
 
 interface BlogFormProps {
@@ -70,6 +72,8 @@ export function BlogForm({
   const [coverUploading, setCoverUploading] = useState(false);
   const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([{ question: "", answer: "" }]);
   const [faqsTitle, setFaqsTitle] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
   const coverRef = useRef<HTMLInputElement>(null);
 
   const blogId = blog?._id ?? "";
@@ -95,6 +99,8 @@ export function BlogForm({
       setIsPublished(blog.isPublished);
       setFaqs(blog.faqs && blog.faqs.length > 0 ? blog.faqs : [{ question: "", answer: "" }]);
       setFaqsTitle(blog.faqsTitle ?? "");
+      setMetaTitle(blog.metaTitle ?? "");
+      setMetaDescription(blog.metaDescription ?? "");
     }
   }, [blog]);
 
@@ -165,6 +171,8 @@ export function BlogForm({
       isPublished,
       faqs: cleanFaqs,
       faqsTitle,
+      metaTitle,
+      metaDescription,
     });
   };
 
@@ -358,7 +366,7 @@ export function BlogForm({
           </p>
         </div>
 
-        
+
         {faqs.map((faq, i) => (
           <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
             <div className="flex items-center justify-between">
@@ -381,6 +389,44 @@ export function BlogForm({
         <Button type="button" variant="outline" size="sm" onClick={addFaq} className="text-xs">
           <Plus className="h-3 w-3 mr-1" /> Add FAQ
         </Button>
+      </div>
+
+      {/* SEO */}
+      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+          SEO
+        </h2>
+        <div className="space-y-1.5">
+          <Label>Meta Title</Label>
+          <Input
+            value={metaTitle}
+            onChange={(e) => setMetaTitle(e.target.value)}
+            placeholder="Leave empty to use blog title"
+            className="bg-white"
+          />
+          <p className="text-xs text-slate-400">
+            Recommended: 50–60 characters.{" "}
+            <span className={metaTitle.length > 60 ? "text-red-500" : "text-slate-400"}>
+              {metaTitle.length}/60
+            </span>
+          </p>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Meta Description</Label>
+          <Textarea
+            value={metaDescription}
+            onChange={(e) => setMetaDescription(e.target.value)}
+            placeholder="Leave empty to use excerpt"
+            rows={3}
+            className="bg-white text-sm"
+          />
+          <p className="text-xs text-slate-400">
+            Recommended: 150–160 characters.{" "}
+            <span className={metaDescription.length > 160 ? "text-red-500" : "text-slate-400"}>
+              {metaDescription.length}/160
+            </span>
+          </p>
+        </div>
       </div>
 
       {/* Publish + Actions */}
