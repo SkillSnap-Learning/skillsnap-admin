@@ -15,7 +15,7 @@ import {
 import { Blog } from "@/types";
 import { blogsApi, categoriesApi } from "@/lib/api";
 import { toast } from "sonner";
-import { ImageIcon, Loader2 } from "lucide-react";
+import { ImageIcon, Loader2, Plus, Trash2 } from "lucide-react";
 import { TipTapEditor } from "@/components/shared/TipTapEditor";
 
 export interface BlogFormData {
@@ -29,6 +29,7 @@ export interface BlogFormData {
   content: string;
   relatedPosts: string[];
   isPublished: boolean;
+  faqs: { question: string; answer: string }[];
 }
 
 interface BlogFormProps {
@@ -66,6 +67,7 @@ export function BlogForm({
   const [relatedPosts, setRelatedPosts] = useState<string[]>([]);
   const [isPublished, setIsPublished] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([{ question: "", answer: "" }]);
   const coverRef = useRef<HTMLInputElement>(null);
 
   const blogId = blog?._id ?? "";
@@ -89,6 +91,7 @@ export function BlogForm({
         )
       );
       setIsPublished(blog.isPublished);
+      setFaqs(blog.faqs && blog.faqs.length > 0 ? blog.faqs : [{ question: "", answer: "" }]);
     }
   }, [blog]);
 
@@ -129,6 +132,11 @@ export function BlogForm({
     );
   };
 
+  const updateFaq = (index: number, field: "question" | "answer", val: string) =>
+    setFaqs((prev) => prev.map((f, i) => (i === index ? { ...f, [field]: val } : f)));
+  const addFaq = () => setFaqs((prev) => [...prev, { question: "", answer: "" }]);
+  const removeFaq = (index: number) => setFaqs((prev) => prev.filter((_, i) => i !== index));
+
   const handleSubmit = async () => {
     if (!title || !slug || !excerpt || !category) {
       toast.error("Title, slug, excerpt and category are required");
@@ -138,6 +146,8 @@ export function BlogForm({
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
+
+    const cleanFaqs = faqs.filter((f) => f.question && f.answer);
 
     await onSubmit({
       title,
@@ -150,6 +160,7 @@ export function BlogForm({
       content,
       relatedPosts,
       isPublished,
+      faqs: cleanFaqs,
     });
   };
 
@@ -322,6 +333,35 @@ export function BlogForm({
           </div>
         </div>
       )}
+
+      {/* FAQs */}
+      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+          FAQs
+        </h2>
+        {faqs.map((faq, i) => (
+          <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500">FAQ {i + 1}</span>
+              <Button type="button" variant="ghost" size="sm"
+                onClick={() => removeFaq(i)}
+                className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                disabled={faqs.length <= 1}>
+                <Trash2 className="h-3 w-3" />
+              </Button>
+            </div>
+            <div className="space-y-2">
+              <Input value={faq.question} onChange={(e) => updateFaq(i, "question", e.target.value)}
+                placeholder="Question" className="bg-white" />
+              <Textarea value={faq.answer} onChange={(e) => updateFaq(i, "answer", e.target.value)}
+                placeholder="Answer" rows={2} className="bg-white text-sm" />
+            </div>
+          </div>
+        ))}
+        <Button type="button" variant="outline" size="sm" onClick={addFaq} className="text-xs">
+          <Plus className="h-3 w-3 mr-1" /> Add FAQ
+        </Button>
+      </div>
 
       {/* Publish + Actions */}
       <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-center justify-between">

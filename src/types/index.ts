@@ -328,6 +328,7 @@ export interface Blog {
   readTime?: string | null;
   content: string;
   relatedPosts: Blog[] | string[];
+  faqs: { question: string; answer: string }[];
   isPublished: boolean;
   publishedAt?: string | null;
   createdBy: string;
