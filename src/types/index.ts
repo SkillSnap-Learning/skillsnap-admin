@@ -329,6 +329,7 @@ export interface Blog {
   content: string;
   relatedPosts: Blog[] | string[];
   faqs: { question: string; answer: string }[];
+  faqsTitle?: string | null;
   isPublished: boolean;
   publishedAt?: string | null;
   createdBy: string;

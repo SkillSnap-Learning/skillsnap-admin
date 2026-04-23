@@ -30,6 +30,7 @@ export interface BlogFormData {
   relatedPosts: string[];
   isPublished: boolean;
   faqs: { question: string; answer: string }[];
+  faqsTitle: string;
 }
 
 interface BlogFormProps {
@@ -68,6 +69,7 @@ export function BlogForm({
   const [isPublished, setIsPublished] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
   const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([{ question: "", answer: "" }]);
+  const [faqsTitle, setFaqsTitle] = useState("");
   const coverRef = useRef<HTMLInputElement>(null);
 
   const blogId = blog?._id ?? "";
@@ -92,6 +94,7 @@ export function BlogForm({
       );
       setIsPublished(blog.isPublished);
       setFaqs(blog.faqs && blog.faqs.length > 0 ? blog.faqs : [{ question: "", answer: "" }]);
+      setFaqsTitle(blog.faqsTitle ?? "");
     }
   }, [blog]);
 
@@ -161,6 +164,7 @@ export function BlogForm({
       relatedPosts,
       isPublished,
       faqs: cleanFaqs,
+      faqsTitle,
     });
   };
 
@@ -339,6 +343,22 @@ export function BlogForm({
         <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
           FAQs
         </h2>
+
+        {/* FAQ Section Title */}
+        <div className="space-y-1.5">
+          <Label>Section Heading</Label>
+          <Input
+            value={faqsTitle}
+            onChange={(e) => setFaqsTitle(e.target.value)}
+            placeholder="Frequently asked questions"
+            className="bg-white"
+          />
+          <p className="text-xs text-slate-400">
+            Leave empty to use default: "Frequently asked questions"
+          </p>
+        </div>
+
+        
         {faqs.map((faq, i) => (
           <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
             <div className="flex items-center justify-between">
