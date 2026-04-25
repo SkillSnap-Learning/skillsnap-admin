@@ -22,7 +22,7 @@ export default function EditResourcePagePage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: ResourcePageFormData) => resourcePagesApi.update(id, data),
+    mutationFn: (data: ResourcePageFormData) => resourcePagesApi.update(id, data as unknown as Record<string, unknown>),
     onSuccess: () => {
       toast.success("Page updated successfully");
       router.push("/resource-pages");
