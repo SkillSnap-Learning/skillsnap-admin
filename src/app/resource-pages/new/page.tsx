@@ -13,7 +13,7 @@ export default function NewResourcePagePage() {
   const router = useRouter();
 
   const createMutation = useMutation({
-    mutationFn: (data: ResourcePageFormData) => resourcePagesApi.create(data),
+    mutationFn: (data: ResourcePageFormData) => resourcePagesApi.create(data as unknown as Record<string, unknown>),
     onSuccess: (res) => {
       toast.success("Page created successfully");
       const newId = res.data.data._id;
