@@ -589,4 +589,53 @@ export const categoriesApi = {
     api.delete(`/categories/${id}`),
 };
 
+export const resourcePagesApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get('/admin/resource-pages', { params }),
+
+  getById: (id: string) =>
+    api.get(`/resource-pages/id/${id}`),
+
+  create: (data: Record<string, unknown>) =>
+    api.post('/admin/resource-pages', data),
+
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch(`/admin/resource-pages/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/resource-pages/${id}`),
+
+  uploadImage: (file: File, pageId: string, onProgress?: (pct: number) => void) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('pageId', pageId);
+
+    return new Promise<{ imageUrl: string }>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/resource-page-image`);
+
+      const token = localStorage.getItem('token');
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+        };
+      }
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const res = JSON.parse(xhr.responseText);
+          resolve({ imageUrl: res.data.imageUrl });
+        } else {
+          reject(new Error(JSON.parse(xhr.responseText)?.message || 'Upload failed'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error during upload'));
+      xhr.send(formData);
+    });
+  },
+};
+
 export default api;

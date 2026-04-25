@@ -84,6 +84,13 @@ const navigation = [
     permission: "canManageBlog",
   },
   {
+    name: "Resource Pages",
+    href: "/resource-pages",
+    icon: FileText,
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageBlog",
+    },
+  {
     name: "Categories",
     href: "/categories",
     icon: Tag,
