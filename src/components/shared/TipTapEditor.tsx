@@ -21,7 +21,7 @@ import {
   Heading1, Heading2, Heading3,
   List, ListOrdered, Quote,
   AlignLeft, AlignCenter, AlignRight,
-  Link as LinkIcon, ImageIcon,
+  Link as LinkIcon, Unlink, ImageIcon,
   Undo, Redo, Minus,
   Highlighter, Superscript as SuperscriptIcon,
   Subscript as SubscriptIcon, Code, CodeSquare,
@@ -120,6 +120,10 @@ export function TipTapEditor({
   };
 
   const setLink = () => {
+    if (editor.isActive("link")) {
+      editor.chain().focus().unsetLink().run();
+      return;
+    }
     const url = window.prompt("Enter URL");
     if (!url) return;
     editor.chain().focus().setLink({ href: url }).run();
@@ -264,13 +268,15 @@ export function TipTapEditor({
 
           <Divider />
 
-          {/* Link & Image */}
+          {/* Link */}
           <ToolbarButton title="Insert Link" onClick={setLink} active={editor.isActive("link")}>
             <LinkIcon className="h-4 w-4" />
           </ToolbarButton>
-          <ToolbarButton title="Insert Image" onClick={() => fileRef.current?.click()}>
-            <ImageIcon className="h-4 w-4" />
-          </ToolbarButton>
+          {editor.isActive("link") && (
+            <ToolbarButton title="Remove Link" onClick={() => editor.chain().focus().unsetLink().run()}>
+              <Unlink className="h-4 w-4" />
+            </ToolbarButton>
+          )}
           <input
             ref={fileRef}
             type="file"
@@ -305,6 +311,9 @@ export function TipTapEditor({
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-slate-400
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:float-left
+            [&_.ProseMirror_a]:text-blue-600
+            [&_.ProseMirror_a]:underline
+            [&_.ProseMirror_a]:cursor-pointer
             [&_.ProseMirror_img]:rounded-lg
             [&_.ProseMirror_img]:max-w-full
             [&_.ProseMirror_blockquote]:border-l-4
