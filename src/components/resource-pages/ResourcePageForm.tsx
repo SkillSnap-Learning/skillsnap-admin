@@ -81,6 +81,8 @@ export interface ResourcePageFormData {
   metaTitle: string;
   metaDescription: string;
   isPublished: boolean;
+  faqsTitle: string;
+  faqs: { question: string; answer: string }[];
 }
 
 interface ResourcePage {
@@ -92,6 +94,8 @@ interface ResourcePage {
   metaTitle: string;
   metaDescription: string;
   isPublished: boolean;
+  faqsTitle: string;
+  faqs: { question: string; answer: string }[];
 }
 
 interface ResourcePageFormProps {
@@ -194,6 +198,9 @@ export function ResourcePageForm({
   const [metaDescription, setMetaDescription] = useState("");
   const [isPublished, setIsPublished] = useState(false);
 
+  const [faqsTitle, setFaqsTitle] = useState("Frequently Asked Questions");
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([]);
+
   // Slug override
   const [slugOverride, setSlugOverride] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
@@ -257,6 +264,8 @@ export function ResourcePageForm({
     setIsPublished(page.isPublished);
     setSlugOverride(page.slug);
     setSlugEdited(true); // treat existing slug as manual
+    setFaqsTitle(page.faqsTitle ?? "Frequently Asked Questions");
+    setFaqs(page.faqs ?? []);
 
     // Reverse-parse slug into step selections
     const parts = page.slug.split("/");
@@ -326,6 +335,8 @@ export function ResourcePageForm({
       metaTitle,
       metaDescription,
       isPublished,
+      faqsTitle,
+      faqs,
     });
   };
 
@@ -517,6 +528,92 @@ export function ResourcePageForm({
             </span>
           </p>
         </div>
+      </div>
+
+      {/* ── FAQs ── */}
+      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+            FAQs
+          </h2>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              setFaqs((prev) => [...prev, { question: "", answer: "" }])
+            }
+          >
+            + Add FAQ
+          </Button>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label>Section Title</Label>
+          <Input
+            value={faqsTitle}
+            onChange={(e) => setFaqsTitle(e.target.value)}
+            placeholder="Frequently Asked Questions"
+          />
+        </div>
+
+        {faqs.length === 0 && (
+          <p className="text-xs text-slate-400">
+            No FAQs yet. Click "+ Add FAQ" to add one.
+          </p>
+        )}
+
+        {faqs.map((faq, index) => (
+          <div
+            key={index}
+            className="border border-slate-200 rounded-lg p-4 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500">
+                FAQ #{index + 1}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setFaqs((prev) => prev.filter((_, i) => i !== index))
+                }
+                className="text-xs text-red-500 hover:text-red-700"
+              >
+                Remove
+              </button>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Question</Label>
+              <Input
+                value={faq.question}
+                onChange={(e) =>
+                  setFaqs((prev) =>
+                    prev.map((f, i) =>
+                      i === index ? { ...f, question: e.target.value } : f
+                    )
+                  )
+                }
+                placeholder="e.g. What is photosynthesis?"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs">Answer</Label>
+              <Textarea
+                value={faq.answer}
+                onChange={(e) =>
+                  setFaqs((prev) =>
+                    prev.map((f, i) =>
+                      i === index ? { ...f, answer: e.target.value } : f
+                    )
+                  )
+                }
+                placeholder="Answer..."
+                rows={3}
+                className="text-sm"
+              />
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* ── Publish + Actions ── */}
