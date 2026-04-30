@@ -335,7 +335,7 @@ export function TipTapEditor({
             title={isHtmlMode ? "Switch to Visual Editor" : "Edit HTML Source"}
             onClick={() => {
               if (isHtmlMode) {
-                editor.commands.setContent(value, false);
+                editor.commands.setContent(value, { emitUpdate: false });
                 setIsHtmlMode(false);
               } else {
                 rawHtmlRef.current = formatHtml(rawHtmlRef.current);
