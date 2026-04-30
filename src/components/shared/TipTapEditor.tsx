@@ -14,7 +14,7 @@ import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Bold, Italic, UnderlineIcon, Strikethrough,
@@ -26,6 +26,9 @@ import {
   Highlighter, Superscript as SuperscriptIcon,
   Subscript as SubscriptIcon, Code, CodeSquare,
 } from "lucide-react";
+import CodeMirror from "@uiw/react-codemirror";
+import { html } from "@codemirror/lang-html";
+import { oneDark } from "@codemirror/theme-one-dark";
 
 interface TipTapEditorProps {
   value: string;
@@ -41,6 +44,9 @@ export function TipTapEditor({
   disabled = false,
 }: TipTapEditorProps) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [isHtmlMode, setIsHtmlMode] = useState(false);
+  const rawHtmlRef = useRef<string>(value);
+  const initializedRef = useRef(false);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -102,11 +108,17 @@ export function TipTapEditor({
   });
 
   useEffect(() => {
-    if (!editor) return;
+    if (!editor || isHtmlMode) return;
+    // Only update rawHtmlRef from external value changes (e.g. DB load),
+    // not from TipTap's own onUpdate firing
+    if (!initializedRef.current) {
+      rawHtmlRef.current = value;
+      initializedRef.current = true;
+    }
     if (editor.getHTML() !== value) {
       editor.commands.setContent(value || "");
     }
-  }, [value, editor]);
+  }, [value, editor, isHtmlMode]);
 
   if (!editor) return null;
 
@@ -133,6 +145,33 @@ export function TipTapEditor({
   const text = editor.getText();
   const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
   const charCount = text.length;
+
+  const formatHtml = (html: string): string => {
+    let formatted = "";
+    let indent = 0;
+    const tab = "  ";
+    const voidElements = new Set(["area","base","br","col","embed","hr","img","input","link","meta","param","source","track","wbr"]);
+    const inlineElements = new Set(["a","abbr","acronym","b","bdo","big","br","cite","code","dfn","em","i","img","input","kbd","label","map","object","output","q","samp","select","small","span","strong","sub","sup","textarea","time","tt","var"]);
+
+    html
+      .replace(/>\s*</g, "><")
+      .replace(/(<\/?)(\w+)([^>]*)>/g, "$1$2$3>")
+      .split(/(?=<)|(?<=>)/)
+      .forEach((token) => {
+        if (!token.trim()) return;
+        const isClosing = /^<\//.test(token);
+        const isSelfClosing = /\/>$/.test(token) || voidElements.has((token.match(/^<(\w+)/) || [])[1]?.toLowerCase() || "");
+        const tagName = ((token.match(/^<\/?(\w+)/) || [])[1] || "").toLowerCase();
+        const isInline = inlineElements.has(tagName);
+        const isOpening = /^<[^/]/.test(token) && !isSelfClosing;
+
+        if (isClosing && !isInline) indent = Math.max(0, indent - 1);
+        formatted += (isInline ? "" : "\n" + tab.repeat(indent)) + token;
+        if (isOpening && !isInline) indent++;
+      });
+
+    return formatted.trim();
+  };
 
   const ToolbarButton = ({
     onClick, active, title, children,
@@ -288,9 +327,47 @@ export function TipTapEditor({
               e.target.value = "";
             }}
           />
+
+          <Divider />
+
+          {/* HTML Source toggle */}
+          <ToolbarButton
+            title={isHtmlMode ? "Switch to Visual Editor" : "Edit HTML Source"}
+            onClick={() => {
+              if (isHtmlMode) {
+                editor.commands.setContent(value, false);
+                setIsHtmlMode(false);
+              } else {
+                rawHtmlRef.current = formatHtml(rawHtmlRef.current);
+                setIsHtmlMode(true);
+              }
+            }}
+            active={isHtmlMode}
+          >
+            <span className="text-xs font-mono font-bold px-0.5">&lt;/&gt;</span>
+          </ToolbarButton>
         </div>
 
         {/* Editor area */}
+        {isHtmlMode ? (
+          <CodeMirror
+            value={rawHtmlRef.current}
+            height="500px"
+            extensions={[html()]}
+            theme={oneDark}
+            onChange={(val) => {
+              rawHtmlRef.current = val;
+              onChange(val);
+            }}
+            basicSetup={{
+              lineNumbers: true,
+              foldGutter: true,
+              autocompletion: true,
+              bracketMatching: true,
+              closeBrackets: true,
+            }}
+          />
+        ) : (
         <EditorContent
           editor={editor}
           className="prose prose-sm max-w-none p-4 min-h-[500px] max-h-[700px] overflow-y-auto focus-within:outline-none text-slate-800
@@ -360,6 +437,7 @@ export function TipTapEditor({
             [&_.ProseMirror_pre_code]:text-rose-600
           "
         />
+        )}
 
         {/* Word / char count */}
         <div className="flex items-center justify-end gap-4 px-4 py-2 border-t border-slate-200 bg-slate-50 text-xs text-slate-400">
