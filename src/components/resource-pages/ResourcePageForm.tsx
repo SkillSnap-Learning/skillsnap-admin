@@ -22,9 +22,10 @@ const SECTIONS = [
   { label: "Chemistry",           value: "chemistry"            },
   { label: "Biology",           value: "biology"            },
   { label: "Maths",           value: "maths"            },
+  { label: "Home Info", value: "home-info" },
 ];
 
-const LEAF_SECTIONS = new Set(["physics", "chemistry", "biology", "maths"]);
+const LEAF_SECTIONS = new Set(["physics", "chemistry", "biology", "maths", "home-info"]);
 
 const CLASSES = [
   { label: "Class 6",  value: "class-6"  },
@@ -71,7 +72,7 @@ const SECTION_ENUM_MAP: Record<string, string> = {
   "chemistry":       "chemistry",
   "biology":         "biology",
   "maths":           "maths",
-
+  "home-info":       "home-info",
 };
 
 const SECTION_SLUG_MAP: Record<string, string> = {
@@ -84,6 +85,7 @@ const SECTION_SLUG_MAP: Record<string, string> = {
   "chemistry": "chemistry",
   "biology":   "biology",
   "maths":     "maths",
+  "home-info": "home-info",
 };
 
 // ── Types ───────────────────────────────────────────────────────────────────
