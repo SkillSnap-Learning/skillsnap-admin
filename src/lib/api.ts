@@ -221,11 +221,8 @@ export const topicsApi = {
 
 // Questions API (updated)
 export const questionsApi = {
-  getAll: (params?: Record<string, unknown>) =>
+  getAll: (params?: { subject?: string; classLevel?: string; difficulty?: string; isActive?: boolean }) =>
     api.get("/admin/questions", { params }),
-
-  getByChapter: (chapterId: string) =>
-    api.get(`/admin/questions/chapter/${chapterId}`),
 
   getById: (id: string) =>
     api.get(`/admin/questions/${id}`),

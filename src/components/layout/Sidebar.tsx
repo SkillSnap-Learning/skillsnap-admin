@@ -89,7 +89,14 @@ const navigation = [
     icon: FileText,
     roles: ["superadmin", "admin", "content-writer"],
     permission: "canManageBlog",
-    },
+  },
+  {
+    name: "Questions",
+    href: "/questions",
+    icon: HelpCircle,
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageContent",
+  },
   {
     name: "Categories",
     href: "/categories",

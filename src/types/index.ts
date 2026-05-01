@@ -301,15 +301,23 @@ export interface Chapter {
   updatedAt: string;
 }
 
+export type QuestionSubject = 'Maths' | 'Science' | 'English' | 'Social Science' | 'Hindi';
+export type QuestionClassLevel = '6' | '7' | '8' | '9' | '10';
+
+export const QUESTION_SUBJECTS: QuestionSubject[] = ['Maths', 'Science', 'English', 'Social Science', 'Hindi'];
+export const QUESTION_CLASS_LEVELS: QuestionClassLevel[] = ['6', '7', '8', '9', '10'];
+
 export interface Question {
   _id: string;
-  chapterId: string | Chapter;
+  subject: QuestionSubject;
+  classLevel: QuestionClassLevel;
   questionText: string;
   options: string[];
   correctAnswer: number;
   explanation?: string;
   difficulty: DifficultyType;
   isActive: boolean;
+  createdBy?: string;
   createdAt: string;
   updatedAt: string;
 }
