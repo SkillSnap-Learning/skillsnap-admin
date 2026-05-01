@@ -139,12 +139,13 @@ export default function QuestionsPage() {
 
       {deletingQuestion && (
         <ConfirmDialog
-          open={!!deletingQuestion}
-          title="Delete Question"
-          description="Are you sure you want to delete this question? This cannot be undone."
-          onConfirm={() => deleteMutation.mutate(deletingQuestion._id)}
-          onCancel={() => setDeletingQuestion(null)}
-          isLoading={deleteMutation.isPending}
+            open={!!deletingQuestion}
+            onOpenChange={(open) => { if (!open) setDeletingQuestion(null); }}
+            title="Delete Question"
+            description="Are you sure you want to delete this question? This cannot be undone."
+            onConfirm={() => deleteMutation.mutate(deletingQuestion!._id)}
+            isLoading={deleteMutation.isPending}
+            isDestructive
         />
       )}
     </div>
