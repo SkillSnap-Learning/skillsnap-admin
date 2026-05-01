@@ -18,7 +18,13 @@ const SECTIONS = [
   { label: "MCQs",            value: "mcqs"             },
   { label: "Worksheet",       value: "worksheet"        },
   { label: "English",         value: "english"          },
+  { label: "Physics",           value: "physics"            },
+  { label: "Chemistry",           value: "chemistry"            },
+  { label: "Biology",           value: "biology"            },
+  { label: "Maths",           value: "maths"            },
 ];
+
+const LEAF_SECTIONS = new Set(["physics", "chemistry", "biology", "maths"]);
 
 const CLASSES = [
   { label: "Class 6",  value: "class-6"  },
@@ -61,6 +67,11 @@ const SECTION_ENUM_MAP: Record<string, string> = {
   "mcqs":            "mcqs",
   "worksheet":       "worksheet",
   "english":         "english",
+  "physics":         "physics",
+  "chemistry":       "chemistry",
+  "biology":         "biology",
+  "maths":           "maths",
+
 };
 
 const SECTION_SLUG_MAP: Record<string, string> = {
@@ -69,6 +80,10 @@ const SECTION_SLUG_MAP: Record<string, string> = {
   "mcqs":      "mcqs",
   "worksheet": "worksheet",
   "english":   "english",
+  "physics":   "physics",
+  "chemistry": "chemistry",
+  "biology":   "biology",
+  "maths":     "maths",
 };
 
 // ── Types ───────────────────────────────────────────────────────────────────
@@ -208,10 +223,13 @@ export function ResourcePageForm({
   const pageId = page?._id ?? "";
   const isEnglish = section === "english";
   const isCbse = section === "cbse-board";
+  const isLeaf = LEAF_SECTIONS.has(section);
 
   // ── Compute auto slug from selections ──────────────────────────────────────
   const computeSlug = (): string => {
     if (!section) return "";
+
+    if (isLeaf) return section;
 
     if (isEnglish) {
       const parts = [section];
@@ -364,7 +382,7 @@ export function ResourcePageForm({
         />
 
         {/* Step 2 — Class (not for English) */}
-        {section && !isEnglish && (
+        {section && !isEnglish && !isLeaf && (
           <CardPicker
             label="Step 2 — Class"
             options={CLASSES}
@@ -374,7 +392,7 @@ export function ResourcePageForm({
         )}
 
         {/* Step 2 — English category */}
-        {isEnglish && (
+        {isEnglish && !isLeaf && (
           <CardPicker
             label="Step 2 — Category"
             options={ENGLISH_CATEGORIES}
@@ -384,7 +402,7 @@ export function ResourcePageForm({
         )}
 
         {/* Step 3 — Type or Subject (non-English) */}
-        {section && !isEnglish && cls && (
+        {section && !isEnglish && !isLeaf && cls && (
           <CardPicker
             label="Step 3 — Type / Subject"
             options={step3Options}
@@ -394,7 +412,7 @@ export function ResourcePageForm({
         )}
 
         {/* Step 3 — Grammar topics */}
-        {isEnglish && engCategory === "grammar" && (
+        {isEnglish && !isLeaf && engCategory === "grammar" && (
           <CardPicker
             label="Step 3 — Grammar Topic"
             options={GRAMMAR_TOPICS}
@@ -404,14 +422,12 @@ export function ResourcePageForm({
         )}
 
         {/* Step 4 — Chapter / title (leaf level text input) */}
-        {(
-          // non-English: show after type/subject picked
+        {!isLeaf && (
           (!isEnglish && typeOrSubject) ||
-          // English essay/speech: show after category picked
           (isEnglish && engCategory && engCategory !== "grammar") ||
-          // English grammar: show after grammar topic picked
           (isEnglish && engCategory === "grammar" && grammarTopic)
         ) && (
+
           <div className="space-y-1.5">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               Step 4 — Chapter / Title{" "}
