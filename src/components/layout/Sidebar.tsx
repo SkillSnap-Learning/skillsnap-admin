@@ -66,7 +66,7 @@ const navigation = [
     name: "Courses",
     href: "/courses",
     icon: BookOpen,
-    roles: ["superadmin", "admin", "content-writer"],
+    roles: ["superadmin", "admin"],
     permission: "canManageContent",
   },
   {

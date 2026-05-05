@@ -102,7 +102,7 @@ export const useAuthStore = create<AuthState>()(
       canManageContent: () => {
         const { user } = get();
         if (!user) return false;
-        return ["superadmin", "admin", "instructor"].includes(user.role);
+        return ["superadmin", "admin", "instructor", "content-writer"].includes(user.role);
       },
 
       canManageBlog: () => {           // ADD
