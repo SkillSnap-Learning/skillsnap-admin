@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Bold, Italic, UnderlineIcon, Strikethrough,
-  Heading1, Heading2, Heading3,
+  Heading1, Heading2, Heading3, Heading4,
   List, ListOrdered, Quote,
   AlignLeft, AlignCenter, AlignRight,
   Link as LinkIcon, Unlink, ImageIcon,
@@ -244,6 +244,9 @@ export function TipTapEditor({
           <ToolbarButton title="Heading 3" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive("heading", { level: 3 })}>
             <Heading3 className="h-4 w-4" />
           </ToolbarButton>
+          <ToolbarButton title="Heading 4" onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()} active={editor.isActive("heading", { level: 4 })}>
+            <Heading4 className="h-4 w-4" />
+          </ToolbarButton>
 
           <Divider />
 
@@ -384,6 +387,10 @@ export function TipTapEditor({
             [&_.ProseMirror_h3]:font-bold
             [&_.ProseMirror_h3]:text-slate-900
             [&_.ProseMirror_h3]:my-2
+            [&_.ProseMirror_h4]:text-lg
+            [&_.ProseMirror_h4]:font-bold
+            [&_.ProseMirror_h4]:text-slate-900
+            [&_.ProseMirror_h4]:my-2
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-slate-400
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none
