@@ -116,7 +116,7 @@ export function TipTapEditor({
       initializedRef.current = true;
     }
     if (editor.getHTML() !== value) {
-      editor.commands.setContent(value || "");
+      editor.commands.setContent(value || "", { emitUpdate: false });
     }
   }, [value, editor, isHtmlMode]);
 
