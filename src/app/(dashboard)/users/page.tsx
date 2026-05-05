@@ -203,6 +203,7 @@ export default function UsersPage() {
                 <SelectItem value="team-lead">Team Lead</SelectItem>
                 <SelectItem value="sales">Sales</SelectItem>
                 <SelectItem value="support">Support</SelectItem>
+                <SelectItem value="content-writer">content-writer</SelectItem>
               </SelectContent>
             </Select>
 
