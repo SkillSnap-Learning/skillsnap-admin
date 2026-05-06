@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { questionsApi } from "@/lib/api";
-import { Question, QuestionSubject, QuestionClassLevel, DifficultyType, QUESTION_SUBJECTS, QUESTION_CLASS_LEVELS } from "@/types";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { questionsApi, qaSubjectsApi, qaChaptersApi } from "@/lib/api";
+import { Question, QASubject, QAChapter, QAClassLevel, DifficultyType } from "@/types";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
@@ -24,8 +24,9 @@ interface QuestionModalProps {
 }
 
 interface QuestionFormData {
-  subject: QuestionSubject;
-  classLevel: QuestionClassLevel;
+  subject: string;
+  classLevel: QAClassLevel;
+  chapter: string;
   questionText: string;
   options: [string, string, string, string];
   correctAnswer: number;
@@ -54,11 +55,30 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
   const classLevel = watch("classLevel");
   const isActive = watch("isActive");
 
+  const { data: subjects } = useQuery({
+    queryKey: ["qa-subjects"],
+    queryFn: async () => {
+      const res = await qaSubjectsApi.getAll();
+      return res.data.data as QASubject[];
+    },
+  });
+
+  const { data: chapters } = useQuery({
+    queryKey: ["qa-chapters", subject, classLevel],
+    queryFn: async () => {
+      if (!subject || !classLevel) return [];
+      const res = await qaChaptersApi.getAll({ subject, classLevel });
+      return res.data.data as QAChapter[];
+    },
+    enabled: !!subject && !!classLevel,
+  });
+
   useEffect(() => {
     if (question) {
       reset({
-        subject: question.subject,
+        subject: typeof question.subject === "object" ? (question.subject as QASubject)._id : question.subject,
         classLevel: question.classLevel,
+        chapter: typeof question.chapter === "object" ? (question.chapter as QAChapter)._id : question.chapter,
         questionText: question.questionText,
         options: question.options as [string, string, string, string],
         correctAnswer: question.correctAnswer,
@@ -117,14 +137,17 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
               <Label>Subject *</Label>
               <Select
                 value={subject}
-                onValueChange={(val) => setValue("subject", val as QuestionSubject, { shouldValidate: true })}
+                onValueChange={(val) => {
+                  setValue("subject", val, { shouldValidate: true });
+                  setValue("chapter", "");
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  {QUESTION_SUBJECTS.map((s) => (
-                    <SelectItem key={s} value={s}>{s}</SelectItem>
+                  {subjects?.map((s) => (
+                    <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -136,13 +159,16 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
               <Label>Class *</Label>
               <Select
                 value={classLevel}
-                onValueChange={(val) => setValue("classLevel", val as QuestionClassLevel, { shouldValidate: true })}
+                onValueChange={(val) => {
+                  setValue("classLevel", val as QAClassLevel, { shouldValidate: true });
+                  setValue("chapter", "");
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select class" />
                 </SelectTrigger>
                 <SelectContent>
-                  {QUESTION_CLASS_LEVELS.map((c) => (
+                  {['6','7','8','9','10','11','12'].map((c) => (
                     <SelectItem key={c} value={c}>Class {c}</SelectItem>
                   ))}
                 </SelectContent>
@@ -150,6 +176,26 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
               <input type="hidden" {...register("classLevel", { required: "Class is required" })} />
               {errors.classLevel && <p className="text-xs text-red-600">{errors.classLevel.message}</p>}
             </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Chapter *</Label>
+            <Select
+              value={watch("chapter")}
+              onValueChange={(val) => setValue("chapter", val, { shouldValidate: true })}
+              disabled={!subject || !classLevel}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={!subject || !classLevel ? "Select subject & class first" : "Select chapter"} />
+              </SelectTrigger>
+              <SelectContent>
+                {chapters?.map((c) => (
+                  <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <input type="hidden" {...register("chapter", { required: "Chapter is required" })} />
+            {errors.chapter && <p className="text-xs text-red-600">{errors.chapter.message}</p>}
           </div>
 
           {/* Question Text */}

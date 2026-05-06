@@ -301,16 +301,41 @@ export interface Chapter {
   updatedAt: string;
 }
 
-export type QuestionSubject = 'Maths' | 'Science' | 'English' | 'Social Science' | 'Hindi';
-export type QuestionClassLevel = '6' | '7' | '8' | '9' | '10';
+export type QAClassLevel = '6' | '7' | '8' | '9' | '10' | '11' | '12';
 
-export const QUESTION_SUBJECTS: QuestionSubject[] = ['Maths', 'Science', 'English', 'Social Science', 'Hindi'];
-export const QUESTION_CLASS_LEVELS: QuestionClassLevel[] = ['6', '7', '8', '9', '10'];
+export const QUESTION_CLASS_LEVELS: QAClassLevel[] = ['6', '7', '8', '9', '10', '11', '12'];
+
+export interface QASubject {
+  _id: string;
+  name: string;
+  classLevels: QAClassLevel[];
+  icon?: string | null;
+  order: number;
+  isActive: boolean;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface QAChapter {
+  _id: string;
+  name: string;
+  subject: string | QASubject;
+  classLevel: QAClassLevel;
+  order: number;
+  isActive: boolean;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface Question {
   _id: string;
-  subject: QuestionSubject;
-  classLevel: QuestionClassLevel;
+  subject: string | QASubject;
+  classLevel: QAClassLevel;
+  chapter: string | QAChapter;
+  exam: 'CBSE';
+  slug: string;
   questionText: string;
   options: string[];
   correctAnswer: number;

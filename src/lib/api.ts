@@ -221,7 +221,7 @@ export const topicsApi = {
 
 // Questions API (updated)
 export const questionsApi = {
-  getAll: (params?: { subject?: string; classLevel?: string; difficulty?: string; isActive?: boolean }) =>
+  getAll: (params?: { subject?: string; classLevel?: string; chapter?: string; difficulty?: string; isActive?: boolean }) =>
     api.get("/admin/questions", { params }),
 
   getById: (id: string) =>
@@ -633,6 +633,42 @@ export const resourcePagesApi = {
       xhr.send(formData);
     });
   },
+};
+
+// QA Subjects API
+export const qaSubjectsApi = {
+  getAll: (params?: { classLevel?: string; isActive?: string }) =>
+    api.get("/admin/qa-subjects", { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/qa-subjects/${id}`),
+
+  create: (data: { name: string; classLevels: string[]; icon?: string; order?: number; isActive?: boolean }) =>
+    api.post("/admin/qa-subjects", data),
+
+  update: (id: string, data: Partial<{ name: string; classLevels: string[]; icon: string; order: number; isActive: boolean }>) =>
+    api.patch(`/admin/qa-subjects/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/qa-subjects/${id}`),
+};
+
+// QA Chapters API
+export const qaChaptersApi = {
+  getAll: (params?: { subject?: string; classLevel?: string; isActive?: string }) =>
+    api.get("/admin/qa-chapters", { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/qa-chapters/${id}`),
+
+  create: (data: { name: string; subject: string; classLevel: string; order?: number; isActive?: boolean }) =>
+    api.post("/admin/qa-chapters", data),
+
+  update: (id: string, data: Partial<{ name: string; subject: string; classLevel: string; order: number; isActive: boolean }>) =>
+    api.patch(`/admin/qa-chapters/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/qa-chapters/${id}`),
 };
 
 export default api;

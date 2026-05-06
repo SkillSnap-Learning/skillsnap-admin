@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { questionsApi } from "@/lib/api";
-import { Question, QUESTION_SUBJECTS, QUESTION_CLASS_LEVELS } from "@/types";
+import { questionsApi,qaSubjectsApi, qaChaptersApi } from "@/lib/api";
+import { Question, QASubject, QAChapter } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
@@ -22,13 +22,33 @@ export default function QuestionsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
   const [deletingQuestion, setDeletingQuestion] = useState<Question | null>(null);
+  const [filterChapter, setFilterChapter] = useState<string>("");
+
+  const { data: subjects } = useQuery({
+    queryKey: ["qa-subjects"],
+    queryFn: async () => {
+      const res = await qaSubjectsApi.getAll();
+      return res.data.data as QASubject[];
+    },
+  });
+
+  const { data: filterChapters } = useQuery({
+    queryKey: ["qa-chapters", filterSubject, filterClass],
+    queryFn: async () => {
+      if (!filterSubject || !filterClass) return [];
+      const res = await qaChaptersApi.getAll({ subject: filterSubject, classLevel: filterClass });
+      return res.data.data as QAChapter[];
+    },
+    enabled: !!filterSubject && !!filterClass,
+  });
 
   const { data, isLoading } = useQuery({
-    queryKey: ["questions", filterSubject, filterClass],
+    queryKey: ["questions", filterSubject, filterClass, filterChapter],
     queryFn: async () => {
       const res = await questionsApi.getAll({
         ...(filterSubject && { subject: filterSubject }),
         ...(filterClass && { classLevel: filterClass }),
+        ...(filterChapter && { chapter: filterChapter }),
       });
       return res.data.data as Question[];
     },
@@ -71,45 +91,69 @@ export default function QuestionsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <Select
-        value={filterSubject || "all"}
-        onValueChange={(val) => {
+          value={filterSubject || "all"}
+          onValueChange={(val) => {
             setFilterSubject(val === "all" ? "" : val);
             setFilterClass("");
-        }}
+            setFilterChapter("");
+          }}
         >
-        <SelectTrigger className="w-48">
+          <SelectTrigger className="w-48">
             <SelectValue placeholder="All Subjects" />
-        </SelectTrigger>
-        <SelectContent>
+          </SelectTrigger>
+          <SelectContent>
             <SelectItem value="all">All Subjects</SelectItem>
-            {QUESTION_SUBJECTS.map((s) => (
-            <SelectItem key={s} value={s}>{s}</SelectItem>
+            {subjects?.map((s) => (
+              <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
             ))}
-        </SelectContent>
+          </SelectContent>
         </Select>
 
         <Select
-        value={filterClass || "all"}
-        onValueChange={(val) => setFilterClass(val === "all" ? "" : val)}
-        disabled={!filterSubject}
+          value={filterClass || "all"}
+          onValueChange={(val) => {
+            setFilterClass(val === "all" ? "" : val);
+            setFilterChapter("");
+          }}
+          disabled={!filterSubject}
         >
-        <SelectTrigger className="w-36">
+          <SelectTrigger className="w-36">
             <SelectValue placeholder="All Classes" />
-        </SelectTrigger>
-        <SelectContent>
+          </SelectTrigger>
+          <SelectContent>
             <SelectItem value="all">All Classes</SelectItem>
-            {QUESTION_CLASS_LEVELS.map((c) => (
-            <SelectItem key={c} value={c}>Class {c}</SelectItem>
+            {['6','7','8','9','10','11','12'].map((c) => (
+              <SelectItem key={c} value={c}>Class {c}</SelectItem>
             ))}
-        </SelectContent>
+          </SelectContent>
         </Select>
 
-        {(filterSubject || filterClass) && (
+        <Select
+          value={filterChapter || "all"}
+          onValueChange={(val) => setFilterChapter(val === "all" ? "" : val)}
+          disabled={!filterSubject || !filterClass}
+        >
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="All Chapters" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Chapters</SelectItem>
+            {filterChapters?.map((c) => (
+              <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {(filterSubject || filterClass || filterChapter) && (
           <Button
             variant="ghost"
-            onClick={() => { setFilterSubject(""); setFilterClass(""); }}
+            onClick={() => {
+              setFilterSubject("");
+              setFilterClass("");
+              setFilterChapter("");
+            }}
           >
             Clear filters
           </Button>

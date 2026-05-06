@@ -1,6 +1,6 @@
 "use client";
 
-import { Question } from "@/types";
+import { Question, QASubject, QAChapter } from "@/types";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -51,6 +51,7 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
             <TableHead>Question</TableHead>
             <TableHead>Subject</TableHead>
             <TableHead>Class</TableHead>
+            <TableHead>Chapter</TableHead>
             <TableHead>Options</TableHead>
             <TableHead>Answer</TableHead>
             <TableHead>Difficulty</TableHead>
@@ -70,8 +71,15 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
                   </p>
                 )}
               </TableCell>
-              <TableCell className="text-sm">{question.subject}</TableCell>
-              <TableCell className="text-sm">Class {question.classLevel}</TableCell>
+              <TableCell className="text-sm">
+                {typeof question.subject === "object" ? (question.subject as QASubject).name : question.subject}
+              </TableCell>
+              <TableCell>
+                <Badge className="bg-blue-100 text-blue-700">Class {question.classLevel}</Badge>
+              </TableCell>
+              <TableCell className="text-sm">
+                {typeof question.chapter === "object" ? (question.chapter as QAChapter).name : "—"}
+              </TableCell>
               <TableCell>
                 <div className="space-y-1">
                   {question.options.map((option, i) => (
