@@ -81,28 +81,36 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
                 {typeof question.chapter === "object" ? (question.chapter as QAChapter).name : "—"}
               </TableCell>
               <TableCell>
-                <div className="space-y-1">
-                  {question.options.map((option, i) => (
-                    <div
-                      key={i}
-                      className={`text-xs flex items-center gap-1.5 ${
-                        i === question.correctAnswer ? "text-green-700 font-medium" : "text-slate-500"
-                      }`}
-                    >
-                      <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
-                        i === question.correctAnswer ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"
-                      }`}>
-                        {OPTION_LABELS[i]}
-                      </span>
-                      <span className="line-clamp-1">{option}</span>
-                    </div>
-                  ))}
-                </div>
+                {question.options && question.options.length > 0 ? (
+                  <div className="space-y-1">
+                    {question.options.map((option, i) => (
+                      <div
+                        key={i}
+                        className={`text-xs flex items-center gap-1.5 ${
+                          i === question.correctAnswer ? "text-green-700 font-medium" : "text-slate-500"
+                        }`}
+                      >
+                        <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
+                          i === question.correctAnswer ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"
+                        }`}>
+                          {OPTION_LABELS[i]}
+                        </span>
+                        <span className="line-clamp-1">{option}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-xs text-purple-600 font-medium">Descriptive</span>
+                )}
               </TableCell>
               <TableCell>
-                <Badge className="bg-green-100 text-green-700">
-                  {OPTION_LABELS[question.correctAnswer]}
-                </Badge>
+                {question.questionType === "descriptive" ? (
+                  <span className="text-xs text-slate-400">—</span>
+                ) : (
+                  <Badge className="bg-green-100 text-green-700">
+                    {OPTION_LABELS[question.correctAnswer]}
+                  </Badge>
+                )}
               </TableCell>
               <TableCell>
                 <Badge className={difficultyColors[question.difficulty] || difficultyColors.medium}>

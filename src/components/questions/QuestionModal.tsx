@@ -27,6 +27,7 @@ interface QuestionFormData {
   subject: string;
   classLevel: QAClassLevel;
   chapter: string;
+  questionType: 'mcq' | 'descriptive';
   questionText: string;
   options: [string, string, string, string];
   correctAnswer: number;
@@ -54,6 +55,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
   const subject = watch("subject");
   const classLevel = watch("classLevel");
   const isActive = watch("isActive");
+  const questionType = watch("questionType");
 
   const { data: subjects } = useQuery({
     queryKey: ["qa-subjects"],
@@ -79,6 +81,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
         subject: typeof question.subject === "object" ? (question.subject as QASubject)._id : question.subject,
         classLevel: question.classLevel,
         chapter: typeof question.chapter === "object" ? (question.chapter as QAChapter)._id : question.chapter,
+        questionType: question.questionType || "mcq",
         questionText: question.questionText,
         options: question.options as [string, string, string, string],
         correctAnswer: question.correctAnswer,
@@ -90,6 +93,8 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
       reset({
         subject: undefined,
         classLevel: undefined,
+        chapter: undefined,
+        questionType: "mcq",
         questionText: "",
         options: ["", "", "", ""],
         correctAnswer: 0,
@@ -116,10 +121,16 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
   });
 
   const onSubmit = (data: QuestionFormData) => {
-    mutation.mutate({
-      ...data,
-      correctAnswer: Number(data.correctAnswer),
-    });
+    const payload: Partial<QuestionFormData> = { ...data };
+
+    if (data.questionType === "descriptive") {
+      delete payload.options;
+      delete payload.correctAnswer;
+    } else {
+      payload.correctAnswer = Number(data.correctAnswer);
+    }
+
+    mutation.mutate(payload as QuestionFormData);
   };
 
   return (
@@ -198,6 +209,36 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
             {errors.chapter && <p className="text-xs text-red-600">{errors.chapter.message}</p>}
           </div>
 
+          {/* Question Type */}
+          <div className="space-y-1.5">
+            <Label>Question Type</Label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setValue("questionType", "mcq")}
+                className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                  questionType === "mcq" || !questionType
+                    ? "bg-[#1A3A8F] text-white border-[#1A3A8F]"
+                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                MCQ
+              </button>
+              <button
+                type="button"
+                onClick={() => setValue("questionType", "descriptive")}
+                className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                  questionType === "descriptive"
+                    ? "bg-[#1A3A8F] text-white border-[#1A3A8F]"
+                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                Descriptive
+              </button>
+            </div>
+            <input type="hidden" {...register("questionType")} />
+          </div>
+
           {/* Question Text */}
           <div className="space-y-1.5">
             <Label>Question *</Label>
@@ -209,32 +250,34 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
             {errors.questionText && <p className="text-xs text-red-600">{errors.questionText.message}</p>}
           </div>
 
-          {/* Options */}
-          <div className="space-y-2">
-            <Label>Options * — click the letter to mark correct answer</Label>
-            {OPTION_LABELS.map((label, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setValue("correctAnswer", i)}
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 transition-colors ${
-                    Number(correctAnswer) === i
-                      ? "bg-green-600 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                  }`}
-                >
-                  {label}
-                </button>
-                <Input
-                  {...register(`options.${i}` as `options.${0 | 1 | 2 | 3}`, {
-                    required: `Option ${label} is required`,
-                  })}
-                  placeholder={`Option ${label}`}
-                />
-              </div>
-            ))}
-            {errors.options && <p className="text-xs text-red-600">All 4 options are required</p>}
-          </div>
+          {/* Options — MCQ only */}
+          {(questionType === "mcq" || !questionType) && (
+            <div className="space-y-2">
+              <Label>Options * — click the letter to mark correct answer</Label>
+              {OPTION_LABELS.map((label, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setValue("correctAnswer", i)}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 transition-colors ${
+                      Number(correctAnswer) === i
+                        ? "bg-green-600 text-white"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                  <Input
+                    {...register(`options.${i}` as `options.${0 | 1 | 2 | 3}`, {
+                      required: questionType === "mcq" ? `Option ${label} is required` : false,
+                    })}
+                    placeholder={`Option ${label}`}
+                  />
+                </div>
+              ))}
+              {errors.options && <p className="text-xs text-red-600">All 4 options are required</p>}
+            </div>
+          )}
 
           {/* Difficulty + Active */}
           <div className="grid grid-cols-2 gap-4">
@@ -268,14 +311,28 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
             </div>
           </div>
 
-          {/* Explanation */}
+          {/* Explanation / Answer */}
           <div className="space-y-1.5">
-            <Label>Explanation <span className="text-slate-400 text-xs">(optional)</span></Label>
+            <Label>
+              {questionType === "descriptive" ? "Answer / Description *" : "Explanation"}
+              {questionType !== "descriptive" && (
+                <span className="text-slate-400 text-xs ml-1">(optional)</span>
+              )}
+            </Label>
             <Textarea
-              {...register("explanation")}
-              placeholder="Why is this the correct answer?"
-              rows={2}
+              {...register("explanation", {
+                required: questionType === "descriptive" ? "Answer is required for descriptive questions" : false,
+              })}
+              placeholder={
+                questionType === "descriptive"
+                  ? "Write the full answer or description here..."
+                  : "Why is this the correct answer?"
+              }
+              rows={questionType === "descriptive" ? 6 : 2}
             />
+            {errors.explanation && (
+              <p className="text-xs text-red-600">{errors.explanation.message}</p>
+            )}
           </div>
 
           <div className="flex gap-3 justify-end pt-2">

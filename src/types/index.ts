@@ -336,6 +336,7 @@ export interface Question {
   chapter: string | QAChapter;
   exam: 'CBSE';
   slug: string;
+  questionType: 'mcq' | 'descriptive';  // ADD
   questionText: string;
   options: string[];
   correctAnswer: number;
