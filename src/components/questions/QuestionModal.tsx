@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { questionsApi, qaSubjectsApi, qaChaptersApi } from "@/lib/api";
@@ -34,12 +34,14 @@ interface QuestionFormData {
   explanation?: string;
   difficulty: DifficultyType;
   isActive: boolean;
+  force?: boolean;
 }
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
 
 export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
   const queryClient = useQueryClient();
+  const [duplicateWarning, setDuplicateWarning] = useState<{ existingQuestion: string; pendingData: QuestionFormData } | null>(null);
 
   const {
     register,
@@ -113,9 +115,17 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["questions"] });
       toast.success(question ? "Question updated" : "Question created");
+      setDuplicateWarning(null);
       onClose();
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
+      if (error.response?.data?.code === 'DUPLICATE_QUESTION') {
+        setDuplicateWarning({
+          existingQuestion: error.response.data.existingQuestion,
+          pendingData: error.config ? JSON.parse(error.config.data) : {},
+        });
+        return;
+      }
       toast.error(error.message);
     },
   });
@@ -343,6 +353,31 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
           </div>
         </form>
       </DialogContent>
+      {duplicateWarning && (
+        <Dialog open={!!duplicateWarning} onOpenChange={() => setDuplicateWarning(null)}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Similar Question Exists</DialogTitle>
+            </DialogHeader>
+            <p className="text-sm text-slate-600">A question with similar text already exists:</p>
+            <p className="text-sm font-medium text-slate-800 bg-slate-50 rounded-lg p-3 border">
+              {duplicateWarning.existingQuestion}
+            </p>
+            <p className="text-sm text-slate-500">Do you still want to save this question?</p>
+            <div className="flex gap-3 justify-end pt-2">
+              <Button variant="outline" onClick={() => setDuplicateWarning(null)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => mutation.mutate({ ...duplicateWarning.pendingData, force: true })}
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? "Saving..." : "Save Anyway"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </Dialog>
   );
 }

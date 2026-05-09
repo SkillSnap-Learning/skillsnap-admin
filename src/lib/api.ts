@@ -38,6 +38,9 @@ api.interceptors.response.use(
         }
       }
     }
+    if (error.response?.data?.code === 'DUPLICATE_QUESTION') {
+      return Promise.reject(error);
+    }
     const message = error.response?.data?.message || error.message || "Something went wrong";
     return Promise.reject(new Error(message));
   }
