@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Copy, Check } from "lucide-react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface QuestionsTableProps {
@@ -23,6 +24,37 @@ const difficultyColors: Record<string, string> = {
 };
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
+
+function CopySlugButton({ slug }: { slug?: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (!slug) return;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    await navigator.clipboard.writeText(`${siteUrl}/question-answer/${slug}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={handleCopy}
+      title={slug ? `Copy: ${slug}` : "No slug"}
+      disabled={!slug}
+      className={`transition-all duration-200 ${
+        copied ? "text-green-600 bg-green-50 hover:bg-green-50 hover:text-green-600" : ""
+      }`}
+    >
+      {copied ? (
+        <Check className="h-4 w-4 text-green-600" />
+      ) : (
+        <Copy className="h-4 w-4" />
+      )}
+    </Button>
+  );
+}
 
 export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: QuestionsTableProps) {
   if (isLoading) {
@@ -124,6 +156,7 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
+                  <CopySlugButton slug={question.slug} />
                   <Button variant="ghost" size="sm" onClick={() => onEdit(question)}>
                     <Pencil className="h-4 w-4" />
                   </Button>
