@@ -28,7 +28,7 @@ api.interceptors.request.use(
 // Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ message?: string }>) => {
+  (error: AxiosError<{ message?: string; code?: string }>) => {
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
