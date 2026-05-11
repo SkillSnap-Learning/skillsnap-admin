@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -227,6 +227,10 @@ export function ResourcePageForm({
   const isCbse = section === "cbse-board";
   const isLeaf = LEAF_SECTIONS.has(section);
 
+  const DRAFT_KEY = `resource-draft-${page?._id ?? "new"}`;
+  const isDirtyRef = useRef(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // ── Compute auto slug from selections ──────────────────────────────────────
   const computeSlug = (): string => {
     if (!section) return "";
@@ -267,6 +271,84 @@ export function ResourcePageForm({
 
   const autoSlug = computeSlug();
   const finalSlug = slugEdited ? slugOverride : autoSlug;
+
+  const saveDraft = useCallback(() => {
+  const draft = {
+      section, cls, typeOrSubject, engCategory, grammarTopic,
+      chapterInput, title, content, metaTitle, metaDescription,
+      isPublished, faqsTitle, faqs, slugOverride, slugEdited,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  }, [section, cls, typeOrSubject, engCategory, grammarTopic, chapterInput, title, content, metaTitle, metaDescription, isPublished, faqsTitle, faqs, slugOverride, slugEdited, DRAFT_KEY]);
+
+  useEffect(() => {
+    if (!isDirtyRef.current) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      saveDraft();
+    }, 2000);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [section, cls, typeOrSubject, engCategory, grammarTopic, chapterInput, title, content, metaTitle, metaDescription, isPublished, faqsTitle, faqs, slugOverride, saveDraft]);
+
+  // Restore draft on mount (only for new pages)
+  useEffect(() => {
+    if (page) return;
+    const saved = localStorage.getItem(DRAFT_KEY);
+    if (!saved) return;
+    try {
+      const draft = JSON.parse(saved);
+      setSection(draft.section ?? "");
+      setCls(draft.cls ?? "");
+      setTypeOrSubject(draft.typeOrSubject ?? "");
+      setEngCategory(draft.engCategory ?? "");
+      setGrammarTopic(draft.grammarTopic ?? "");
+      setChapterInput(draft.chapterInput ?? "");
+      setTitle(draft.title ?? "");
+      setContent(draft.content ?? "");
+      setMetaTitle(draft.metaTitle ?? "");
+      setMetaDescription(draft.metaDescription ?? "");
+      setIsPublished(draft.isPublished ?? false);
+      setFaqsTitle(draft.faqsTitle ?? "Frequently Asked Questions");
+      setFaqs(draft.faqs ?? []);
+      setSlugOverride(draft.slugOverride ?? "");
+      setSlugEdited(draft.slugEdited ?? false);
+      toast.info(`Draft restored from ${new Date(draft.savedAt).toLocaleTimeString()}`, {
+        action: {
+          label: "Discard",
+          onClick: () => localStorage.removeItem(DRAFT_KEY),
+        },
+      });
+    } catch {}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-save every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isDirtyRef.current) saveDraft();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [saveDraft]);
+
+  // Mark dirty on any change
+  useEffect(() => {
+    isDirtyRef.current = true;
+  }, [section, cls, typeOrSubject, engCategory, grammarTopic, chapterInput, title, content, metaTitle, metaDescription, isPublished, faqsTitle, faqs, slugOverride]);
+
+  // beforeunload warning
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (isDirtyRef.current) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
 
   // Sync slug override when auto changes (unless manually edited)
   useEffect(() => {
@@ -347,16 +429,15 @@ export function ResourcePageForm({
     if (!title) { toast.error("Title is required"); return; }
     if (!finalSlug) { toast.error("Please select a section first"); return; }
 
+    // Clear dirty BEFORE submit
+    isDirtyRef.current = false;
+    localStorage.removeItem(DRAFT_KEY);
+
     await onSubmit({
       slug: finalSlug,
       section: SECTION_ENUM_MAP[section] ?? section,
-      title,
-      content,
-      metaTitle,
-      metaDescription,
-      isPublished,
-      faqsTitle,
-      faqs,
+      title, content, metaTitle, metaDescription,
+      isPublished, faqsTitle, faqs,
     });
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -75,8 +75,88 @@ export function BlogForm({
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const coverRef = useRef<HTMLInputElement>(null);
+  const DRAFT_KEY = `blog-draft-${blog?._id ?? "new"}`;
+  const isDirtyRef = useRef(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const blogId = blog?._id ?? "";
+
+  // Save draft to localStorage
+  const saveDraft = useCallback(() => {
+    const draft = {
+      title, slug, excerpt, category, tagsInput, readTime,
+      content, isPublished, faqs, faqsTitle, metaTitle, metaDescription,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  }, [title, slug, excerpt, category, tagsInput, readTime, content, isPublished, faqs, faqsTitle, metaTitle, metaDescription, DRAFT_KEY]);
+
+  useEffect(() => {
+    if (!isDirtyRef.current) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      saveDraft();
+    }, 2000); // 2 seconds after last change
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [title, slug, excerpt, category, tagsInput, readTime, content, isPublished, faqs, faqsTitle, metaTitle, metaDescription, saveDraft])
+
+  // Restore draft on mount (only for new blogs)
+  useEffect(() => {
+    if (blog) return; // don't restore draft when editing existing blog
+    const saved = localStorage.getItem(DRAFT_KEY);
+    if (!saved) return;
+    try {
+      const draft = JSON.parse(saved);
+      setTitle(draft.title ?? "");
+      setSlug(draft.slug ?? "");
+      setExcerpt(draft.excerpt ?? "");
+      setCategory(draft.category ?? "");
+      setTagsInput(draft.tagsInput ?? "");
+      setReadTime(draft.readTime ?? "");
+      setContent(draft.content ?? "");
+      setIsPublished(draft.isPublished ?? false);
+      setFaqs(draft.faqs ?? [{ question: "", answer: "" }]);
+      setFaqsTitle(draft.faqsTitle ?? "");
+      setMetaTitle(draft.metaTitle ?? "");
+      setMetaDescription(draft.metaDescription ?? "");
+      toast.info(`Draft restored from ${new Date(draft.savedAt).toLocaleTimeString()}`, {
+        action: {
+          label: "Discard",
+          onClick: () => localStorage.removeItem(DRAFT_KEY),
+        },
+      });
+    } catch {}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-save every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isDirtyRef.current) {
+        saveDraft();
+      }
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [saveDraft]);
+
+  // Mark dirty on any change
+  useEffect(() => {
+    isDirtyRef.current = true;
+  }, [title, slug, excerpt, category, tagsInput, readTime, content, isPublished, faqs, faqsTitle, metaTitle, metaDescription]);
+
+  // beforeunload warning
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (isDirtyRef.current) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
 
   useEffect(() => {
     if (blog) {
@@ -151,28 +231,17 @@ export function BlogForm({
       toast.error("Title, slug, excerpt and category are required");
       return;
     }
-    const tags = tagsInput
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-
+    const tags = tagsInput.split(",").map((t) => t.trim()).filter(Boolean);
     const cleanFaqs = faqs.filter((f) => f.question && f.answer);
 
+    // Clear dirty BEFORE submit so navigation after success doesn't trigger beforeunload
+    isDirtyRef.current = false;
+    localStorage.removeItem(DRAFT_KEY);
+
     await onSubmit({
-      title,
-      slug,
-      excerpt,
-      category,
-      coverImage,
-      tags,
-      readTime: readTime || undefined,
-      content,
-      relatedPosts,
-      isPublished,
-      faqs: cleanFaqs,
-      faqsTitle,
-      metaTitle,
-      metaDescription,
+      title, slug, excerpt, category, coverImage, tags,
+      readTime: readTime || undefined, content, relatedPosts,
+      isPublished, faqs: cleanFaqs, faqsTitle, metaTitle, metaDescription,
     });
   };
 
