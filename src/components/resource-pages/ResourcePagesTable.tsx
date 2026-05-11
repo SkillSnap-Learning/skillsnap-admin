@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
+import { TextTooltip } from "../ui/text-tooltip";
 
 interface ResourcePage {
   _id: string;
@@ -77,7 +78,9 @@ export function ResourcePagesTable({
           {pages.map((page) => (
             <TableRow key={page._id}>
               <TableCell className="max-w-[240px]">
-                <p className="font-medium text-slate-900 truncate">{page.title}</p>
+                <TextTooltip text={page.title}>
+                  <p className="font-medium text-slate-900 truncate">{page.title}</p>
+                </TextTooltip>
               </TableCell>
               <TableCell>
                 <span
@@ -89,7 +92,9 @@ export function ResourcePagesTable({
                 </span>
               </TableCell>
               <TableCell className="max-w-[240px]">
-                <p className="text-xs text-slate-500 font-mono truncate">/{page.slug}</p>
+                <TextTooltip text={`/${page.slug}`}>
+                  <p className="text-xs text-slate-500 font-mono truncate">/{page.slug}</p>
+                </TextTooltip>
               </TableCell>
               <TableCell>
                 <span

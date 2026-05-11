@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Pencil, Trash2, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TextTooltip } from "@/components/ui/text-tooltip";
 
 interface QuestionsTableProps {
   questions: Question[];
@@ -96,11 +97,15 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
             <TableRow key={question._id}>
               <TableCell className="text-slate-500 text-sm">{index + 1}</TableCell>
               <TableCell className="max-w-xs">
-                <p className="font-medium text-sm line-clamp-2">{question.questionText}</p>
+                <TextTooltip text={question.questionText}>
+                  <p className="font-medium text-sm line-clamp-2">{question.questionText}</p>
+                </TextTooltip>
                 {question.explanation && (
-                  <p className="text-xs text-slate-400 mt-1 line-clamp-1">
-                    Explanation: {question.explanation}
-                  </p>
+                  <TextTooltip text={question.explanation}>
+                    <p className="text-xs text-slate-400 mt-1 line-clamp-1">
+                      Explanation: {question.explanation}
+                    </p>
+                  </TextTooltip>
                 )}
               </TableCell>
               <TableCell className="text-sm">

@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Pencil, Trash2 } from "lucide-react";
 import { Blog } from "@/types";
 import { formatDate } from "@/lib/utils";
+import { TextTooltip } from "../ui/text-tooltip";
 
 interface BlogsTableProps {
   blogs: Blog[];
@@ -64,9 +65,15 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
             <TableRow key={blog._id}>
               {/* Title + Excerpt */}
               <TableCell className="max-w-[260px]">
-                <p className="font-medium text-slate-900 truncate">{blog.title}</p>
-                <p className="text-xs text-slate-400 truncate mt-0.5">{blog.excerpt}</p>
-                <p className="text-xs text-slate-400 mt-0.5">/{blog.slug}</p>
+                <TextTooltip text={blog.title}>
+                  <p className="font-medium text-slate-900 truncate">{blog.title}</p>
+                </TextTooltip>
+                <TextTooltip text={blog.excerpt}>
+                  <p className="text-xs text-slate-400 truncate mt-0.5">{blog.excerpt}</p>
+                </TextTooltip>
+                <TextTooltip text={`/${blog.slug}`}>
+                  <p className="text-xs text-slate-400 mt-0.5">/{blog.slug}</p>
+                </TextTooltip>
               </TableCell>
 
               {/* Category */}
