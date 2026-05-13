@@ -319,6 +319,9 @@ export function TipTapEditor({
               <Unlink className="h-4 w-4" />
             </ToolbarButton>
           )}
+          <ToolbarButton title="Insert Image" onClick={() => fileRef.current?.click()}>
+            <ImageIcon className="h-4 w-4" />
+          </ToolbarButton>
           <input
             ref={fileRef}
             type="file"
