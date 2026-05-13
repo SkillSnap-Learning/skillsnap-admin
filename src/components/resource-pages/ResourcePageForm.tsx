@@ -53,6 +53,7 @@ const ENGLISH_CATEGORIES = [
   { label: "Essay",   value: "essay"   },
   { label: "Speech",  value: "speech"  },
   { label: "Grammar", value: "grammar" },
+  { label: "Vocabulary", value: "vocabulary" },
 ];
 
 const GRAMMAR_TOPICS = [
