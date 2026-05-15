@@ -15,7 +15,6 @@ import { TipTapEditor } from "@/components/shared/TipTapEditor";
 const SECTIONS = [
   { label: "CBSE Board",      value: "cbse-board"      },
   { label: "NCERT Solutions", value: "ncert-solutions"  },
-  { label: "Academics", value: "academics"  },
   { label: "MCQs",            value: "mcqs"             },
   { label: "Worksheet",       value: "worksheet"        },
   { label: "English",         value: "english"          },
@@ -70,7 +69,6 @@ const GRAMMAR_TOPICS = [
 const SECTION_ENUM_MAP: Record<string, string> = {
   "cbse-board":      "cbse",
   "ncert-solutions": "ncert",
-  "academics":       "academics",
   "mcqs":            "mcqs",
   "worksheet":       "worksheet",
   "english":         "english",
@@ -86,7 +84,6 @@ const SECTION_ENUM_MAP: Record<string, string> = {
 const SECTION_SLUG_MAP: Record<string, string> = {
   "cbse":      "cbse-board",
   "ncert":     "ncert-solutions",
-  "academics": "academics",
   "mcqs":      "mcqs",
   "worksheet": "worksheet",
   "english":   "english",
