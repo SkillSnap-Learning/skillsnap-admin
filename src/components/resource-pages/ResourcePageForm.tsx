@@ -57,6 +57,7 @@ const ENGLISH_CATEGORIES = [
   { label: "Speech",  value: "speech"  },
   { label: "Grammar", value: "grammar" },
   { label: "Vocabulary", value: "vocabulary" },
+  { label: "Quotes", value: "quotes" },
 ];
 
 const GRAMMAR_TOPICS = [
