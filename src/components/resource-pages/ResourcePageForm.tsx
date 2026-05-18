@@ -106,6 +106,7 @@ export interface ResourcePageFormData {
   metaTitle: string;
   metaDescription: string;
   isPublished: boolean;
+  isPublic: boolean;
   faqsTitle: string;
   faqs: { question: string; answer: string }[];
 }
@@ -119,6 +120,7 @@ interface ResourcePage {
   metaTitle: string;
   metaDescription: string;
   isPublished: boolean;
+  isPublic: boolean;
   faqsTitle: string;
   faqs: { question: string; answer: string }[];
 }
@@ -238,6 +240,8 @@ export function ResourcePageForm({
   const DRAFT_KEY = `resource-draft-${page?._id ?? "new"}`;
   const isDirtyRef = useRef(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [isPublic, setIsPublic] = useState(true);
 
   // ── Compute auto slug from selections ──────────────────────────────────────
   const computeSlug = (): string => {
@@ -376,6 +380,7 @@ export function ResourcePageForm({
     setSlugEdited(true); // treat existing slug as manual
     setFaqsTitle(page.faqsTitle ?? "Frequently Asked Questions");
     setFaqs(page.faqs ?? []);
+    setIsPublic(page.isPublic ?? true);
 
     // Reverse-parse slug into step selections
     const parts = page.slug.split("/");
@@ -445,7 +450,7 @@ export function ResourcePageForm({
       slug: finalSlug,
       section: SECTION_ENUM_MAP[section] ?? section,
       title, content, metaTitle, metaDescription,
-      isPublished, faqsTitle, faqs,
+      isPublished, isPublic, faqsTitle, faqs,
     });
   };
 
@@ -736,6 +741,18 @@ export function ResourcePageForm({
             Publish immediately
           </span>
         </label>
+        <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+              className="accent-blue-950 w-4 h-4"
+            />
+            <span className="text-sm font-medium text-slate-700">
+              Show as public page{" "}
+              <span className="text-xs font-normal text-slate-400">(uncheck for internal/home-info pages)</span>
+            </span>
+          </label>
         <div className="flex gap-3">
           <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
             Cancel
