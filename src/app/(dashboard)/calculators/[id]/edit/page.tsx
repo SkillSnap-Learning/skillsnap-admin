@@ -22,7 +22,7 @@ export default function EditCalculatorPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: CalculatorFormData) => calculatorsApi.update(id, data),
+    mutationFn: (data: CalculatorFormData) => calculatorsApi.update(id, data as any),
     onSuccess: () => {
       toast.success("Calculator updated successfully");
       router.push("/calculators");

@@ -13,7 +13,7 @@ export default function NewCalculatorPage() {
   const router = useRouter();
 
   const createMutation = useMutation({
-    mutationFn: (data: CalculatorFormData) => calculatorsApi.create(data),
+    mutationFn: (data: CalculatorFormData) => calculatorsApi.create(data as any),
     onSuccess: (res) => {
       toast.success("Calculator created successfully");
       router.push(`/calculators/${res.data.data._id}/edit`);
