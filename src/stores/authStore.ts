@@ -23,6 +23,7 @@ interface AuthState {
   canDeleteLeads: () => boolean;
   canManageContent: () => boolean; // Add this
   canManageBlog: () => boolean;
+  canManageCalculator: () => boolean;
   canViewSalesFeedback: () => boolean;
   canManageOtherFeedback: () => boolean;
   isSales: () => boolean;
@@ -106,6 +107,11 @@ export const useAuthStore = create<AuthState>()(
       },
 
       canManageBlog: () => {           // ADD
+        const { user } = get();
+        if (!user) return false;
+        return ["superadmin", "admin", "content-writer"].includes(user.role);
+      },
+      canManageCalculator: () => {
         const { user } = get();
         if (!user) return false;
         return ["superadmin", "admin", "content-writer"].includes(user.role);

@@ -1,4 +1,4 @@
-import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News, Course } from "@/types";
+import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News, Course, Calculator } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -672,6 +672,24 @@ export const qaChaptersApi = {
 
   delete: (id: string) =>
     api.delete(`/admin/qa-chapters/${id}`),
+};
+
+// Calculators API
+export const calculatorsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get('/admin/calculators', { params }),
+
+  getById: (id: string) =>
+    api.get(`/admin/calculators/id/${id}`),
+
+  create: (data: Partial<Calculator>) =>
+    api.post('/admin/calculators', data),
+
+  update: (id: string, data: Partial<Calculator>) =>
+    api.patch(`/admin/calculators/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/calculators/${id}`),
 };
 
 export default api;
