@@ -1,4 +1,4 @@
-import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News, Course, Calculator } from "@/types";
+import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News, Course, Calculator, FinanceCategory, FinanceBlog } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
@@ -690,6 +690,74 @@ export const calculatorsApi = {
 
   delete: (id: string) =>
     api.delete(`/admin/calculators/${id}`),
+};
+
+// Finance Categories API
+export const financeCategoriesApi = {
+  getAll: (params?: { includeInactive?: boolean }) =>
+    api.get('/finance/categories', { params }),
+
+  create: (data: Partial<FinanceCategory>) =>
+    api.post('/admin/finance/categories', data),
+
+  update: (id: string, data: Partial<FinanceCategory>) =>
+    api.patch(`/admin/finance/categories/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/finance/categories/${id}`),
+};
+
+// Finance Blogs API
+export const financeBlogsApi = {
+  getAll: (params?: Record<string, unknown>) =>
+    api.get('/admin/finance/blogs', { params }),
+
+  getById: (id: string) =>
+    api.get(`/finance/blogs/id/${id}`),
+
+  getPublished: () =>
+    api.get('/finance/blogs', { params: { limit: 100 } }),
+
+  create: (data: Partial<FinanceBlog>) =>
+    api.post('/admin/finance/blogs', data),
+
+  update: (id: string, data: Partial<FinanceBlog>) =>
+    api.patch(`/admin/finance/blogs/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/finance/blogs/${id}`),
+
+  uploadImage: (file: File, blogId: string, onProgress?: (pct: number) => void) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('blogId', blogId);
+
+    return new Promise<{ imageUrl: string }>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/blog-image`);
+
+      const token = localStorage.getItem('token');
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+        };
+      }
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const res = JSON.parse(xhr.responseText);
+          resolve({ imageUrl: res.data.imageUrl });
+        } else {
+          reject(new Error(JSON.parse(xhr.responseText)?.message || 'Upload failed'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error'));
+      xhr.send(formData);
+    });
+  },
 };
 
 export default api;

@@ -127,7 +127,20 @@ const FINANCE_NAV: NavItem[] = [
     roles: ["superadmin", "admin", "content-writer"],
     permission: "canManageBlog",
   },
-  // Future: Finance Blogs, Finance Articles etc.
+  {
+    name: "Finance Categories",
+    href: "/finance-categories",
+    icon: Tag,
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageBlog",
+  },
+  {
+    name: "Finance Blogs",
+    href: "/finance-blogs",
+    icon: Newspaper,
+    roles: ["superadmin", "admin", "content-writer"],
+    permission: "canManageBlog",
+  },
 ];
 
 // ── Product type ──────────────────────────────────────────────────────
@@ -141,7 +154,7 @@ export function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Detect active product from pathname
-  const FINANCE_PATHS = ["/calculators"];
+  const FINANCE_PATHS = ["/calculators", "/finance-categories", "/finance-blogs"];
   const isFinancePath = FINANCE_PATHS.some(p => pathname.startsWith(p));
   const [product, setProduct] = useState<Product>(isFinancePath ? "finance" : "learning");
 

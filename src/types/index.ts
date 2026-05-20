@@ -522,3 +522,39 @@ export interface Calculator {
   createdAt: string;
   updatedAt: string;
 }
+
+// Finance types
+export interface FinanceCategory {
+  _id: string;
+  name: string;
+  slug: string;
+  description: string;
+  order: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FinanceBlog {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: FinanceCategory | string;
+  coverImage: string | null;
+  tags: string[];
+  readTime: string | null;
+  content: string;
+  relatedPosts: FinanceBlog[] | string[];
+  relatedCalculators: { label: string; href: string }[];
+  disclaimer: boolean;
+  faqs: { question: string; answer: string }[];
+  faqsTitle: string;
+  metaTitle: string;
+  metaDescription: string;
+  isPublished: boolean;
+  publishedAt: string | null;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
