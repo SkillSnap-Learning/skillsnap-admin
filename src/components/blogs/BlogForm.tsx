@@ -232,7 +232,9 @@ export function BlogForm({
       return;
     }
     const tags = tagsInput.split(",").map((t) => t.trim()).filter(Boolean);
-    const cleanFaqs = faqs.filter((f) => f.question && f.answer);
+    const cleanFaqs = faqs.filter(
+      (f) => f.question.trim() && f.answer.replace(/<[^>]*>/g, "").trim()
+    );
 
     // Clear dirty BEFORE submit so navigation after success doesn't trigger beforeunload
     isDirtyRef.current = false;
@@ -450,8 +452,16 @@ export function BlogForm({
             <div className="space-y-2">
               <Input value={faq.question} onChange={(e) => updateFaq(i, "question", e.target.value)}
                 placeholder="Question" className="bg-white" />
-              <Textarea value={faq.answer} onChange={(e) => updateFaq(i, "answer", e.target.value)}
-                placeholder="Answer" rows={2} className="bg-white text-sm" />
+              <div className="bg-white rounded-lg">
+                <TipTapEditor
+                  value={faq.answer}
+                  onChange={(htmlValue) => updateFaq(i, "answer", htmlValue)}
+                  onImageUpload={handleEditorImageUpload}
+                  minHeight="120px"
+                  maxHeight="320px"
+                  placeholder="Answer"
+                />
+              </div>
             </div>
           </div>
         ))}
