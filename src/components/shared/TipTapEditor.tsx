@@ -1,6 +1,7 @@
 "use client";
 
 import { useEditor, EditorContent } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
@@ -25,6 +26,9 @@ import {
   Undo, Redo, Minus,
   Highlighter, Superscript as SuperscriptIcon,
   Subscript as SubscriptIcon, Code, CodeSquare,
+  Table as TableIcon, Trash2, Columns3, Rows3,
+  ArrowLeftToLine, ArrowRightToLine, ArrowUpToLine, ArrowDownToLine,
+  Merge, Split, Heading as HeadingIcon, Pilcrow,
 } from "lucide-react";
 import CodeMirror from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
@@ -35,6 +39,9 @@ interface TipTapEditorProps {
   onChange: (html: string) => void;
   onImageUpload: (file: File) => Promise<string>;
   disabled?: boolean;
+  minHeight?: string;
+  maxHeight?: string;
+  placeholder?: string;
 }
 
 export function TipTapEditor({
@@ -42,6 +49,9 @@ export function TipTapEditor({
   onChange,
   onImageUpload,
   disabled = false,
+  minHeight = "500px",
+  maxHeight = "700px",
+  placeholder = "Start writing your content...",
 }: TipTapEditorProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [isHtmlMode, setIsHtmlMode] = useState(false);
@@ -56,7 +66,7 @@ export function TipTapEditor({
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Link.configure({ openOnClick: false }),
       Image.configure({ inline: false, allowBase64: false }),
-      Placeholder.configure({ placeholder: "Start writing your content..." }),
+      Placeholder.configure({ placeholder }),
       Highlight.configure({ multicolor: false }),
       Superscript,
       Subscript,
@@ -197,6 +207,73 @@ export function TipTapEditor({
 
   return (
     <>
+      {!isHtmlMode && (
+        <BubbleMenu
+          editor={editor}
+          shouldShow={({ editor }) => editor.isActive("table")}
+          options={{ placement: "top" }}
+          className="flex flex-wrap items-center gap-0.5 p-1 rounded-lg border border-slate-200 bg-white shadow-md"
+        >
+          {/* Columns */}
+          <ToolbarButton title="Add Column Before" onClick={() => editor.chain().focus().addColumnBefore().run()}>
+            <ArrowLeftToLine className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton title="Add Column After" onClick={() => editor.chain().focus().addColumnAfter().run()}>
+            <ArrowRightToLine className="h-4 w-4" />
+          </ToolbarButton>
+          <button
+            type="button"
+            title="Delete Column"
+            onClick={() => editor.chain().focus().deleteColumn().run()}
+            className="p-1.5 rounded text-rose-600 hover:bg-rose-50 transition-colors"
+          >
+            <Columns3 className="h-4 w-4" />
+          </button>
+
+          <Divider />
+
+          {/* Rows */}
+          <ToolbarButton title="Add Row Before" onClick={() => editor.chain().focus().addRowBefore().run()}>
+            <ArrowUpToLine className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton title="Add Row After" onClick={() => editor.chain().focus().addRowAfter().run()}>
+            <ArrowDownToLine className="h-4 w-4" />
+          </ToolbarButton>
+          <button
+            type="button"
+            title="Delete Row"
+            onClick={() => editor.chain().focus().deleteRow().run()}
+            className="p-1.5 rounded text-rose-600 hover:bg-rose-50 transition-colors"
+          >
+            <Rows3 className="h-4 w-4" />
+          </button>
+
+          <Divider />
+
+          {/* Cells */}
+          <ToolbarButton title="Merge Cells" onClick={() => editor.chain().focus().mergeCells().run()}>
+            <Merge className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton title="Split Cell" onClick={() => editor.chain().focus().splitCell().run()}>
+            <Split className="h-4 w-4" />
+          </ToolbarButton>
+          <ToolbarButton title="Toggle Header Row" onClick={() => editor.chain().focus().toggleHeaderRow().run()}>
+            <HeadingIcon className="h-4 w-4" />
+          </ToolbarButton>
+
+          <Divider />
+
+          {/* Delete table */}
+          <button
+            type="button"
+            title="Delete Table"
+            onClick={() => editor.chain().focus().deleteTable().run()}
+            className="p-1.5 rounded text-rose-600 hover:bg-rose-50 transition-colors"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </BubbleMenu>
+      )}
       <style>{`
       .column-resize-handle {
         position: absolute;
@@ -234,7 +311,10 @@ export function TipTapEditor({
 
           <Divider />
 
-          {/* Headings */}
+          {/* Paragraph + Headings */}
+          <ToolbarButton title="Paragraph" onClick={() => editor.chain().focus().setParagraph().run()} active={editor.isActive("paragraph")}>
+            <Pilcrow className="h-4 w-4" />
+          </ToolbarButton>
           <ToolbarButton title="Heading 1" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })}>
             <Heading1 className="h-4 w-4" />
           </ToolbarButton>
@@ -336,6 +416,19 @@ export function TipTapEditor({
 
           <Divider />
 
+          {/* Table */}
+          <ToolbarButton
+            title="Insert Table"
+            onClick={() =>
+              editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+            }
+            active={editor.isActive("table")}
+          >
+            <TableIcon className="h-4 w-4" />
+          </ToolbarButton>
+
+          <Divider />
+
           {/* HTML Source toggle */}
           <ToolbarButton
             title={isHtmlMode ? "Switch to Visual Editor" : "Edit HTML Source"}
@@ -358,7 +451,7 @@ export function TipTapEditor({
         {isHtmlMode ? (
           <CodeMirror
             value={rawHtmlRef.current}
-            height="500px"
+            height={minHeight}
             extensions={[html()]}
             theme={oneDark}
             onChange={(val) => {
@@ -376,7 +469,8 @@ export function TipTapEditor({
         ) : (
         <EditorContent
           editor={editor}
-          className="prose prose-sm max-w-none p-4 min-h-[500px] max-h-[700px] overflow-y-auto focus-within:outline-none text-slate-800
+          style={{ minHeight, maxHeight }}
+          className="prose prose-sm max-w-none p-4 overflow-y-auto focus-within:outline-none text-slate-800
             [&_.ProseMirror]:outline-none
             [&_.ProseMirror_h1]:text-3xl
             [&_.ProseMirror_h1]:font-bold
