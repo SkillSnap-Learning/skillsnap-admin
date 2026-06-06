@@ -55,8 +55,9 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
             <TableHead>Status</TableHead>
             <TableHead>Tags</TableHead>
             <TableHead>Read Time</TableHead>
-            <TableHead>Published At</TableHead>
             <TableHead>Created</TableHead>
+            <TableHead>Updated</TableHead>
+            <TableHead>Published At</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -122,14 +123,19 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
                 {blog.readTime ?? "—"}
               </TableCell>
 
-              {/* Published At */}
-              <TableCell className="text-sm text-slate-600">
-                {blog.publishedAt ? formatDate(blog.publishedAt) : "—"}
-              </TableCell>
-
               {/* Created At */}
               <TableCell className="text-sm text-slate-600">
                 {blog.createdAt ? formatDate(blog.createdAt) : "—"}
+              </TableCell>
+
+              {/* Updated At */}
+              <TableCell className="text-sm text-slate-600">
+                {blog.updatedAt ? formatDate(blog.updatedAt) : "—"}
+              </TableCell>
+
+              {/* Published At */}
+              <TableCell className="text-sm text-slate-600">
+                {blog.publishedAt ? formatDate(blog.publishedAt) : "—"}
               </TableCell>
 
               {/* Actions */}

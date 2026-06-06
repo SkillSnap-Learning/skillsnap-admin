@@ -432,6 +432,41 @@ export const blogsApi = {
       xhr.send(formData);
     });
   },
+
+  uploadPdf: (file: File, blogId: string, onProgress?: (pct: number) => void) => {
+    const formData = new FormData();
+    formData.append("pdf", file);
+    formData.append("blogId", blogId);
+
+    return new Promise<{ pdfUrl: string }>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${process.env.NEXT_PUBLIC_API_URL}/admin/content/upload/blog-pdf`);
+
+      const token = localStorage.getItem("token");
+      if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            onProgress(Math.round((e.loaded / e.total) * 100));
+          }
+        };
+      }
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const res = JSON.parse(xhr.responseText);
+          resolve({ pdfUrl: res.data.pdfUrl });
+        } else {
+          const msg = JSON.parse(xhr.responseText)?.message || "Upload failed";
+          reject(new Error(msg));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error("Network error during upload"));
+      xhr.send(formData);
+    });
+  },
 };
 
 // News API

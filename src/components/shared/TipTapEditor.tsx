@@ -15,6 +15,7 @@ import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
+import { Pdf } from "./extensions/PdfExtension";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,7 @@ import {
   Table as TableIcon, Trash2, Columns3, Rows3,
   ArrowLeftToLine, ArrowRightToLine, ArrowUpToLine, ArrowDownToLine,
   Merge, Split, Heading as HeadingIcon, Pilcrow,
+  FileText,
 } from "lucide-react";
 import CodeMirror from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
@@ -38,6 +40,7 @@ interface TipTapEditorProps {
   value: string;
   onChange: (html: string) => void;
   onImageUpload: (file: File) => Promise<string>;
+  onPdfUpload?: (file: File) => Promise<string>;
   disabled?: boolean;
   minHeight?: string;
   maxHeight?: string;
@@ -48,12 +51,14 @@ export function TipTapEditor({
   value,
   onChange,
   onImageUpload,
+  onPdfUpload,
   disabled = false,
   minHeight = "500px",
   maxHeight = "700px",
   placeholder = "Start writing your content...",
 }: TipTapEditorProps) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const pdfRef = useRef<HTMLInputElement>(null);
   const [isHtmlMode, setIsHtmlMode] = useState(false);
   const rawHtmlRef = useRef<string>(value);
   const initializedRef = useRef(false);
@@ -74,6 +79,7 @@ export function TipTapEditor({
       TableRow,
       TableHeader,
       TableCell,
+      Pdf,
     ],
     editorProps: {
       transformPastedHTML(html) {
@@ -138,6 +144,16 @@ export function TipTapEditor({
       editor.chain().focus().setImage({ src: url }).run();
     } catch (e) {
       console.error("Image upload failed", e);
+    }
+  };
+
+  const handlePdfInsert = async (file: File) => {
+    if (!onPdfUpload) return;
+    try {
+      const url = await onPdfUpload(file);
+      editor.chain().focus().setPdf({ src: url, title: file.name }).run();
+    } catch (e) {
+      console.error("PDF upload failed", e);
     }
   };
 
@@ -413,6 +429,24 @@ export function TipTapEditor({
               e.target.value = "";
             }}
           />
+          {onPdfUpload && (
+            <>
+              <ToolbarButton title="Insert PDF" onClick={() => pdfRef.current?.click()}>
+                <FileText className="h-4 w-4" />
+              </ToolbarButton>
+              <input
+                ref={pdfRef}
+                type="file"
+                accept=".pdf,application/pdf"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handlePdfInsert(file);
+                  e.target.value = "";
+                }}
+              />
+            </>
+          )}
 
           <Divider />
 
@@ -497,6 +531,11 @@ export function TipTapEditor({
             [&_.ProseMirror_a]:cursor-pointer
             [&_.ProseMirror_img]:rounded-lg
             [&_.ProseMirror_img]:max-w-full
+            [&_.ProseMirror_iframe]:w-full
+            [&_.ProseMirror_iframe]:rounded-lg
+            [&_.ProseMirror_iframe]:border
+            [&_.ProseMirror_iframe]:border-slate-200
+            [&_.ProseMirror_iframe]:my-3
             [&_.ProseMirror_blockquote]:border-l-4
             [&_.ProseMirror_blockquote]:border-slate-300
             [&_.ProseMirror_blockquote]:pl-4
