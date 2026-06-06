@@ -215,6 +215,15 @@ export function BlogForm({
     return result.imageUrl;
   };
 
+  const handleEditorPdfUpload = async (file: File): Promise<string> => {
+    if (!blogId) {
+      toast.error("Save the blog first before uploading a PDF");
+      throw new Error("No blogId");
+    }
+    const result = await blogsApi.uploadPdf(file, blogId);
+    return result.pdfUrl;
+  };
+
   const toggleRelated = (id: string) => {
     setRelatedPosts((prev) =>
       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
@@ -386,6 +395,7 @@ export function BlogForm({
           value={content}
           onChange={setContent}
           onImageUpload={handleEditorImageUpload}
+          onPdfUpload={handleEditorPdfUpload}
         />
       </div>
 
@@ -457,6 +467,7 @@ export function BlogForm({
                   value={faq.answer}
                   onChange={(htmlValue) => updateFaq(i, "answer", htmlValue)}
                   onImageUpload={handleEditorImageUpload}
+                  onPdfUpload={handleEditorPdfUpload}
                   minHeight="120px"
                   maxHeight="320px"
                   placeholder="Answer"
