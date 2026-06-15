@@ -42,6 +42,7 @@ const CBSE_TYPES = [
   { label: "Assignments",     value: "assignments"     },
   { label: "Sample Papers",   value: "sample-papers"   },
   { label: "Previous Papers", value: "previous-papers" },
+  { label: "Syllabus",        value: "syllabus"        },
 ];
 
 const SUBJECTS = [
