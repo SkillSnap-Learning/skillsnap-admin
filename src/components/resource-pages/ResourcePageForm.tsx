@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { resourcePagesApi } from "@/lib/api";
 import { toast } from "sonner";
-import { Loader2, ChevronRight } from "lucide-react";
+import { Loader2, ChevronRight, Plus, Trash2 } from "lucide-react";
 import { TipTapEditor } from "@/components/shared/TipTapEditor";
 
 // ── Static data ─────────────────────────────────────────────────────────────
@@ -644,89 +644,82 @@ export function ResourcePageForm({
       </div>
 
       {/* ── FAQs ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
-            FAQs
-          </h2>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              setFaqs((prev) => [...prev, { question: "", answer: "" }])
-            }
-          >
-            + Add FAQ
-          </Button>
-        </div>
+      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+          FAQs
+        </h2>
 
         <div className="space-y-1.5">
-          <Label>Section Title</Label>
+          <Label>Section Heading</Label>
           <Input
             value={faqsTitle}
             onChange={(e) => setFaqsTitle(e.target.value)}
             placeholder="Frequently Asked Questions"
+            className="bg-white"
           />
+          <p className="text-xs text-slate-400">
+            Leave empty to use default: "Frequently Asked Questions"
+          </p>
         </div>
 
         {faqs.length === 0 && (
           <p className="text-xs text-slate-400">
-            No FAQs yet. Click "+ Add FAQ" to add one.
+            No FAQs yet. Click "Add FAQ" to add one.
           </p>
         )}
 
         {faqs.map((faq, index) => (
-          <div
-            key={index}
-            className="border border-slate-200 rounded-lg p-4 space-y-3"
-          >
+          <div key={index} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">
-                FAQ #{index + 1}
-              </span>
-              <button
+              <span className="text-xs font-semibold text-slate-500">FAQ {index + 1}</span>
+              <Button
                 type="button"
-                onClick={() =>
-                  setFaqs((prev) => prev.filter((_, i) => i !== index))
-                }
-                className="text-xs text-red-500 hover:text-red-700"
+                variant="ghost"
+                size="sm"
+                onClick={() => setFaqs((prev) => prev.filter((_, i) => i !== index))}
+                className="text-red-500 hover:text-red-700 hover:bg-red-50"
               >
-                Remove
-              </button>
+                <Trash2 className="h-3 w-3" />
+              </Button>
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Question</Label>
+            <div className="space-y-2">
               <Input
                 value={faq.question}
                 onChange={(e) =>
                   setFaqs((prev) =>
-                    prev.map((f, i) =>
-                      i === index ? { ...f, question: e.target.value } : f
-                    )
+                    prev.map((f, i) => (i === index ? { ...f, question: e.target.value } : f))
                   )
                 }
-                placeholder="e.g. What is photosynthesis?"
+                placeholder="Question"
+                className="bg-white"
               />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Answer</Label>
-              <Textarea
-                value={faq.answer}
-                onChange={(e) =>
-                  setFaqs((prev) =>
-                    prev.map((f, i) =>
-                      i === index ? { ...f, answer: e.target.value } : f
+              <div className="bg-white rounded-lg">
+                <TipTapEditor
+                  value={faq.answer}
+                  onChange={(htmlValue) =>
+                    setFaqs((prev) =>
+                      prev.map((f, i) => (i === index ? { ...f, answer: htmlValue } : f))
                     )
-                  )
-                }
-                placeholder="Answer..."
-                rows={3}
-                className="text-sm"
-              />
+                  }
+                  onImageUpload={handleEditorImageUpload}
+                  minHeight="120px"
+                  maxHeight="320px"
+                  placeholder="Answer"
+                />
+              </div>
             </div>
           </div>
         ))}
+
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setFaqs((prev) => [...prev, { question: "", answer: "" }])}
+          className="text-xs"
+        >
+          <Plus className="h-3 w-3 mr-1" /> Add FAQ
+        </Button>
       </div>
 
       {/* ── Publish + Actions ── */}
