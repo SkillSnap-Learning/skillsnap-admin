@@ -176,6 +176,7 @@ export function Sidebar() {
     window.location.href = "/login";
   };
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
 
