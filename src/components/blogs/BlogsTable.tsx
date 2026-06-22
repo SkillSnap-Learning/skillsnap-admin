@@ -89,7 +89,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
           {blogs.map((blog) => (
             <TableRow key={blog._id}>
               {/* Title + Excerpt */}
-              <TableCell className="max-w-[260px] overflow-hidden">
+              <TableCell className="max-w-[340px] overflow-hidden">
                 <TextTooltip text={blog.title}>
                   <p className="font-medium text-foreground truncate">{blog.title}</p>
                 </TextTooltip>
