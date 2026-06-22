@@ -185,7 +185,7 @@ function SidebarPanel({
             <div className="w-8 h-8 bg-blue-950 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">S</span>
             </div>
-            <span className="font-semibold text-blue-950">SkillSnap</span>
+            <span className="font-semibold text-blue-950 dark:text-foreground">SkillSnap</span>
           </Link>
         )}
         <Button
@@ -306,8 +306,8 @@ function SidebarPanel({
       <div className="border-t p-3 flex-shrink-0">
         {!collapsed && user && (
           <div className="px-3 py-2 mb-2">
-            <p className="text-sm font-medium text-slate-900 truncate">{user.name}</p>
-            <p className="text-xs text-slate-500 capitalize">{user.role.replace("-", " ")}</p>
+            <p className="text-sm font-medium text-foreground truncate">{user.name}</p>
+            <p className="text-xs text-muted-foreground capitalize">{user.role?.replace("-", " ")}</p>
           </div>
         )}
         <Button

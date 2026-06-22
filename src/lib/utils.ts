@@ -36,7 +36,8 @@ export function formatRelativeTime(date: string | Date): string {
   return formatDate(date);
 }
 
-export function getInitials(name: string): string {
+export function getInitials(name: string | undefined | null): string {
+  if (!name) return "?";
   return name
     .split(" ")
     .map((n) => n[0])

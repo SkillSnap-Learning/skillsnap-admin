@@ -46,7 +46,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
   return (
     <div className="bg-card rounded-xl border">
       <div className="p-4 border-b flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-blue-950">Recent Leads</h2>
+        <h2 className="text-lg font-semibold text-foreground">Recent Leads</h2>
         <Link href="/leads">
           <Button variant="ghost" size="sm" className="text-blue-600">
             View All
@@ -87,7 +87,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
                   <td className="px-4 py-3">
                     <Link
                       href={`/leads/${lead.id || lead._id}`}
-                      className="font-medium text-blue-950 hover:text-blue-600"
+                      className="font-medium text-foreground hover:text-blue-600 dark:hover:text-blue-400"
                     >
                       {lead.name}
                     </Link>

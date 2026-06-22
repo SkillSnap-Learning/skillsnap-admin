@@ -121,7 +121,7 @@ export function LeadsTable({
                 <td className="px-4 py-3">
                   <Link
                     href={`/leads/${lead.id || lead._id}`}
-                    className="font-medium text-blue-950 hover:text-blue-600"
+                    className="font-medium text-foreground hover:text-blue-600 dark:hover:text-blue-400"
                   >
                     {lead.name}
                   </Link>

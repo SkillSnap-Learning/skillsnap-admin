@@ -136,15 +136,15 @@ export default function DashboardPage() {
           </div>
 
           {/* Recent Replies */}
-          <div className="bg-white rounded-xl border p-6">
-            <h2 className="text-sm font-semibold text-blue-950 mb-4">
+          <div className="bg-card rounded-xl border p-6">
+            <h2 className="text-sm font-semibold text-foreground mb-4">
               Recent Replies from Admin
             </h2>
 
             {salesLoading ? (
               <div className="space-y-3">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-16 bg-slate-100 rounded-lg animate-pulse" />
+                  <div key={i} className="h-16 bg-muted rounded-lg animate-pulse" />
                 ))}
               </div>
             ) : salesStats?.recentReplies?.length === 0 ? (
@@ -154,10 +154,10 @@ export default function DashboardPage() {
                 {salesStats?.recentReplies?.map((item: OtherFeedback) => (
                   <div
                     key={item.id}
-                    className="flex flex-col gap-1 p-4 rounded-lg bg-slate-50 border"
+                    className="flex flex-col gap-1 p-4 rounded-lg bg-muted/50 border"
                   >
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-slate-700 line-clamp-1">
+                      <p className="text-sm font-medium text-foreground line-clamp-1">
                         {item.message}
                       </p>
                       <Badge className="bg-green-100 text-green-700 text-xs shrink-0 ml-2">

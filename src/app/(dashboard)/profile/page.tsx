@@ -144,7 +144,7 @@ export default function ProfilePage() {
                     {isLoading
                       ? <Skeleton className="h-4 w-28" />
                       : <Badge className="bg-blue-950 text-white capitalize mt-1">
-                          {user?.role.replace(/-/g, " ")}
+                          {user?.role?.replace(/-/g, " ")}
                         </Badge>}
                   </div>
                 </div>

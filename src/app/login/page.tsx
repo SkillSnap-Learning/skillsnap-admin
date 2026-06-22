@@ -60,7 +60,7 @@ export default function LoginPage() {
               <span className="text-white font-bold text-xl">S</span>
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-blue-950">
+          <CardTitle className="text-2xl font-bold text-blue-950 dark:text-foreground">
             SkillSnap Admin
           </CardTitle>
           <CardDescription>
@@ -71,7 +71,7 @@ export default function LoginPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-slate-700">
+              <label htmlFor="email" className="text-sm font-medium text-foreground">
                 Email
               </label>
               <Input
@@ -87,7 +87,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-slate-700">
+              <label htmlFor="password" className="text-sm font-medium text-foreground">
                 Password
               </label>
               <div className="relative">
