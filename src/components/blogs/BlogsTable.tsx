@@ -74,7 +74,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50">
-            <TableHead>Title</TableHead>
+            <TableHead className="w-[520px]">Title</TableHead>
             <TableHead className="whitespace-nowrap">Category</TableHead>
             <TableHead className="whitespace-nowrap">Status</TableHead>
             <TableHead className="whitespace-nowrap">Tags</TableHead>
@@ -89,7 +89,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
           {blogs.map((blog) => (
             <TableRow key={blog._id}>
               {/* Title + Excerpt */}
-              <TableCell className="max-w-[440px] overflow-hidden">
+              <TableCell className="w-[520px] max-w-[520px] overflow-hidden">
                 <TextTooltip text={blog.title}>
                   <p className="font-medium text-foreground truncate">{blog.title}</p>
                 </TextTooltip>
