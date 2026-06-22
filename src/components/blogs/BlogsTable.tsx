@@ -10,10 +10,34 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Copy, Check } from "lucide-react";
 import { Blog } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { TextTooltip } from "../ui/text-tooltip";
+import { useState } from "react";
+
+function SlugCell({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(`/${slug}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className="mt-1 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-muted hover:bg-muted/80 transition-colors cursor-pointer max-w-fit"
+      title="Copy slug"
+    >
+      <span className="text-xs text-muted-foreground font-mono truncate">/{slug}</span>
+      {copied
+        ? <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
+        : <Copy className="h-3 w-3 text-muted-foreground/60 flex-shrink-0" />}
+    </button>
+  );
+}
 
 interface BlogsTableProps {
   blogs: Blog[];
@@ -50,14 +74,14 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50">
-            <TableHead>Title</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Tags</TableHead>
-            <TableHead>Read Time</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead>Updated</TableHead>
-            <TableHead>Published At</TableHead>
+            <TableHead className="w-[520px]">Title</TableHead>
+            <TableHead className="whitespace-nowrap">Category</TableHead>
+            <TableHead className="whitespace-nowrap">Status</TableHead>
+            <TableHead className="whitespace-nowrap">Tags</TableHead>
+            <TableHead className="whitespace-nowrap">Read Time</TableHead>
+            <TableHead className="whitespace-nowrap">Created</TableHead>
+            <TableHead className="whitespace-nowrap">Updated</TableHead>
+            <TableHead className="whitespace-nowrap">Published At</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -65,20 +89,18 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
           {blogs.map((blog) => (
             <TableRow key={blog._id}>
               {/* Title + Excerpt */}
-              <TableCell className="max-w-[260px]">
+              <TableCell className="w-[520px] max-w-[520px] overflow-hidden">
                 <TextTooltip text={blog.title}>
                   <p className="font-medium text-foreground truncate">{blog.title}</p>
                 </TextTooltip>
                 <TextTooltip text={blog.excerpt}>
                   <p className="text-xs text-muted-foreground/60 truncate mt-0.5">{blog.excerpt}</p>
                 </TextTooltip>
-                <TextTooltip text={`/${blog.slug}`}>
-                  <p className="text-xs text-muted-foreground/60 mt-0.5">/{blog.slug}</p>
-                </TextTooltip>
+                <SlugCell slug={blog.slug} />
               </TableCell>
 
               {/* Category */}
-              <TableCell>
+              <TableCell className="whitespace-nowrap">
                 <span
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[typeof blog.category === "object" ? blog.category.slug : String(blog.category)] ?? "bg-muted text-foreground"}`}
                 >
@@ -87,7 +109,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
               </TableCell>
 
               {/* Published Status */}
-              <TableCell>
+              <TableCell className="whitespace-nowrap">
                 <span
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     blog.isPublished
