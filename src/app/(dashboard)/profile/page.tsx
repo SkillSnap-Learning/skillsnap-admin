@@ -11,6 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 import {
   Eye, EyeOff, Loader2, Pencil, X, Check,
@@ -36,7 +45,6 @@ const PERMISSION_LABELS: Record<string, string> = {
 export default function ProfilePage() {
   const { user: storeUser, updateUser } = useAuthStore();
 
-  // fetch fresh profile
   const { data: profile, isLoading } = useQuery({
     queryKey: ["me"],
     queryFn: async () => {
@@ -98,7 +106,12 @@ export default function ProfilePage() {
     if (validatePw()) changePasswordMutation.mutate();
   };
 
-  // ── Render ─────────────────────────────────────────────────────────
+  const pwFields = [
+    { key: "current" as const, label: "Current Password" },
+    { key: "next" as const, label: "New Password" },
+    { key: "confirm" as const, label: "Confirm New Password" },
+  ];
+
   return (
     <div>
       <Header title="Profile" description="Manage your account details and security" />
@@ -106,201 +119,216 @@ export default function ProfilePage() {
       <div className="p-6 max-w-5xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* ── Left column ── */}
-        <div className="lg:col-span-2 space-y-6">
+          {/* ── Left column ── */}
+          <div className="lg:col-span-2 space-y-6">
 
-        {/* Identity card */}
-        <div className="bg-white rounded-xl border p-6">
-          <div className="flex items-start gap-5">
-            {/* Avatar */}
-            <div className="w-16 h-16 bg-blue-950 rounded-xl flex items-center justify-center shrink-0">
-              <span className="text-white text-2xl font-bold">
-                {user ? getInitials(user.name) : "?"}
-              </span>
-            </div>
+            {/* Identity */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Account Information</CardTitle>
+                <CardDescription>Your personal details on SkillSnap Admin.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
 
-            <div className="flex-1 space-y-4">
-              {/* Name row */}
-              <div className="space-y-1">
-                <Label className="text-xs text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <User className="h-3 w-3" /> Name
-                </Label>
-                {editingName ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      value={nameValue}
-                      onChange={(e) => setNameValue(e.target.value)}
-                      className="h-9 max-w-xs"
-                      autoFocus
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") updateProfileMutation.mutate(nameValue);
-                        if (e.key === "Escape") setEditingName(false);
-                      }}
-                    />
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-9 w-9 text-green-600 hover:text-green-700 hover:bg-green-50"
-                      onClick={() => updateProfileMutation.mutate(nameValue)}
-                      disabled={updateProfileMutation.isPending}
-                    >
-                      {updateProfileMutation.isPending
-                        ? <Loader2 className="h-4 w-4 animate-spin" />
-                        : <Check className="h-4 w-4" />}
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-9 w-9 text-slate-400 hover:text-slate-600"
-                      onClick={() => setEditingName(false)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                {/* Avatar + name */}
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-blue-950 rounded-xl flex items-center justify-center shrink-0">
+                    <span className="text-white text-2xl font-bold">
+                      {user ? getInitials(user.name) : "?"}
+                    </span>
                   </div>
-                ) : (
-                  <div className="flex items-center gap-2">
+                  <div>
                     {isLoading
-                      ? <div className="h-6 w-40 bg-slate-100 rounded animate-pulse" />
-                      : <p className="text-base font-semibold text-slate-900">{user?.name}</p>}
-                    <button
-                      onClick={startEditName}
-                      className="text-slate-400 hover:text-blue-950 transition-colors"
-                      title="Edit name"
-                    >
-                      <Pencil className="h-3.5 w-3.5" />
-                    </button>
+                      ? <Skeleton className="h-6 w-40 mb-1" />
+                      : <p className="text-lg font-semibold">{user?.name}</p>}
+                    {isLoading
+                      ? <Skeleton className="h-4 w-28" />
+                      : <Badge className="bg-blue-950 text-white capitalize mt-1">
+                          {user?.role.replace(/-/g, " ")}
+                        </Badge>}
                   </div>
-                )}
-              </div>
-
-              {/* Email */}
-              <div className="space-y-1">
-                <Label className="text-xs text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Mail className="h-3 w-3" /> Email
-                </Label>
-                {isLoading
-                  ? <div className="h-5 w-56 bg-slate-100 rounded animate-pulse" />
-                  : <p className="text-sm text-slate-700">{user?.email}</p>}
-              </div>
-
-              {/* Role + Team */}
-              <div className="flex flex-wrap gap-6">
-                <div className="space-y-1">
-                  <Label className="text-xs text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <ShieldCheck className="h-3 w-3" /> Role
-                  </Label>
-                  {isLoading
-                    ? <div className="h-5 w-24 bg-slate-100 rounded animate-pulse" />
-                    : <Badge className="bg-blue-950 text-white capitalize">
-                        {user?.role.replace(/-/g, " ")}
-                      </Badge>}
                 </div>
 
-                {user?.team && (
-                  <div className="space-y-1">
-                    <Label className="text-xs text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                      <Building2 className="h-3 w-3" /> Team
+                <Separator />
+
+                {/* Fields */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                  {/* Name */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                      <User className="h-3 w-3" /> Name
                     </Label>
-                    <p className="text-sm text-slate-700">{user.team.name}</p>
+                    {editingName ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          value={nameValue}
+                          onChange={(e) => setNameValue(e.target.value)}
+                          className="h-9"
+                          autoFocus
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") updateProfileMutation.mutate(nameValue);
+                            if (e.key === "Escape") setEditingName(false);
+                          }}
+                        />
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-9 w-9 shrink-0 text-green-600 hover:text-green-700 hover:bg-green-50"
+                          onClick={() => updateProfileMutation.mutate(nameValue)}
+                          disabled={updateProfileMutation.isPending}
+                        >
+                          {updateProfileMutation.isPending
+                            ? <Loader2 className="h-4 w-4 animate-spin" />
+                            : <Check className="h-4 w-4" />}
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-9 w-9 shrink-0"
+                          onClick={() => setEditingName(false)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 h-9">
+                        {isLoading
+                          ? <Skeleton className="h-5 w-36" />
+                          : <span className="text-sm">{user?.name}</span>}
+                        <button
+                          onClick={startEditName}
+                          className="text-muted-foreground hover:text-blue-950 transition-colors"
+                          title="Edit name"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Change password */}
-        <div className="bg-white rounded-xl border p-6">
-          <h2 className="text-sm font-semibold text-blue-950 mb-1 flex items-center gap-2">
-            <Lock className="h-4 w-4" /> Change Password
-          </h2>
-          <p className="text-xs text-slate-400 mb-5">
-            Choose a strong password of at least 6 characters.
-          </p>
-
-          <div className="space-y-4">
-            {(["current", "next", "confirm"] as const).map((field) => {
-              const labels = { current: "Current Password", next: "New Password", confirm: "Confirm New Password" };
-              return (
-                <div key={field} className="space-y-1.5">
-                  <Label className="text-sm">{labels[field]}</Label>
-                  <div className="relative">
-                    <Input
-                      type={showPw[field] ? "text" : "password"}
-                      value={pwForm[field]}
-                      onChange={(e) => {
-                        setPwForm(prev => ({ ...prev, [field]: e.target.value }));
-                        if (pwErrors[field]) setPwErrors(prev => ({ ...prev, [field]: "" }));
-                      }}
-                      placeholder="••••••••"
-                      className="pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPw(prev => ({ ...prev, [field]: !prev[field] }))}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                      tabIndex={-1}
-                    >
-                      {showPw[field] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
+                  {/* Email */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                      <Mail className="h-3 w-3" /> Email
+                    </Label>
+                    <div className="flex items-center h-9">
+                      {isLoading
+                        ? <Skeleton className="h-5 w-48" />
+                        : <span className="text-sm text-muted-foreground">{user?.email}</span>}
+                    </div>
                   </div>
-                  {pwErrors[field] && (
-                    <p className="text-xs text-red-500">{pwErrors[field]}</p>
+
+                  {/* Team */}
+                  {user?.team && (
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                        <Building2 className="h-3 w-3" /> Team
+                      </Label>
+                      <div className="flex items-center h-9">
+                        <span className="text-sm">{user.team.name}</span>
+                      </div>
+                    </div>
                   )}
                 </div>
-              );
-            })}
+              </CardContent>
+            </Card>
 
-            <Button
-              onClick={handleChangePassword}
-              disabled={changePasswordMutation.isPending}
-              className="bg-blue-950 hover:bg-blue-900 w-full"
-            >
-              {changePasswordMutation.isPending && (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              )}
-              Update Password
-            </Button>
-          </div>
-        </div>
-
-        </div>{/* end left column */}
-
-        {/* ── Right column — Permissions ── */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border p-6 sticky top-6">
-            <h2 className="text-sm font-semibold text-blue-950 mb-4 flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4" /> Permissions
-            </h2>
-            {isLoading ? (
-              <div className="space-y-2">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-8 bg-slate-100 rounded animate-pulse" />
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-1.5">
-                {Object.entries(user?.permissions ?? {}).map(([key, granted]) => (
-                  <div
-                    key={key}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium border ${
-                      granted
-                        ? "bg-green-50 border-green-200 text-green-700"
-                        : "bg-slate-50 border-slate-200 text-slate-400"
-                    }`}
-                  >
-                    {granted
-                      ? <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-                      : <ShieldOff className="h-3.5 w-3.5 shrink-0" />}
-                    <span>{PERMISSION_LABELS[key] ?? key}</span>
+            {/* Change password */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" /> Change Password
+                </CardTitle>
+                <CardDescription>
+                  Choose a strong password of at least 6 characters.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {pwFields.map(({ key, label }) => (
+                  <div key={key} className="space-y-1.5">
+                    <Label>{label}</Label>
+                    <div className="relative">
+                      <Input
+                        type={showPw[key] ? "text" : "password"}
+                        value={pwForm[key]}
+                        onChange={(e) => {
+                          setPwForm(prev => ({ ...prev, [key]: e.target.value }));
+                          if (pwErrors[key]) setPwErrors(prev => ({ ...prev, [key]: "" }));
+                        }}
+                        placeholder="••••••••"
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPw(prev => ({ ...prev, [key]: !prev[key] }))}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        tabIndex={-1}
+                      >
+                        {showPw[key] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+                    {pwErrors[key] && (
+                      <p className="text-xs text-destructive">{pwErrors[key]}</p>
+                    )}
                   </div>
                 ))}
-              </div>
-            )}
-          </div>
-        </div>
 
-        </div>{/* end grid */}
+                <Button
+                  onClick={handleChangePassword}
+                  disabled={changePasswordMutation.isPending}
+                  className="w-full bg-blue-950 hover:bg-blue-900"
+                >
+                  {changePasswordMutation.isPending && (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  )}
+                  Update Password
+                </Button>
+              </CardContent>
+            </Card>
+
+          </div>
+
+          {/* ── Right column — Permissions ── */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4" /> Permissions
+                </CardTitle>
+                <CardDescription>Access rights for your role.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isLoading ? (
+                  <div className="space-y-2">
+                    {[...Array(8)].map((_, i) => (
+                      <Skeleton key={i} className="h-8 w-full" />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-1.5">
+                    {Object.entries(user?.permissions ?? {}).map(([key, granted]) => (
+                      <div
+                        key={key}
+                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium border ${
+                          granted
+                            ? "bg-green-50 border-green-200 text-green-700"
+                            : "bg-muted border-border text-muted-foreground"
+                        }`}
+                      >
+                        {granted
+                          ? <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                          : <ShieldOff className="h-3.5 w-3.5 shrink-0" />}
+                        <span>{PERMISSION_LABELS[key] ?? key}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+        </div>
       </div>
     </div>
   );
