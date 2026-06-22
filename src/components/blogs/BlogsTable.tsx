@@ -31,7 +31,7 @@ function SlugCell({ slug }: { slug: string }) {
       className="mt-1 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-muted hover:bg-muted/80 transition-colors cursor-pointer max-w-fit"
       title="Copy slug"
     >
-      <span className="text-xs text-muted-foreground font-mono break-all">/{slug}</span>
+      <span className="text-xs text-muted-foreground font-mono truncate">/{slug}</span>
       {copied
         ? <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
         : <Copy className="h-3 w-3 text-muted-foreground/60 flex-shrink-0" />}
@@ -89,7 +89,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
           {blogs.map((blog) => (
             <TableRow key={blog._id}>
               {/* Title + Excerpt */}
-              <TableCell className="max-w-[260px]">
+              <TableCell className="max-w-[260px] overflow-hidden">
                 <TextTooltip text={blog.title}>
                   <p className="font-medium text-foreground truncate">{blog.title}</p>
                 </TextTooltip>
