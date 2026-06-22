@@ -96,16 +96,9 @@ export default function DashboardPage() {
                       : "Please submit today's feedback"
                   }
                   icon={ClipboardList}
-                  iconColor={
-                    salesStats?.todayFeedbackSubmitted
-                      ? "text-green-600"
-                      : "text-orange-600"
-                  }
-                  iconBg={
-                    salesStats?.todayFeedbackSubmitted
-                      ? "bg-green-100"
-                      : "bg-orange-100"
-                  }
+                  iconColor={salesStats?.todayFeedbackSubmitted ? "text-green-600" : "text-orange-600"}
+                  iconBg={salesStats?.todayFeedbackSubmitted ? "bg-green-500/10" : "bg-orange-500/10"}
+                  accentBorder={salesStats?.todayFeedbackSubmitted ? "border-l-green-500" : "border-l-orange-500"}
                 />
                 <StatsCard
                   title="Total Feedbacks"
@@ -113,15 +106,17 @@ export default function DashboardPage() {
                   subtitle="All time submissions"
                   icon={ClipboardList}
                   iconColor="text-blue-600"
-                  iconBg="bg-blue-100"
+                  iconBg="bg-blue-500/10"
+                  accentBorder="border-l-blue-500"
                 />
                 <StatsCard
                   title="Pending Issues"
                   value={salesStats?.pendingIssues || 0}
                   subtitle="Awaiting reply"
                   icon={AlertCircle}
-                  iconColor="text-yellow-600"
-                  iconBg="bg-yellow-100"
+                  iconColor="text-amber-600"
+                  iconBg="bg-amber-500/10"
+                  accentBorder="border-l-amber-500"
                 />
                 <StatsCard
                   title="Resolved Issues"
@@ -129,7 +124,8 @@ export default function DashboardPage() {
                   subtitle="Replied by admin"
                   icon={CheckCircle2}
                   iconColor="text-green-600"
-                  iconBg="bg-green-100"
+                  iconBg="bg-green-500/10"
+                  accentBorder="border-l-green-500"
                 />
               </>
             )}
@@ -214,15 +210,17 @@ export default function DashboardPage() {
                 subtitle="All time"
                 icon={Users}
                 iconColor="text-blue-600"
-                iconBg="bg-blue-100"
+                iconBg="bg-blue-500/10"
+                accentBorder="border-l-blue-500"
               />
               <StatsCard
                 title="New Leads"
                 value={statsData?.byStatus?.new || 0}
                 subtitle="Pending contact"
                 icon={UserPlus}
-                iconColor="text-yellow-600"
-                iconBg="bg-yellow-100"
+                iconColor="text-amber-600"
+                iconBg="bg-amber-500/10"
+                accentBorder="border-l-amber-500"
               />
               <StatsCard
                 title="Converted"
@@ -230,7 +228,8 @@ export default function DashboardPage() {
                 subtitle={`${statsData?.conversionRate || 0}% conversion`}
                 icon={UserCheck}
                 iconColor="text-green-600"
-                iconBg="bg-green-100"
+                iconBg="bg-green-500/10"
+                accentBorder="border-l-green-500"
               />
               <StatsCard
                 title="Unassigned"
@@ -238,7 +237,8 @@ export default function DashboardPage() {
                 subtitle="Needs assignment"
                 icon={Clock}
                 iconColor="text-orange-600"
-                iconBg="bg-orange-100"
+                iconBg="bg-orange-500/10"
+                accentBorder="border-l-orange-500"
               />
             </>
           )}
@@ -259,7 +259,8 @@ export default function DashboardPage() {
                 subtitle="In progress"
                 icon={TrendingUp}
                 iconColor="text-purple-600"
-                iconBg="bg-purple-100"
+                iconBg="bg-purple-500/10"
+                accentBorder="border-l-purple-500"
               />
               <StatsCard
                 title="Lost"
@@ -267,7 +268,8 @@ export default function DashboardPage() {
                 subtitle="Did not convert"
                 icon={UserX}
                 iconColor="text-red-600"
-                iconBg="bg-red-100"
+                iconBg="bg-red-500/10"
+                accentBorder="border-l-red-500"
               />
               <StatsCard
                 title="Assigned"
@@ -275,7 +277,8 @@ export default function DashboardPage() {
                 subtitle="Being worked on"
                 icon={UserCheck}
                 iconColor="text-teal-600"
-                iconBg="bg-teal-100"
+                iconBg="bg-teal-500/10"
+                accentBorder="border-l-teal-500"
               />
             </>
           )}

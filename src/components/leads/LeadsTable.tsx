@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Eye, UserPlus, MessageSquare } from "lucide-react";
+import { MoreHorizontal, Eye, UserPlus, Copy, Check } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
 
 interface LeadsTableProps {
@@ -25,6 +25,34 @@ interface LeadsTableProps {
   onSelectAll: (selected: boolean) => void;
   onStatusChange: (leadId: string, status: LeadStatus) => void;
   onAssignClick: (lead: Lead) => void;
+}
+
+function PhoneCell({ phone }: { phone: string }) {
+  const [copied, setCopied] = useState(false);
+  const formatted = formatPhone(phone);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(phone);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div className="flex items-center gap-1 mt-0.5 group/phone">
+      <span className="text-xs text-muted-foreground">{formatted}</span>
+      <button
+        onClick={handleCopy}
+        className="opacity-0 group-hover/phone:opacity-100 transition-opacity cursor-pointer"
+        title="Copy phone"
+      >
+        {copied
+          ? <Check className="h-3 w-3 text-green-500" />
+          : <Copy className="h-3 w-3 text-muted-foreground hover:text-foreground" />}
+      </button>
+    </div>
+  );
 }
 
 export function LeadsTable({
@@ -58,8 +86,8 @@ export function LeadsTable({
   if (leads.length === 0) {
     return (
       <div className="bg-card rounded-xl border p-12 text-center">
-        <p className="text-slate-500">No leads found</p>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-muted-foreground">No leads found</p>
+        <p className="text-sm text-muted-foreground/60 mt-1">
           Try adjusting your filters
         </p>
       </div>
@@ -78,36 +106,33 @@ export function LeadsTable({
                   onCheckedChange={onSelectAll}
                 />
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3">
                 Name
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">
-                Contact
-              </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Source
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Board
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3">
                 Status
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden md:table-cell">
                 Assigned To
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Created
               </th>
               <th className="w-12 px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y">
             {leads.map((lead, index) => (
               <tr
                 key={lead.id || lead._id || index}
                 className={`hover:bg-muted/50 transition-colors ${
-                  selectedLeads.includes(lead.id || lead._id) ? "bg-blue-50" : ""
+                  selectedLeads.includes(lead.id || lead._id) ? "bg-blue-50 dark:bg-blue-950/20" : ""
                 }`}
               >
                 <td className="px-4 py-3">
@@ -125,17 +150,7 @@ export function LeadsTable({
                   >
                     {lead.name}
                   </Link>
-                  <p className="text-xs text-slate-400 sm:hidden mt-0.5">
-                    {lead.phone}
-                  </p>
-                </td>
-                <td className="px-4 py-3 hidden sm:table-cell">
-                  <p className="text-sm text-muted-foreground">{formatPhone(lead.phone)}</p>
-                  {lead.email && (
-                    <p className="text-xs text-slate-400 truncate max-w-[200px]">
-                      {lead.email}
-                    </p>
-                  )}
+                  <PhoneCell phone={lead.phone} />
                 </td>
                 <td className="px-4 py-3 hidden lg:table-cell">
                   <span className="text-sm text-muted-foreground capitalize">
@@ -160,30 +175,30 @@ export function LeadsTable({
                       {lead.assignedTo.name}
                     </span>
                   ) : (
-                    <span className="text-sm text-slate-400">Unassigned</span>
+                    <span className="text-sm text-muted-foreground/50">Unassigned</span>
                   )}
                 </td>
                 <td className="px-4 py-3 hidden lg:table-cell">
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-muted-foreground">
                     {formatRelativeTime(lead.createdAt)}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 cursor-pointer">
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/leads/${lead.id || lead._id}`}>
+                        <Link href={`/leads/${lead.id || lead._id}`} className="cursor-pointer">
                           <Eye className="h-4 w-4 mr-2" />
                           View Details
                         </Link>
                       </DropdownMenuItem>
                       {canAssignLeads() && (
-                        <DropdownMenuItem onClick={() => onAssignClick(lead)}>
+                        <DropdownMenuItem onClick={() => onAssignClick(lead)} className="cursor-pointer">
                           <UserPlus className="h-4 w-4 mr-2" />
                           {lead.assignedTo ? "Reassign" : "Assign"}
                         </DropdownMenuItem>
