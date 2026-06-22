@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/authStore";
+import { AuthUser } from "@/types";
 import {
   LayoutDashboard, Users, UserCircle, Building2,
   LogOut, ChevronLeft, Menu, BookOpen, FileText,
@@ -143,41 +144,38 @@ const FINANCE_NAV: NavItem[] = [
   },
 ];
 
-// ── Product type ──────────────────────────────────────────────────────
 type Product = "learning" | "finance";
 
-// ── Main Sidebar ──────────────────────────────────────────────────────
-export function Sidebar() {
-  const pathname = usePathname();
-  const { user, logout, hasRole } = useAuthStore();
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+// ── SidebarPanel ──────────────────────────────────────────────────────
+// Extracted as a proper top-level component so React never remounts it
+// when the parent Sidebar re-renders.
 
-  // Detect active product from pathname
-  const FINANCE_PATHS = ["/calculators", "/finance-categories", "/finance-blogs"];
-  const isFinancePath = FINANCE_PATHS.some(p => pathname.startsWith(p));
-  const [product, setProduct] = useState<Product>(isFinancePath ? "finance" : "learning");
+interface SidebarPanelProps {
+  collapsed: boolean;
+  onCollapsedChange: (v: boolean) => void;
+  mobileOpen: boolean;
+  onMobileClose: () => void;
+  product: Product;
+  onProductChange: (p: Product) => void;
+  activeNav: NavItem[];
+  pathname: string;
+  user: AuthUser | null;
+  onLogout: () => void;
+}
 
-  // Filter nav items by role/permission
-  function filterNav(nav: NavItem[]) {
-    return nav.filter(item => {
-      const hasRequiredRole = item.roles.some(role => hasRole(role as any));
-      if (!hasRequiredRole) return false;
-      if (item.permission === "canManageBlog") return useAuthStore.getState().canManageBlog();
-      if (item.permission === "canManageContent") return useAuthStore.getState().canManageContent();
-      return true;
-    });
-  }
-
-  const activeNav = filterNav(product === "learning" ? LEARNING_NAV : FINANCE_NAV);
-
-  const handleLogout = () => {
-    logout();
-    window.location.href = "/login";
-  };
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const SidebarContent = () => (
+function SidebarPanel({
+  collapsed,
+  onCollapsedChange,
+  mobileOpen,
+  onMobileClose,
+  product,
+  onProductChange,
+  activeNav,
+  pathname,
+  user,
+  onLogout,
+}: SidebarPanelProps) {
+  return (
     <div className="flex flex-col h-full">
 
       {/* Logo + collapse */}
@@ -193,7 +191,7 @@ export function Sidebar() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => onCollapsedChange(!collapsed)}
           className="hidden lg:flex"
         >
           <ChevronLeft className={cn("h-5 w-5 transition-transform", collapsed && "rotate-180")} />
@@ -208,7 +206,7 @@ export function Sidebar() {
           </p>
           <div className="flex rounded-lg border border-slate-200 overflow-hidden bg-slate-50 p-0.5 gap-0.5">
             <button
-              onClick={() => setProduct("learning")}
+              onClick={() => onProductChange("learning")}
               className={cn(
                 "flex-1 text-xs font-semibold py-1.5 px-2 rounded-md transition-all",
                 product === "learning"
@@ -219,7 +217,7 @@ export function Sidebar() {
               Learning
             </button>
             <button
-              onClick={() => setProduct("finance")}
+              onClick={() => onProductChange("finance")}
               className={cn(
                 "flex-1 text-xs font-semibold py-1.5 px-2 rounded-md transition-all",
                 product === "finance"
@@ -237,7 +235,7 @@ export function Sidebar() {
       {collapsed && (
         <div className="px-2 pt-3 pb-1 flex flex-col gap-1 flex-shrink-0">
           <button
-            onClick={() => setProduct("learning")}
+            onClick={() => onProductChange("learning")}
             title="SkillSnap Learning"
             className={cn(
               "w-full flex items-center justify-center py-1.5 rounded-md text-xs font-bold transition-all",
@@ -249,7 +247,7 @@ export function Sidebar() {
             L
           </button>
           <button
-            onClick={() => setProduct("finance")}
+            onClick={() => onProductChange("finance")}
             title="SkillSnap Finance"
             className={cn(
               "w-full flex items-center justify-center py-1.5 rounded-md text-xs font-bold transition-all",
@@ -286,7 +284,7 @@ export function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={onMobileClose}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                 isActive
@@ -313,7 +311,7 @@ export function Sidebar() {
         )}
         <Button
           variant="ghost"
-          onClick={handleLogout}
+          onClick={onLogout}
           className={cn(
             "w-full justify-start text-slate-600 hover:text-red-600 hover:bg-red-50",
             collapsed && "justify-center px-2"
@@ -326,6 +324,53 @@ export function Sidebar() {
 
     </div>
   );
+}
+
+// ── Main Sidebar ──────────────────────────────────────────────────────
+
+interface SidebarProps {
+  collapsed: boolean;
+  onCollapsedChange: (v: boolean) => void;
+}
+
+export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
+  const pathname = usePathname();
+  const { user, logout, hasRole } = useAuthStore();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const FINANCE_PATHS = ["/calculators", "/finance-categories", "/finance-blogs"];
+  const isFinancePath = FINANCE_PATHS.some(p => pathname.startsWith(p));
+  const [product, setProduct] = useState<Product>(isFinancePath ? "finance" : "learning");
+
+  function filterNav(nav: NavItem[]) {
+    return nav.filter(item => {
+      const hasRequiredRole = item.roles.some(role => hasRole(role as any));
+      if (!hasRequiredRole) return false;
+      if (item.permission === "canManageBlog") return useAuthStore.getState().canManageBlog();
+      if (item.permission === "canManageContent") return useAuthStore.getState().canManageContent();
+      return true;
+    });
+  }
+
+  const activeNav = filterNav(product === "learning" ? LEARNING_NAV : FINANCE_NAV);
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/login";
+  };
+
+  const panelProps: SidebarPanelProps = {
+    collapsed,
+    onCollapsedChange,
+    mobileOpen,
+    onMobileClose: () => setMobileOpen(false),
+    product,
+    onProductChange: setProduct,
+    activeNav,
+    pathname,
+    user,
+    onLogout: handleLogout,
+  };
 
   return (
     <>
@@ -352,7 +397,7 @@ export function Sidebar() {
         "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r transform transition-transform lg:hidden",
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <SidebarContent />
+        <SidebarPanel {...panelProps} />
       </aside>
 
       {/* Desktop sidebar */}
@@ -360,7 +405,7 @@ export function Sidebar() {
         "hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 bg-white border-r transition-all duration-300",
         collapsed ? "lg:w-16" : "lg:w-64"
       )}>
-        <SidebarContent />
+        <SidebarPanel {...panelProps} />
       </aside>
     </>
   );
