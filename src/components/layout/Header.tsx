@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { LogOut, User, KeyRound } from "lucide-react";
+import Link from "next/link";
 
 interface HeaderProps {
   title: string;
@@ -82,9 +83,11 @@ export function Header({ title, description }: HeaderProps) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
-            Profile
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <Link href="/profile">
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem 
             onClick={() => setChangePasswordOpen(true)}

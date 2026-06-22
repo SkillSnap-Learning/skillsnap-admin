@@ -64,6 +64,10 @@ export const authApi = {
 
   changePassword: (currentPassword: string, newPassword: string) =>
     api.post("/auth/change-password", { currentPassword, newPassword }),
+
+  // Requires backend: PATCH /auth/me
+  updateProfile: (data: { name: string }) =>
+    api.patch("/auth/me", data),
 };
 
 // Leads API
