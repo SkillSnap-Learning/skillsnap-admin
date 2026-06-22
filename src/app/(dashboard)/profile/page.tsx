@@ -312,7 +312,7 @@ export default function ProfilePage() {
                         key={key}
                         className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium border ${
                           granted
-                            ? "bg-green-50 border-green-200 text-green-700"
+                            ? "bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400"
                             : "bg-muted border-border text-muted-foreground"
                         }`}
                       >
