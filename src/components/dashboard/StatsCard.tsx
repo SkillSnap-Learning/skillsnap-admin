@@ -1,5 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Copy, Check } from "lucide-react";
 
 interface StatsCardProps {
   title: string;
@@ -23,14 +26,33 @@ export function StatsCard({
   iconBg = "bg-blue-100",
   trend,
 }: StatsCardProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(String(value));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <div className="bg-card rounded-xl border p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <p className="text-3xl font-bold text-foreground">{value}</p>
+          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <div className="flex items-center gap-2 group">
+            <p className="text-3xl font-bold text-foreground">{value}</p>
+            <button
+              onClick={handleCopy}
+              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded text-muted-foreground hover:text-foreground hover:bg-muted"
+              title="Copy value"
+            >
+              {copied
+                ? <Check className="h-3.5 w-3.5 text-green-500" />
+                : <Copy className="h-3.5 w-3.5" />}
+            </button>
+          </div>
           {subtitle && (
-            <p className="text-xs text-slate-400">{subtitle}</p>
+            <p className="text-xs text-muted-foreground">{subtitle}</p>
           )}
           {trend && (
             <p
