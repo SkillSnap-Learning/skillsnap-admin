@@ -1,5 +1,6 @@
 import { Plan, Subject, Chapter, Topic, Question, NotificationTemplate, Blog, News, Course, Calculator, FinanceCategory, FinanceBlog } from "@/types";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import NProgress from "nprogress";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
 
@@ -11,7 +12,7 @@ export const api = axios.create({
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor — auth token + start progress bar
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (typeof window !== "undefined") {
@@ -19,16 +20,24 @@ api.interceptors.request.use(
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
+      NProgress.start();
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    NProgress.done();
+    return Promise.reject(error);
+  }
 );
 
-// Response interceptor for error handling
+// Response interceptor — stop progress bar + error handling
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    NProgress.done();
+    return response;
+  },
   (error: AxiosError<{ message?: string; code?: string }>) => {
+    NProgress.done();
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
