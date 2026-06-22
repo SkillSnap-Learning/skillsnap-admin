@@ -40,7 +40,7 @@ export function TeamsTable({
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border">
+      <div className="bg-card rounded-xl border">
         <div className="p-4 space-y-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="flex items-center gap-4">
@@ -55,7 +55,7 @@ export function TeamsTable({
 
   if (teams.length === 0) {
     return (
-      <div className="bg-white rounded-xl border p-12 text-center">
+      <div className="bg-card rounded-xl border p-12 text-center">
         <p className="text-slate-500">No teams found</p>
         <p className="text-sm text-slate-400 mt-1">
           Create your first team to get started
@@ -65,10 +65,10 @@ export function TeamsTable({
   }
 
   return (
-    <div className="bg-white rounded-xl border overflow-hidden">
+    <div className="bg-card rounded-xl border overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-slate-50 border-b">
+          <thead className="bg-muted/50 border-b">
             <tr>
               <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
                 Team
@@ -95,7 +95,7 @@ export function TeamsTable({
               return (
                 <tr
                   key={team._id || team.id || index}
-                  className="hover:bg-slate-50 transition-colors"
+                  className="hover:bg-muted/50 transition-colors"
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">

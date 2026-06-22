@@ -204,14 +204,14 @@ function SidebarPanel({
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1 mb-2">
             Product
           </p>
-          <div className="flex rounded-lg border border-slate-200 overflow-hidden bg-slate-50 p-0.5 gap-0.5">
+          <div className="flex rounded-lg border overflow-hidden bg-muted p-0.5 gap-0.5">
             <button
               onClick={() => onProductChange("learning")}
               className={cn(
                 "flex-1 text-xs font-semibold py-1.5 px-2 rounded-md transition-all",
                 product === "learning"
                   ? "bg-blue-950 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700 hover:bg-white"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background"
               )}
             >
               Learning
@@ -222,7 +222,7 @@ function SidebarPanel({
                 "flex-1 text-xs font-semibold py-1.5 px-2 rounded-md transition-all",
                 product === "finance"
                   ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700 hover:bg-white"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background"
               )}
             >
               Finance
@@ -241,7 +241,7 @@ function SidebarPanel({
               "w-full flex items-center justify-center py-1.5 rounded-md transition-all",
               product === "learning"
                 ? "bg-blue-950 text-white"
-                : "text-slate-400 hover:bg-slate-100"
+                : "text-muted-foreground hover:bg-muted"
             )}
           >
             <GraduationCap className="h-4 w-4" />
@@ -253,7 +253,7 @@ function SidebarPanel({
               "w-full flex items-center justify-center py-1.5 rounded-md transition-all",
               product === "finance"
                 ? "bg-emerald-600 text-white"
-                : "text-slate-400 hover:bg-slate-100"
+                : "text-muted-foreground hover:bg-muted"
             )}
           >
             <TrendingUp className="h-4 w-4" />
@@ -292,7 +292,7 @@ function SidebarPanel({
                   ? product === "finance"
                     ? "bg-emerald-600 text-white"
                     : "bg-blue-950 text-white"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-blue-950"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -395,7 +395,7 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
 
       {/* Mobile sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r transform transition-transform lg:hidden",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r transform transition-transform lg:hidden",
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <SidebarPanel {...panelProps} />
@@ -403,7 +403,7 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
 
       {/* Desktop sidebar */}
       <aside className={cn(
-        "hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 bg-white border-r transition-all duration-300",
+        "hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 bg-card border-r transition-all duration-300",
         collapsed ? "lg:w-16" : "lg:w-64"
       )}>
         <SidebarPanel {...panelProps} />

@@ -14,7 +14,7 @@ export default function DashboardLayout({
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-background">
         <Sidebar collapsed={collapsed} onCollapsedChange={setCollapsed} />
         <main
           className={cn(

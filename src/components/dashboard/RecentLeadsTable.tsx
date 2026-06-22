@@ -23,7 +23,7 @@ const statusColors: Record<string, string> = {
 export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl border">
+      <div className="bg-card rounded-xl border">
         <div className="p-4 border-b flex items-center justify-between">
           <Skeleton className="h-6 w-32" />
           <Skeleton className="h-8 w-24" />
@@ -44,7 +44,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl border">
+    <div className="bg-card rounded-xl border">
       <div className="p-4 border-b flex items-center justify-between">
         <h2 className="text-lg font-semibold text-blue-950">Recent Leads</h2>
         <Link href="/leads">
@@ -62,7 +62,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-slate-50">
+            <thead className="bg-muted/50">
               <tr>
                 <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
                   Name
@@ -83,7 +83,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {leads.map((lead, index) => (
-                <tr key={lead.id || lead._id || index} className="hover:bg-slate-50 transition-colors">
+                <tr key={lead.id || lead._id || index} className="hover:bg-muted/50 transition-colors">
                   <td className="px-4 py-3">
                     <Link
                       href={`/leads/${lead.id || lead._id}`}
