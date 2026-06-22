@@ -206,7 +206,7 @@ export function ChangePasswordModal({
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             {isSubmitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             Change Password

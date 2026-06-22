@@ -66,7 +66,7 @@ function CategoryForm({
         <Button
           onClick={() => onSubmit({ name, slug, description, order, isActive })}
           disabled={isSubmitting || !name || !slug}
-          className="bg-blue-950 hover:bg-blue-900"
+          className="bg-blue-950 hover:bg-blue-900 text-white"
         >
           {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
           {initial ? "Update" : "Create"}
@@ -155,7 +155,7 @@ export default function FinanceCategoriesPage() {
           <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
             <h2 className="font-semibold text-slate-800">All Categories</h2>
             {!formOpen && !editing && (
-              <Button onClick={() => setFormOpen(true)} className="bg-blue-950 hover:bg-blue-900" size="sm">
+              <Button onClick={() => setFormOpen(true)} className="bg-blue-950 hover:bg-blue-900 text-white" size="sm">
                 <Plus className="h-4 w-4 mr-1" /> New Category
               </Button>
             )}

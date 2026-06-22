@@ -230,7 +230,7 @@ export default function UsersPage() {
           {/* Create Button */}
           <Button
             onClick={handleCreateUser}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             Add User

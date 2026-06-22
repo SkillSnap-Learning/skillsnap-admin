@@ -316,7 +316,7 @@ export function FinanceBlogForm({
         </div>
         <div className="flex gap-3">
           <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>Cancel</Button>
-          <Button type="button" onClick={handleSubmit} disabled={isSubmitting} className="bg-blue-950 hover:bg-blue-900">
+          <Button type="button" onClick={handleSubmit} disabled={isSubmitting} className="bg-blue-950 hover:bg-blue-900 text-white">
             {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
             {blog ? "Update Blog" : "Create Blog"}
           </Button>

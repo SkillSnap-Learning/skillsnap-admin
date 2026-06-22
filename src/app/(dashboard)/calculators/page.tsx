@@ -95,7 +95,7 @@ export default function CalculatorsPage() {
           </div>
           <Button
             onClick={() => router.push("/calculators/new")}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             New Calculator

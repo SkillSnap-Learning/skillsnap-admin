@@ -69,7 +69,7 @@ export function NotesTimeline({ notes, onAddNote, isAdding }: NotesTimelineProps
                   size="sm"
                   onClick={handleSubmit}
                   disabled={!newNote.trim() || isAdding}
-                  className="bg-blue-950 hover:bg-blue-900"
+                  className="bg-blue-950 hover:bg-blue-900 text-white"
                 >
                   {isAdding && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
                   Save Note

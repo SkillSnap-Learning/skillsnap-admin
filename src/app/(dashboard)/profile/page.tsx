@@ -277,7 +277,7 @@ export default function ProfilePage() {
                 <Button
                   onClick={handleChangePassword}
                   disabled={changePasswordMutation.isPending}
-                  className="w-full bg-blue-950 hover:bg-blue-900"
+                  className="w-full bg-blue-950 hover:bg-blue-900 text-white"
                 >
                   {changePasswordMutation.isPending && (
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />

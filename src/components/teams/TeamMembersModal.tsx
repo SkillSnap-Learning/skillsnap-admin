@@ -160,7 +160,7 @@ export function TeamMembersModal({
             <Button
               onClick={handleAddMember}
               disabled={!selectedUserId || addMemberMutation.isPending}
-              className="bg-blue-950 hover:bg-blue-900"
+              className="bg-blue-950 hover:bg-blue-900 text-white"
             >
               {addMemberMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

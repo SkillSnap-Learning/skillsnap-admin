@@ -154,7 +154,7 @@ export default function LeadsPage() {
             {canAssignLeads() && (
               <Button
                 onClick={handleAutoAssign}
-                className="bg-blue-950 hover:bg-blue-900"
+                className="bg-blue-950 hover:bg-blue-900 text-white"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Auto-Assign Leads

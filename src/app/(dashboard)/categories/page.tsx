@@ -134,7 +134,7 @@ function CategoryForm({
           type="button"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="bg-blue-950 hover:bg-blue-900"
+          className="bg-blue-950 hover:bg-blue-900 text-white"
         >
           {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
           {initial ? "Update Category" : "Create Category"}
@@ -200,7 +200,7 @@ export default function CategoriesPage() {
         {!showForm && !editingCategory && (
           <Button
             onClick={() => setShowForm(true)}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             New Category

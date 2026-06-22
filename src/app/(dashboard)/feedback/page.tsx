@@ -204,7 +204,7 @@ function SalesFeedbackForm() {
       <Button
         onClick={handleSubmit}
         disabled={submitMutation.isPending}
-        className="bg-blue-950 hover:bg-blue-900"
+        className="bg-blue-950 hover:bg-blue-900 text-white"
       >
         <Send className="h-4 w-4 mr-2" />
         {submitMutation.isPending
@@ -360,7 +360,7 @@ function OtherFeedbackPanel() {
           <Button
             onClick={handleSubmit}
             disabled={submitMutation.isPending}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             <Send className="h-4 w-4 mr-2" />
             {submitMutation.isPending ? "Submitting..." : "Submit Issue"}
@@ -659,7 +659,7 @@ function AdminOtherFeedbackView() {
                   size="sm"
                   disabled={replyMutation.isPending}
                   onClick={() => handleReply(item.id)}
-                  className="bg-blue-950 hover:bg-blue-900"
+                  className="bg-blue-950 hover:bg-blue-900 text-white"
                 >
                   <Send className="h-3 w-3 mr-1" />
                   {replyMutation.isPending ? "Sending..." : "Send Reply"}
