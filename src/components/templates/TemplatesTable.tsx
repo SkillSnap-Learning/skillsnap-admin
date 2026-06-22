@@ -35,16 +35,16 @@ const typeLabels: Record<string, string> = {
 };
 
 const typeColors: Record<string, string> = {
-  achievement: "bg-purple-100 text-purple-700",
-  reminder: "bg-yellow-100 text-yellow-700",
-  announcement: "bg-blue-100 text-blue-700",
-  instructor_reply: "bg-green-100 text-green-700",
-  chapter_unlocked: "bg-cyan-100 text-cyan-700",
-  test_passed: "bg-emerald-100 text-emerald-700",
-  child_test_passed: "bg-pink-100 text-pink-700",
-  child_chapter_unlocked: "bg-indigo-100 text-indigo-700",
-  weekly_progress: "bg-orange-100 text-orange-700",
-  parent_announcement: "bg-teal-100 text-teal-700",
+  achievement: "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400",
+  reminder: "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400",
+  announcement: "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+  instructor_reply: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  chapter_unlocked: "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-400",
+  test_passed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
+  child_test_passed: "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-400",
+  child_chapter_unlocked: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+  weekly_progress: "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
+  parent_announcement: "bg-teal-100 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400",
 };
 
 export function TemplatesTable({ templates, isLoading, onEdit, onToggleActive }: TemplatesTableProps) {
@@ -61,7 +61,7 @@ export function TemplatesTable({ templates, isLoading, onEdit, onToggleActive }:
   if (templates.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No templates found</p>
+        <p className="text-muted-foreground">No templates found</p>
       </div>
     );
   }
@@ -89,7 +89,7 @@ export function TemplatesTable({ templates, isLoading, onEdit, onToggleActive }:
               <TableCell className="font-medium max-w-xs truncate">
                 {template.title}
               </TableCell>
-              <TableCell className="max-w-md truncate text-sm text-slate-600">
+              <TableCell className="max-w-md truncate text-sm text-muted-foreground">
                 {template.message}
               </TableCell>
               <TableCell>
@@ -107,7 +107,7 @@ export function TemplatesTable({ templates, isLoading, onEdit, onToggleActive }:
                     {template.isActive ? (
                       <ToggleRight className="h-4 w-4 text-green-600" />
                     ) : (
-                      <ToggleLeft className="h-4 w-4 text-slate-400" />
+                      <ToggleLeft className="h-4 w-4 text-muted-foreground/60" />
                     )}
                   </Button>
                   <Button variant="ghost" size="sm" onClick={() => onEdit(template)}>

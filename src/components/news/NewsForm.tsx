@@ -154,8 +154,8 @@ export function NewsForm({
     <div className="space-y-8 max-w-5xl mx-auto">
 
       {/* Basic Info */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-5">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Basic Info
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -220,12 +220,12 @@ export function NewsForm({
       </div>
 
       {/* Cover Image */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Cover Image
         </h2>
         {!newsId ? (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Save the news first to enable cover image upload.
           </p>
         ) : (
@@ -269,12 +269,12 @@ export function NewsForm({
       </div>
 
       {/* Content Editor */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Content
         </h2>
         {!newsId && (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Save the news first to enable inline image uploads inside the editor.
           </p>
         )}
@@ -287,8 +287,8 @@ export function NewsForm({
 
       {/* Related News */}
       {otherNews.length > 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+        <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
             Related News
           </h2>
           <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -303,8 +303,8 @@ export function NewsForm({
                   onChange={() => toggleRelated(n._id)}
                   className="accent-blue-950"
                 />
-                <span className="text-sm text-slate-700">{n.title}</span>
-                <span className="text-xs text-slate-400 ml-auto capitalize">
+                <span className="text-sm text-foreground">{n.title}</span>
+                <span className="text-xs text-muted-foreground/60 ml-auto capitalize">
                   {n.category}
                 </span>
               </label>
@@ -314,7 +314,7 @@ export function NewsForm({
       )}
 
       {/* Publish + Actions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-center justify-between">
+      <div className="bg-card rounded-xl border border-border p-6 flex items-center justify-between">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -322,7 +322,7 @@ export function NewsForm({
             onChange={(e) => setIsPublished(e.target.checked)}
             className="accent-blue-950 w-4 h-4"
           />
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-foreground">
             Publish immediately
           </span>
         </label>
@@ -334,7 +334,7 @@ export function NewsForm({
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
             {news ? "Update News" : "Create News"}

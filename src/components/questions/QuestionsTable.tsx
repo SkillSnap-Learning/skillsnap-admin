@@ -19,9 +19,9 @@ interface QuestionsTableProps {
 }
 
 const difficultyColors: Record<string, string> = {
-  easy: "bg-green-100 text-green-700",
-  medium: "bg-yellow-100 text-yellow-700",
-  hard: "bg-red-100 text-red-700",
+  easy: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  medium: "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400",
+  hard: "bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400",
 };
 
 const OPTION_LABELS = ["A", "B", "C", "D"];
@@ -69,8 +69,8 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
   if (questions.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No questions found</p>
-        <p className="text-sm text-slate-400 mt-1">Use the filters above or add a new question</p>
+        <p className="text-muted-foreground">No questions found</p>
+        <p className="text-sm text-muted-foreground/60 mt-1">Use the filters above or add a new question</p>
       </div>
     );
   }
@@ -95,14 +95,14 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
         <TableBody>
           {questions.map((question, index) => (
             <TableRow key={question._id}>
-              <TableCell className="text-slate-500 text-sm">{index + 1}</TableCell>
+              <TableCell className="text-muted-foreground text-sm">{index + 1}</TableCell>
               <TableCell className="max-w-xs">
                 <TextTooltip text={question.questionText}>
                   <p className="font-medium text-sm line-clamp-2">{question.questionText}</p>
                 </TextTooltip>
                 {question.explanation && (
                   <TextTooltip text={question.explanation}>
-                    <p className="text-xs text-slate-400 mt-1 line-clamp-1">
+                    <p className="text-xs text-muted-foreground/60 mt-1 line-clamp-1">
                       Explanation: {question.explanation}
                     </p>
                   </TextTooltip>
@@ -112,7 +112,7 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
                 {typeof question.subject === "object" ? (question.subject as QASubject).name : question.subject}
               </TableCell>
               <TableCell>
-                <Badge className="bg-blue-100 text-blue-700">Class {question.classLevel}</Badge>
+                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">Class {question.classLevel}</Badge>
               </TableCell>
               <TableCell className="text-sm">
                 {typeof question.chapter === "object" ? (question.chapter as QAChapter).name : "—"}
@@ -124,11 +124,11 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
                       <div
                         key={i}
                         className={`text-xs flex items-center gap-1.5 ${
-                          i === question.correctAnswer ? "text-green-700 font-medium" : "text-slate-500"
+                          i === question.correctAnswer ? "text-green-700 font-medium" : "text-muted-foreground"
                         }`}
                       >
                         <span className={`w-4 h-4 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
-                          i === question.correctAnswer ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"
+                          i === question.correctAnswer ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400" : "bg-muted text-muted-foreground"
                         }`}>
                           {OPTION_LABELS[i]}
                         </span>
@@ -142,9 +142,9 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
               </TableCell>
               <TableCell>
                 {question.questionType === "descriptive" ? (
-                  <span className="text-xs text-slate-400">—</span>
+                  <span className="text-xs text-muted-foreground/60">—</span>
                 ) : (
-                  <Badge className="bg-green-100 text-green-700">
+                  <Badge className="bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400">
                     {OPTION_LABELS[question.correctAnswer]}
                   </Badge>
                 )}
@@ -155,7 +155,7 @@ export function QuestionsTable({ questions, isLoading, onEdit, onDelete }: Quest
                 </Badge>
               </TableCell>
               <TableCell>
-                <Badge className={question.isActive ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-500"}>
+                <Badge className={question.isActive ? "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400" : "bg-muted text-muted-foreground"}>
                   {question.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>

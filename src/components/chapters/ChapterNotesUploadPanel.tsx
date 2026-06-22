@@ -120,24 +120,24 @@ export function ChapterNotesUploadPanel({
   };
 
   return (
-    <div className="bg-slate-50 border rounded-lg p-4 space-y-3">
-      <p className="text-sm font-medium text-slate-700">
+    <div className="bg-muted/50 border rounded-lg p-4 space-y-3">
+      <p className="text-sm font-medium text-foreground">
         Chapter Notes —{" "}
-        <span className="text-blue-950 font-semibold">
+        <span className="text-foreground font-semibold">
           Ch {chapter.chapterNumber}: {chapter.title}
         </span>
       </p>
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <FileText className="h-4 w-4 text-slate-500" />
+          <FileText className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium">Notes (PDF)</span>
         </div>
         <Badge
           className={
             chapter.notesUrl
-              ? "bg-green-100 text-green-700"
-              : "bg-slate-100 text-slate-600"
+              ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+              : "bg-muted text-muted-foreground"
           }
         >
           {chapter.notesUrl ? (
@@ -170,18 +170,18 @@ export function ChapterNotesUploadPanel({
 
       {notesFile ? (
         <div className="space-y-2">
-          <div className="text-xs text-slate-600 bg-white border rounded px-3 py-2 space-y-0.5">
+          <div className="text-xs text-muted-foreground bg-card border rounded px-3 py-2 space-y-0.5">
             <p><strong>File:</strong> {notesFile.name}</p>
             <p><strong>Size:</strong> {(notesFile.size / 1024 / 1024).toFixed(2)} MB</p>
           </div>
 
           {notesMutation.isPending && (
             <div className="space-y-1">
-              <div className="flex justify-between text-xs text-slate-500">
+              <div className="flex justify-between text-xs text-muted-foreground">
                 <span>Uploading...</span>
                 <span>{notesProgress}%</span>
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${notesProgress}%` }}
@@ -253,7 +253,7 @@ export function ChapterNotesUploadPanel({
           <div className="flex-1 h-full overflow-hidden rounded">
             {previewLoading ? (
               <div className="flex items-center justify-center h-full">
-                <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground/60" />
               </div>
             ) : previewUrl ? (
               <iframe
@@ -266,18 +266,18 @@ export function ChapterNotesUploadPanel({
         </DialogContent>
       </Dialog>
       {/* ── Assessment Section ── */}
-      <hr className="border-slate-200" />
+      <hr className="border-border" />
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <FileText className="h-4 w-4 text-slate-500" />
+          <FileText className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium">Assessment (PDF)</span>
         </div>
         <Badge
           className={
             chapter.assessmentUrl
-              ? "bg-green-100 text-green-700"
-              : "bg-slate-100 text-slate-600"
+              ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+              : "bg-muted text-muted-foreground"
           }
         >
           {chapter.assessmentUrl ? (
@@ -310,18 +310,18 @@ export function ChapterNotesUploadPanel({
 
       {assessmentFile ? (
         <div className="space-y-2">
-          <div className="text-xs text-slate-600 bg-white border rounded px-3 py-2 space-y-0.5">
+          <div className="text-xs text-muted-foreground bg-card border rounded px-3 py-2 space-y-0.5">
             <p><strong>File:</strong> {assessmentFile.name}</p>
             <p><strong>Size:</strong> {(assessmentFile.size / 1024 / 1024).toFixed(2)} MB</p>
           </div>
 
           {assessmentMutation.isPending && (
             <div className="space-y-1">
-              <div className="flex justify-between text-xs text-slate-500">
+              <div className="flex justify-between text-xs text-muted-foreground">
                 <span>Uploading...</span>
                 <span>{assessmentProgress}%</span>
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${assessmentProgress}%` }}
@@ -393,7 +393,7 @@ export function ChapterNotesUploadPanel({
           <div className="flex-1 h-full overflow-hidden rounded">
             {assessmentPreviewLoading ? (
               <div className="flex items-center justify-center h-full">
-                <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground/60" />
               </div>
             ) : assessmentPreviewUrl ? (
               <iframe

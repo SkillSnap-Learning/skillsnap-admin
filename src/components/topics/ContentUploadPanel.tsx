@@ -94,10 +94,10 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
   });
 
   return (
-    <div className="bg-slate-50 border rounded-lg p-5 space-y-5">
-      <p className="text-sm font-medium text-slate-700">
+    <div className="bg-muted/50 border rounded-lg p-5 space-y-5">
+      <p className="text-sm font-medium text-foreground">
         Upload Content for:{" "}
-        <span className="text-blue-950 font-semibold">
+        <span className="text-foreground font-semibold">
           T{topic.topicNumber} — {topic.title}
         </span>
       </p>
@@ -108,16 +108,16 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Video className="h-4 w-4 text-slate-500" />
+              <Video className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Video</span>
             </div>
             <Badge
               className={
                 topic.videoStatus === "ready"
-                  ? "bg-green-100 text-green-700"
+                  ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
                   : topic.videoStatus === "uploading"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : "bg-slate-100 text-slate-600"
+                  ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400"
+                  : "bg-muted text-muted-foreground"
               }
             >
               {topic.videoStatus === "ready" ? (
@@ -153,7 +153,7 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
 
           {videoFile ? (
             <div className="space-y-2">
-              <div className="text-xs text-slate-600 bg-white border rounded px-3 py-2 space-y-0.5">
+              <div className="text-xs text-muted-foreground bg-card border rounded px-3 py-2 space-y-0.5">
                 <p><strong>File:</strong> {videoFile.name}</p>
                 <p><strong>Size:</strong> {(videoFile.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
@@ -161,11 +161,11 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
               {/* Progress bar */}
               {videoMutation.isPending && (
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-slate-500">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>Uploading...</span>
                     <span>{videoProgress}%</span>
                   </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${videoProgress}%` }}
@@ -230,14 +230,14 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-slate-500" />
+              <FileText className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Notes (PDF)</span>
             </div>
             <Badge
               className={
                 topic.notesUrl
-                  ? "bg-green-100 text-green-700"
-                  : "bg-slate-100 text-slate-600"
+                  ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                  : "bg-muted text-muted-foreground"
               }
             >
               {topic.notesUrl ? (
@@ -271,7 +271,7 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
 
           {notesFile ? (
             <div className="space-y-2">
-              <div className="text-xs text-slate-600 bg-white border rounded px-3 py-2 space-y-0.5">
+              <div className="text-xs text-muted-foreground bg-card border rounded px-3 py-2 space-y-0.5">
                 <p><strong>File:</strong> {notesFile.name}</p>
                 <p><strong>Size:</strong> {(notesFile.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
@@ -279,11 +279,11 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
               {/* Progress bar */}
               {notesMutation.isPending && (
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-slate-500">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>Uploading...</span>
                     <span>{notesProgress}%</span>
                   </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${notesProgress}%` }}
@@ -433,7 +433,7 @@ function NotesPreview({ s3Key }: { s3Key: string }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground/60" />
       </div>
     );
   }

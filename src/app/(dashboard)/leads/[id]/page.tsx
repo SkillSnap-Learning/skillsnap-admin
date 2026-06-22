@@ -130,7 +130,7 @@ export default function LeadDetailPage({ params }: PageProps) {
       <div>
         <Header title="Lead Not Found" />
         <div className="p-6">
-          <p className="text-slate-500">The requested lead could not be found.</p>
+          <p className="text-muted-foreground">The requested lead could not be found.</p>
           <Button onClick={() => router.push("/leads")} className="mt-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Leads
@@ -155,7 +155,7 @@ export default function LeadDetailPage({ params }: PageProps) {
           <div className="flex flex-wrap items-center gap-3">
             {/* Status Dropdown */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-slate-500">Status:</span>
+              <span className="text-sm text-muted-foreground">Status:</span>
               <LeadStatusBadge
                 status={lead.status}
                 editable={true}
@@ -167,7 +167,7 @@ export default function LeadDetailPage({ params }: PageProps) {
             {/* Quick Assign */}
             {canAssignLeads() && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-slate-500">Assigned:</span>
+                <span className="text-sm text-muted-foreground">Assigned:</span>
                 <Select
                   value={lead.assignedTo?._id || "unassigned"}
                   onValueChange={(value) => {

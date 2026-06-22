@@ -28,8 +28,8 @@ export function QASubjectsTable({ subjects, isLoading, onEdit, onDelete }: QASub
   if (subjects.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No subjects found</p>
-        <p className="text-sm text-slate-400 mt-1">Add a subject to get started</p>
+        <p className="text-muted-foreground">No subjects found</p>
+        <p className="text-sm text-muted-foreground/60 mt-1">Add a subject to get started</p>
       </div>
     );
   }
@@ -51,21 +51,21 @@ export function QASubjectsTable({ subjects, isLoading, onEdit, onDelete }: QASub
         <TableBody>
           {subjects.map((subject, index) => (
             <TableRow key={subject._id}>
-              <TableCell className="text-slate-500 text-sm">{index + 1}</TableCell>
+              <TableCell className="text-muted-foreground text-sm">{index + 1}</TableCell>
               <TableCell className="font-medium">{subject.name}</TableCell>
               <TableCell className="text-lg">{subject.icon || "—"}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
                   {subject.classLevels.sort().map((cls) => (
-                    <Badge key={cls} className="bg-blue-100 text-blue-700 text-xs">
+                    <Badge key={cls} className="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 text-xs">
                       Class {cls}
                     </Badge>
                   ))}
                 </div>
               </TableCell>
-              <TableCell className="text-sm text-slate-500">{subject.order}</TableCell>
+              <TableCell className="text-sm text-muted-foreground">{subject.order}</TableCell>
               <TableCell>
-                <Badge className={subject.isActive ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"}>
+                <Badge className={subject.isActive ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400" : "bg-muted text-muted-foreground"}>
                   {subject.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>

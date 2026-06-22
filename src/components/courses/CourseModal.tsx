@@ -86,9 +86,9 @@ function BlockEditor({
   };
 
   return (
-    <div className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+    <div className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{block.type}</span>
+        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{block.type}</span>
         <div className="flex items-center gap-1">
           <Button type="button" variant="ghost" size="sm" onClick={() => onMoveUp(index)} disabled={isFirst}>
             <ChevronUp className="h-3 w-3" />
@@ -97,7 +97,7 @@ function BlockEditor({
             <ChevronDown className="h-3 w-3" />
           </Button>
           <Button type="button" variant="ghost" size="sm" onClick={() => onRemove(index)}
-            className="text-red-500 hover:text-red-700 hover:bg-red-50">
+            className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10">
             <Trash2 className="h-3 w-3" />
           </Button>
         </div>
@@ -109,7 +109,7 @@ function BlockEditor({
           onChange={(e) => update({ text: e.target.value })}
           placeholder={block.type === "heading" ? "Heading text..." : block.type === "quote" ? "Quote text..." : "Paragraph text..."}
           rows={block.type === "paragraph" ? 4 : 2}
-          className="bg-white text-sm"
+          className="bg-card text-sm"
         />
       )}
 
@@ -117,7 +117,7 @@ function BlockEditor({
         <div className="space-y-2">
           {(block.items ?? []).map((item, i) => (
             <div key={i} className="flex gap-2">
-              <span className="text-slate-400 text-sm mt-2 w-4 shrink-0">
+              <span className="text-muted-foreground/60 text-sm mt-2 w-4 shrink-0">
                 {block.type === "numbered" ? `${i + 1}.` : "•"}
               </span>
               <Input
@@ -128,7 +128,7 @@ function BlockEditor({
                   update({ items: updated });
                 }}
                 placeholder={`Item ${i + 1}`}
-                className="bg-white text-sm"
+                className="bg-card text-sm"
               />
               <Button
                 type="button" variant="ghost" size="sm"
@@ -162,9 +162,9 @@ function BlockEditor({
           </div>
           {block.src && <img src={block.src} alt={block.alt ?? ""} className="w-full max-h-40 object-cover rounded-lg" />}
           <Input value={block.alt ?? ""} onChange={(e) => update({ alt: e.target.value })}
-            placeholder="Alt text (optional)" className="bg-white text-sm" />
+            placeholder="Alt text (optional)" className="bg-card text-sm" />
           <Select value={block.alignment ?? "center"} onValueChange={(val) => update({ alignment: val as "center" | "full" })}>
-            <SelectTrigger className="bg-white text-sm h-9"><SelectValue /></SelectTrigger>
+            <SelectTrigger className="bg-card text-sm h-9"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="center">Center</SelectItem>
               <SelectItem value="full">Full Width</SelectItem>
@@ -319,7 +319,7 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
                   ))}
                 </SelectContent>
               </Select>
-              {course && <p className="text-xs text-slate-400">Class cannot be changed after creation.</p>}
+              {course && <p className="text-xs text-muted-foreground/60">Class cannot be changed after creation.</p>}
             </div>
 
             <div className="space-y-1.5">
@@ -332,7 +332,7 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
                   <SelectItem value="future-plus">Future Plus</SelectItem>
                 </SelectContent>
               </Select>
-              {course && <p className="text-xs text-slate-400">Plan type cannot be changed after creation.</p>}
+              {course && <p className="text-xs text-muted-foreground/60">Plan type cannot be changed after creation.</p>}
             </div>
 
             <div className="space-y-1.5">
@@ -356,7 +356,7 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
           <div className="space-y-2">
             <Label>Cover Image</Label>
             {!courseId ? (
-              <p className="text-xs text-slate-400">Save the course first to enable cover image upload.</p>
+              <p className="text-xs text-muted-foreground/60">Save the course first to enable cover image upload.</p>
             ) : (
               <div className="flex items-center gap-3">
                 <Button type="button" variant="outline" size="sm"
@@ -376,10 +376,10 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
           {/* ── Enroll Points ── */}
           <div className="space-y-3">
             <Label>Enroll Sidebar Points</Label>
-            <p className="text-xs text-slate-400">Bullet points shown in the enroll now sidebar on the course detail page.</p>
+            <p className="text-xs text-muted-foreground/60">Bullet points shown in the enroll now sidebar on the course detail page.</p>
             {enrollPoints.map((point, i) => (
               <div key={i} className="flex gap-2">
-                <span className="text-slate-400 text-sm mt-2 shrink-0">•</span>
+                <span className="text-muted-foreground/60 text-sm mt-2 shrink-0">•</span>
                 <Input value={point} onChange={(e) => updateEnrollPoint(i, e.target.value)}
                   placeholder={`Point ${i + 1}`} />
                 <Button type="button" variant="ghost" size="sm"
@@ -399,7 +399,7 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
           <div className="space-y-3">
             <Label>Content Blocks</Label>
             {blocks.length === 0 && (
-              <p className="text-sm text-slate-400">No blocks yet. Add your first block below.</p>
+              <p className="text-sm text-muted-foreground/60">No blocks yet. Add your first block below.</p>
             )}
             {blocks.map((block, i) => (
               <BlockEditor key={i} block={block} index={i} courseId={courseId}
@@ -423,21 +423,21 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
           <div className="space-y-3">
             <Label>FAQs</Label>
             {faqs.map((faq, i) => (
-              <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+              <div key={i} className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-500">FAQ {i + 1}</span>
+                  <span className="text-xs font-semibold text-muted-foreground">FAQ {i + 1}</span>
                   <Button type="button" variant="ghost" size="sm"
                     onClick={() => removeFaq(i)}
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                    className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10"
                     disabled={faqs.length <= 1}>
                     <Trash2 className="h-3 w-3" />
                   </Button>
                 </div>
                 <div className="space-y-2">
                   <Input value={faq.question} onChange={(e) => updateFaq(i, "question", e.target.value)}
-                    placeholder="Question" className="bg-white" />
+                    placeholder="Question" className="bg-card" />
                   <Textarea value={faq.answer} onChange={(e) => updateFaq(i, "answer", e.target.value)}
-                    placeholder="Answer" rows={2} className="bg-white text-sm" />
+                    placeholder="Answer" rows={2} className="bg-card text-sm" />
                 </div>
               </div>
             ))}
@@ -450,7 +450,7 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={isPublished}
               onChange={(e) => setIsPublished(e.target.checked)} className="accent-blue-950 w-4 h-4" />
-            <span className="text-sm font-medium text-slate-700">Publish immediately</span>
+            <span className="text-sm font-medium text-foreground">Publish immediately</span>
           </label>
 
           {/* ── Actions ── */}
@@ -459,7 +459,7 @@ export function CourseModal({ open, onOpenChange, course, onSubmit, isSubmitting
               Cancel
             </Button>
             <Button type="button" onClick={handleSubmit} disabled={isSubmitting}
-              className="bg-blue-950 hover:bg-blue-900">
+              className="bg-blue-950 hover:bg-blue-900 text-white">
               {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
               {course ? "Update Course" : "Create Course"}
             </Button>

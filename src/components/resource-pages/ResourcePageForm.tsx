@@ -148,7 +148,7 @@ function CardPicker({
 }) {
   return (
     <div className="space-y-2">
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</p>
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</p>
       <div className="flex flex-wrap gap-2">
         {options.map((opt) => {
           const isActive = value === opt.value;
@@ -160,7 +160,7 @@ function CardPicker({
               className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
                 isActive
                   ? "bg-blue-950 text-white border-blue-950"
-                  : "bg-white text-slate-600 border-slate-200 hover:border-blue-950 hover:text-blue-950"
+                  : "bg-card text-muted-foreground border-border hover:border-foreground hover:text-foreground"
               }`}
             >
               {opt.label}
@@ -177,9 +177,9 @@ function CardPicker({
 function SlugPreview({ slug }: { slug: string }) {
   if (!slug) return null;
   return (
-    <p className="text-xs text-slate-400">
+    <p className="text-xs text-muted-foreground/60">
       URL:{" "}
-      <span className="font-mono text-slate-600">
+      <span className="font-mono text-muted-foreground">
         skillsnaplearning.com/{slug}
       </span>
     </p>
@@ -192,11 +192,11 @@ function StepBreadcrumb({ parts }: { parts: string[] }) {
   const visible = parts.filter(Boolean);
   if (visible.length === 0) return null;
   return (
-    <div className="flex items-center gap-1 flex-wrap text-xs text-slate-500">
+    <div className="flex items-center gap-1 flex-wrap text-xs text-muted-foreground">
       {visible.map((part, i) => (
         <span key={i} className="flex items-center gap-1">
-          {i > 0 && <ChevronRight className="h-3 w-3 text-slate-300" />}
-          <span className="bg-slate-100 px-2 py-0.5 rounded font-mono">{part}</span>
+          {i > 0 && <ChevronRight className="h-3 w-3 text-muted-foreground/40" />}
+          <span className="bg-muted px-2 py-0.5 rounded font-mono">{part}</span>
         </span>
       ))}
     </div>
@@ -465,8 +465,8 @@ export function ResourcePageForm({
     <div className="space-y-8 max-w-5xl mx-auto">
 
       {/* ── Step builder ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-6">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-6">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Build Page URL
         </h2>
 
@@ -526,9 +526,9 @@ export function ResourcePageForm({
         ) && (
 
           <div className="space-y-1.5">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
               Step 4 — Chapter / Title{" "}
-              <span className="normal-case font-normal text-slate-400">(optional — leave empty to save this level as a page)</span>
+              <span className="normal-case font-normal text-muted-foreground/60">(optional — leave empty to save this level as a page)</span>
             </p>
             <Input
               value={chapterInput}
@@ -541,7 +541,7 @@ export function ResourcePageForm({
 
         {/* Breadcrumb + slug preview */}
         {finalSlug && (
-          <div className="space-y-2 pt-2 border-t border-slate-100">
+          <div className="space-y-2 pt-2 border-t border-border">
             <StepBreadcrumb parts={breadcrumbParts} />
             <SlugPreview slug={finalSlug} />
           </div>
@@ -550,9 +550,9 @@ export function ResourcePageForm({
         {/* Slug override */}
         {finalSlug && (
           <div className="space-y-1.5">
-            <Label className="text-xs text-slate-500">
+            <Label className="text-xs text-muted-foreground">
               Override slug manually{" "}
-              <span className="font-normal text-slate-400">(only if you need a custom path)</span>
+              <span className="font-normal text-muted-foreground/60">(only if you need a custom path)</span>
             </Label>
             <Input
               value={slugOverride}
@@ -574,8 +574,8 @@ export function ResourcePageForm({
       </div>
 
       {/* ── Basic Info ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-5">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Page Info
         </h2>
         <div className="space-y-1.5">
@@ -589,12 +589,12 @@ export function ResourcePageForm({
       </div>
 
       {/* ── Content Editor ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Content
         </h2>
         {!pageId && (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Save the page first to enable inline image uploads.
           </p>
         )}
@@ -606,8 +606,8 @@ export function ResourcePageForm({
       </div>
 
       {/* ── SEO ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           SEO
         </h2>
         <div className="space-y-1.5">
@@ -616,11 +616,11 @@ export function ResourcePageForm({
             value={metaTitle}
             onChange={(e) => setMetaTitle(e.target.value)}
             placeholder="Leave empty to use page title"
-            className="bg-white"
+            className="bg-card"
           />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Recommended: 50–60 characters.{" "}
-            <span className={metaTitle.length > 60 ? "text-red-500" : "text-slate-400"}>
+            <span className={metaTitle.length > 60 ? "text-red-500" : "text-muted-foreground/60"}>
               {metaTitle.length}/60
             </span>
           </p>
@@ -632,11 +632,11 @@ export function ResourcePageForm({
             onChange={(e) => setMetaDescription(e.target.value)}
             placeholder="Leave empty to use page title"
             rows={3}
-            className="bg-white text-sm"
+            className="bg-card text-sm"
           />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Recommended: 150–160 characters.{" "}
-            <span className={metaDescription.length > 160 ? "text-red-500" : "text-slate-400"}>
+            <span className={metaDescription.length > 160 ? "text-red-500" : "text-muted-foreground/60"}>
               {metaDescription.length}/160
             </span>
           </p>
@@ -644,8 +644,8 @@ export function ResourcePageForm({
       </div>
 
       {/* ── FAQs ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           FAQs
         </h2>
 
@@ -655,23 +655,23 @@ export function ResourcePageForm({
             value={faqsTitle}
             onChange={(e) => setFaqsTitle(e.target.value)}
             placeholder="Frequently Asked Questions"
-            className="bg-white"
+            className="bg-card"
           />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Leave empty to use default: "Frequently Asked Questions"
           </p>
         </div>
 
         {faqs.length === 0 && (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             No FAQs yet. Click "Add FAQ" to add one.
           </p>
         )}
 
         {faqs.map((faq, index) => (
-          <div key={index} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+          <div key={index} className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">FAQ {index + 1}</span>
+              <span className="text-xs font-semibold text-muted-foreground">FAQ {index + 1}</span>
               <Button
                 type="button"
                 variant="ghost"
@@ -691,9 +691,9 @@ export function ResourcePageForm({
                   )
                 }
                 placeholder="Question"
-                className="bg-white"
+                className="bg-card"
               />
-              <div className="bg-white rounded-lg">
+              <div className="bg-card rounded-lg">
                 <TipTapEditor
                   value={faq.answer}
                   onChange={(htmlValue) =>
@@ -723,7 +723,7 @@ export function ResourcePageForm({
       </div>
 
       {/* ── Publish + Actions ── */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-center justify-between">
+      <div className="bg-card rounded-xl border border-border p-6 flex items-center justify-between">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -731,7 +731,7 @@ export function ResourcePageForm({
             onChange={(e) => setIsPublished(e.target.checked)}
             className="accent-blue-950 w-4 h-4"
           />
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-foreground">
             Publish immediately
           </span>
         </label>
@@ -742,9 +742,9 @@ export function ResourcePageForm({
               onChange={(e) => setIsPublic(e.target.checked)}
               className="accent-blue-950 w-4 h-4"
             />
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-foreground">
               Show as public page{" "}
-              <span className="text-xs font-normal text-slate-400">(uncheck for internal/home-info pages)</span>
+              <span className="text-xs font-normal text-muted-foreground/60">(uncheck for internal/home-info pages)</span>
             </span>
           </label>
         <div className="flex gap-3">
@@ -755,7 +755,7 @@ export function ResourcePageForm({
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
             {page ? "Update Page" : "Create Page"}

@@ -2,31 +2,46 @@
 
 import { Badge } from "@/components/ui/badge";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { LeadStatus } from "@/types";
 import { cn } from "@/lib/utils";
+import { Check, ChevronDown } from "lucide-react";
 
-const statusConfig: Record<LeadStatus, { label: string; className: string }> = {
+const statusConfig: Record<
+  LeadStatus,
+  { label: string; dot: string; badge: string; item: string }
+> = {
   new: {
     label: "New",
-    className: "bg-blue-100 text-blue-700 hover:bg-blue-200",
+    dot: "bg-blue-500",
+    badge:
+      "bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20",
+    item: "text-blue-700 dark:text-blue-400",
   },
   contacted: {
     label: "Contacted",
-    className: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200",
+    dot: "bg-amber-500",
+    badge:
+      "bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20",
+    item: "text-amber-700 dark:text-amber-400",
   },
   converted: {
     label: "Converted",
-    className: "bg-green-100 text-green-700 hover:bg-green-200",
+    dot: "bg-green-500",
+    badge:
+      "bg-green-50 text-green-700 border border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/20",
+    item: "text-green-700 dark:text-green-400",
   },
   lost: {
     label: "Lost",
-    className: "bg-red-100 text-red-700 hover:bg-red-200",
+    dot: "bg-red-500",
+    badge:
+      "bg-red-50 text-red-700 border border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20",
+    item: "text-red-700 dark:text-red-400",
   },
 };
 
@@ -43,39 +58,49 @@ export function LeadStatusBadge({
   onStatusChange,
   disabled = false,
 }: LeadStatusBadgeProps) {
-  const config = statusConfig[status] || statusConfig.new;
+  const config = statusConfig[status] ?? statusConfig.new;
 
-  if (!editable) {
-    return (
-      <Badge variant="secondary" className={cn("font-medium", config.className)}>
-        {config.label}
-      </Badge>
-    );
-  }
+  const trigger = (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+        config.badge
+      )}
+    >
+      <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", config.dot)} />
+      {config.label}
+      {editable && !disabled && (
+        <ChevronDown className="h-3 w-3 ml-0.5 opacity-60" />
+      )}
+    </span>
+  );
+
+  if (!editable || disabled) return trigger;
 
   return (
-    <Select
-      value={status}
-      onValueChange={(value) => onStatusChange?.(value as LeadStatus)}
-      disabled={disabled}
-    >
-      <SelectTrigger
-        className={cn(
-          "h-7 w-[110px] border-0 text-xs font-medium",
-          config.className
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className="focus:outline-none cursor-pointer">{trigger}</button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-40 p-1">
+        {(Object.entries(statusConfig) as [LeadStatus, typeof config][]).map(
+          ([value, cfg]) => (
+            <DropdownMenuItem
+              key={value}
+              onClick={() => onStatusChange?.(value)}
+              className="flex items-center gap-2.5 px-2.5 py-2 rounded-md cursor-pointer"
+            >
+              <span className={cn("w-2 h-2 rounded-full shrink-0", cfg.dot)} />
+              <span className={cn("text-xs font-medium flex-1", cfg.item)}>
+                {cfg.label}
+              </span>
+              {value === status && (
+                <Check className="h-3.5 w-3.5 text-foreground/50" />
+              )}
+            </DropdownMenuItem>
+          )
         )}
-      >
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        {Object.entries(statusConfig).map(([value, { label, className }]) => (
-          <SelectItem key={value} value={value}>
-            <span className={cn("px-2 py-0.5 rounded text-xs", className)}>
-              {label}
-            </span>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

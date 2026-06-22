@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "nprogress/nprogress.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -129,6 +130,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  button, [role="button"], a {
+    cursor: pointer;
+  }
 }
 
 /* Custom utility classes */
@@ -136,6 +140,18 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* NProgress top bar — brand blue, no spinner */
+#nprogress .bar {
+  background: #0c1e3d;
+  height: 3px;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #0c1e3d, 0 0 5px #0c1e3d;
+}
+#nprogress .spinner {
+  display: none;
 }
 
 /* Scrollbar styling */

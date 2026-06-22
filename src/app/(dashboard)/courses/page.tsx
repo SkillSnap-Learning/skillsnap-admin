@@ -144,7 +144,7 @@ export default function CoursesPage() {
             </Select>
           </div>
 
-          <Button onClick={handleCreate} className="bg-blue-950 hover:bg-blue-900">
+          <Button onClick={handleCreate} className="bg-blue-950 hover:bg-blue-900 text-white">
             <Plus className="h-4 w-4 mr-2" />
             New Course
           </Button>
