@@ -42,7 +42,7 @@ export function NotesTimeline({ notes, onAddNote, isAdding }: NotesTimelineProps
       <CardContent className="space-y-4">
         {/* Add Note Form */}
         {showForm && (
-          <div className="space-y-3 p-4 bg-slate-50 rounded-lg">
+          <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
             <Textarea
               placeholder="Write a note..."
               value={newNote}
@@ -51,7 +51,7 @@ export function NotesTimeline({ notes, onAddNote, isAdding }: NotesTimelineProps
               maxLength={500}
             />
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-muted-foreground/60">
                 {newNote.length}/500 characters
               </span>
               <div className="flex gap-2">
@@ -81,15 +81,15 @@ export function NotesTimeline({ notes, onAddNote, isAdding }: NotesTimelineProps
 
         {/* Notes Timeline */}
         {notes.length === 0 ? (
-          <div className="text-center py-8 text-slate-500">
-            <MessageSquare className="h-8 w-8 mx-auto mb-2 text-slate-300" />
+          <div className="text-center py-8 text-muted-foreground">
+            <MessageSquare className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
             <p>No notes yet</p>
-            <p className="text-sm text-slate-400">Add a note to track progress</p>
+            <p className="text-sm text-muted-foreground/60">Add a note to track progress</p>
           </div>
         ) : (
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-200" />
+            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-muted" />
 
             <div className="space-y-4">
               {notes.map((note, index) => {
@@ -102,21 +102,21 @@ export function NotesTimeline({ notes, onAddNote, isAdding }: NotesTimelineProps
                     {/* Timeline dot */}
                     <div className="absolute left-2.5 top-1 w-3 h-3 bg-blue-950 rounded-full border-2 border-white" />
                     
-                    <div className="bg-white border rounded-lg p-4">
-                      <p className="text-sm text-slate-700 whitespace-pre-wrap">
+                    <div className="bg-card border rounded-lg p-4">
+                      <p className="text-sm text-foreground whitespace-pre-wrap">
                         {note.content}
                       </p>
                       <div className="flex items-center gap-2 mt-3 pt-3 border-t">
-                        <div className="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center">
                           <span className="text-xs font-medium text-muted-foreground">
                             {getInitials(author.name || "S")}
                           </span>
                         </div>
-                        <span className="text-xs text-slate-500">
+                        <span className="text-xs text-muted-foreground">
                           {author.name || "System"}
                         </span>
-                        <span className="text-xs text-slate-400">•</span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground/60">•</span>
+                        <span className="text-xs text-muted-foreground/60">
                           {formatDateTime(note.createdAt)}
                         </span>
                       </div>

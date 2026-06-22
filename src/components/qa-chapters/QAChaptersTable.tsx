@@ -28,8 +28,8 @@ export function QAChaptersTable({ chapters, isLoading, onEdit, onDelete }: QACha
   if (chapters.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No chapters found</p>
-        <p className="text-sm text-slate-400 mt-1">Add a chapter or adjust filters</p>
+        <p className="text-muted-foreground">No chapters found</p>
+        <p className="text-sm text-muted-foreground/60 mt-1">Add a chapter or adjust filters</p>
       </div>
     );
   }
@@ -58,17 +58,17 @@ export function QAChaptersTable({ chapters, isLoading, onEdit, onDelete }: QACha
         <TableBody>
           {chapters.map((chapter, index) => (
             <TableRow key={chapter._id}>
-              <TableCell className="text-slate-500 text-sm">{index + 1}</TableCell>
+              <TableCell className="text-muted-foreground text-sm">{index + 1}</TableCell>
               <TableCell className="font-medium">{chapter.name}</TableCell>
               <TableCell className="text-sm">{getSubjectName(chapter.subject)}</TableCell>
               <TableCell>
-                <Badge className="bg-blue-100 text-blue-700">
+                <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
                   Class {chapter.classLevel}
                 </Badge>
               </TableCell>
-              <TableCell className="text-sm text-slate-500">{chapter.order}</TableCell>
+              <TableCell className="text-sm text-muted-foreground">{chapter.order}</TableCell>
               <TableCell>
-                <Badge className={chapter.isActive ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"}>
+                <Badge className={chapter.isActive ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400" : "bg-muted text-muted-foreground"}>
                   {chapter.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>

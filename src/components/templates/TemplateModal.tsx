@@ -103,7 +103,7 @@ export function TemplateModal({ open, onClose, template }: TemplateModalProps) {
           <div>
             <Label>Title *</Label>
             <Input {...register("title", { required: true })} placeholder="Notification title" />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Placeholders: {"{studentName}"}, {"{chapterName}"}, {"{courseName}"}, {"{score}"}, {"{streak}"}
             </p>
           </div>

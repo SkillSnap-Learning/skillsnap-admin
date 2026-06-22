@@ -229,7 +229,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   questionType === "mcq" || !questionType
                     ? "bg-[#1A3A8F] text-white border-[#1A3A8F]"
-                    : "bg-white text-muted-foreground border-slate-200 hover:border-slate-300"
+                    : "bg-card text-muted-foreground border-border hover:border-slate-300"
                 }`}
               >
                 MCQ
@@ -240,7 +240,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   questionType === "descriptive"
                     ? "bg-[#1A3A8F] text-white border-[#1A3A8F]"
-                    : "bg-white text-muted-foreground border-slate-200 hover:border-slate-300"
+                    : "bg-card text-muted-foreground border-border hover:border-slate-300"
                 }`}
               >
                 Descriptive
@@ -272,7 +272,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 transition-colors ${
                       Number(correctAnswer) === i
                         ? "bg-green-600 text-white"
-                        : "bg-muted text-muted-foreground hover:bg-slate-200"
+                        : "bg-muted text-muted-foreground hover:bg-muted"
                     }`}
                   >
                     {label}
@@ -326,7 +326,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
             <Label>
               {questionType === "descriptive" ? "Answer / Description *" : "Explanation"}
               {questionType !== "descriptive" && (
-                <span className="text-slate-400 text-xs ml-1">(optional)</span>
+                <span className="text-muted-foreground/60 text-xs ml-1">(optional)</span>
               )}
             </Label>
             <Textarea
@@ -362,10 +362,10 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
             <p className="text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
               ⚠️ A question with similar text already exists:
             </p>
-            <p className="text-sm font-medium text-slate-800 bg-slate-50 rounded-lg p-3 border">
+            <p className="text-sm font-medium text-foreground bg-muted/50 rounded-lg p-3 border">
               {duplicateWarning.existingQuestion}
             </p>
-            <p className="text-sm text-slate-500">Do you still want to save this question?</p>
+            <p className="text-sm text-muted-foreground">Do you still want to save this question?</p>
             <div className="flex gap-3 justify-end pt-2">
               <Button variant="outline" onClick={() => setDuplicateWarning(null)}>
                 Cancel

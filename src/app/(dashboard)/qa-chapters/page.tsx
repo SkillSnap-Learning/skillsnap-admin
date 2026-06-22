@@ -68,7 +68,7 @@ export default function QAChaptersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">QA Chapters</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Manage chapters for question & answer
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function QAChaptersPage() {
         )}
 
         {chapters && (
-          <span className="text-sm text-slate-400 ml-auto">
+          <span className="text-sm text-muted-foreground/60 ml-auto">
             {chapters.length} chapter{chapters.length !== 1 ? "s" : ""}
           </span>
         )}

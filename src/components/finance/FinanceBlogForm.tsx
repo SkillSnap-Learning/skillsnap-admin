@@ -153,8 +153,8 @@ export function FinanceBlogForm({
     <div className="space-y-8 max-w-5xl mx-auto">
 
       {/* Basic Info */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Basic Info</h2>
+      <div className="bg-card rounded-xl border border-border p-6 space-y-5">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Basic Info</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5 sm:col-span-2">
             <Label>Title *</Label>
@@ -191,10 +191,10 @@ export function FinanceBlogForm({
       </div>
 
       {/* Cover Image */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Cover Image</h2>
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Cover Image</h2>
         {!blogId ? (
-          <p className="text-xs text-slate-400">Save the blog first to enable cover image upload.</p>
+          <p className="text-xs text-muted-foreground/60">Save the blog first to enable cover image upload.</p>
         ) : (
           <div className="flex items-center gap-3">
             <Button type="button" variant="outline" size="sm"
@@ -211,21 +211,21 @@ export function FinanceBlogForm({
       </div>
 
       {/* Content */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Content</h2>
-        {!blogId && <p className="text-xs text-slate-400">Save the blog first to enable inline image uploads.</p>}
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Content</h2>
+        {!blogId && <p className="text-xs text-muted-foreground/60">Save the blog first to enable inline image uploads.</p>}
         <TipTapEditor value={content} onChange={setContent} onImageUpload={handleEditorImageUpload} />
       </div>
 
       {/* Related Calculators — Finance specific */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Related Calculators</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Related Calculators</h2>
           <Button type="button" variant="outline" size="sm" onClick={addCalc}>
             <Plus className="h-3 w-3 mr-1" /> Add
           </Button>
         </div>
-        <p className="text-xs text-slate-400">Link relevant calculators to appear in the article sidebar.</p>
+        <p className="text-xs text-muted-foreground/60">Link relevant calculators to appear in the article sidebar.</p>
         {relatedCalculators.map((c, i) => (
           <div key={i} className="flex gap-3 items-start">
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -244,14 +244,14 @@ export function FinanceBlogForm({
 
       {/* Related Posts */}
       {otherBlogs.length > 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Related Posts</h2>
+        <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Related Posts</h2>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {otherBlogs.map(b => (
               <label key={b._id} className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={relatedPosts.includes(b._id)}
                   onChange={() => toggleRelated(b._id)} className="accent-blue-950" />
-                <span className="text-sm text-slate-700">{b.title}</span>
+                <span className="text-sm text-foreground">{b.title}</span>
               </label>
             ))}
           </div>
@@ -259,23 +259,23 @@ export function FinanceBlogForm({
       )}
 
       {/* FAQs */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">FAQs</h2>
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">FAQs</h2>
         <div className="space-y-1.5">
           <Label>Section Heading</Label>
           <Input value={faqsTitle} onChange={e => setFaqsTitle(e.target.value)} placeholder="Frequently asked questions" />
         </div>
         {faqs.map((faq, i) => (
-          <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+          <div key={i} className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">FAQ {i + 1}</span>
+              <span className="text-xs font-semibold text-muted-foreground">FAQ {i + 1}</span>
               <Button type="button" variant="ghost" size="sm" onClick={() => removeFaq(i)}
                 className="text-red-500 hover:text-red-700 hover:bg-red-50" disabled={faqs.length <= 1}>
                 <Trash2 className="h-3 w-3" />
               </Button>
             </div>
-            <Input value={faq.question} onChange={e => updateFaq(i, "question", e.target.value)} placeholder="Question" className="bg-white" />
-            <Textarea value={faq.answer} onChange={e => updateFaq(i, "answer", e.target.value)} placeholder="Answer" rows={2} className="bg-white text-sm" />
+            <Input value={faq.question} onChange={e => updateFaq(i, "question", e.target.value)} placeholder="Question" className="bg-card" />
+            <Textarea value={faq.answer} onChange={e => updateFaq(i, "answer", e.target.value)} placeholder="Answer" rows={2} className="bg-card text-sm" />
           </div>
         ))}
         <Button type="button" variant="outline" size="sm" onClick={addFaq} className="text-xs">
@@ -284,34 +284,34 @@ export function FinanceBlogForm({
       </div>
 
       {/* SEO */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">SEO</h2>
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">SEO</h2>
         <div className="space-y-1.5">
           <Label>Meta Title</Label>
           <Input value={metaTitle} onChange={e => setMetaTitle(e.target.value)} placeholder="Leave empty to use title" />
-          <p className="text-xs text-slate-400">
-            <span className={metaTitle.length > 60 ? "text-red-500" : "text-slate-400"}>{metaTitle.length}/60</span>
+          <p className="text-xs text-muted-foreground/60">
+            <span className={metaTitle.length > 60 ? "text-red-500" : "text-muted-foreground/60"}>{metaTitle.length}/60</span>
           </p>
         </div>
         <div className="space-y-1.5">
           <Label>Meta Description</Label>
           <Textarea value={metaDescription} onChange={e => setMetaDescription(e.target.value)} placeholder="Leave empty to use excerpt" rows={3} className="text-sm" />
-          <p className="text-xs text-slate-400">
-            <span className={metaDescription.length > 160 ? "text-red-500" : "text-slate-400"}>{metaDescription.length}/160</span>
+          <p className="text-xs text-muted-foreground/60">
+            <span className={metaDescription.length > 160 ? "text-red-500" : "text-muted-foreground/60"}>{metaDescription.length}/160</span>
           </p>
         </div>
       </div>
 
       {/* Disclaimer + Publish + Actions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-center justify-between flex-wrap gap-4">
+      <div className="bg-card rounded-xl border border-border p-6 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-6">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={disclaimer} onChange={e => setDisclaimer(e.target.checked)} className="accent-emerald-600 w-4 h-4" />
-            <span className="text-sm font-medium text-slate-700">Show SEBI disclaimer</span>
+            <span className="text-sm font-medium text-foreground">Show SEBI disclaimer</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={isPublished} onChange={e => setIsPublished(e.target.checked)} className="accent-blue-950 w-4 h-4" />
-            <span className="text-sm font-medium text-slate-700">Publish immediately</span>
+            <span className="text-sm font-medium text-foreground">Publish immediately</span>
           </label>
         </div>
         <div className="flex gap-3">

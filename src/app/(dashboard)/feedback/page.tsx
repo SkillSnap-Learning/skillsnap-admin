@@ -86,7 +86,7 @@ function SalesFeedbackForm() {
     return (
       <div className="space-y-4">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-24 bg-slate-100 rounded-lg animate-pulse" />
+          <div key={i} className="h-24 bg-muted rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -121,7 +121,7 @@ function SalesFeedbackForm() {
       {/* Form fields */}
       <div className="space-y-5">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-foreground">
             Reasons Why Customers Are Showing Interest
             <span className="text-red-500 ml-1">*</span>
           </label>
@@ -135,13 +135,13 @@ function SalesFeedbackForm() {
             maxLength={2000}
             className="resize-none"
           />
-          <p className="text-xs text-slate-400 text-right">
+          <p className="text-xs text-muted-foreground/60 text-right">
             {form.reasonsInterested.length}/2000
           </p>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-foreground">
             Why Customers Are Not Showing Interest
             <span className="text-red-500 ml-1">*</span>
           </label>
@@ -155,13 +155,13 @@ function SalesFeedbackForm() {
             maxLength={2000}
             className="resize-none"
           />
-          <p className="text-xs text-slate-400 text-right">
+          <p className="text-xs text-muted-foreground/60 text-right">
             {form.reasonsNotInterested.length}/2000
           </p>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-foreground">
             Why Follow Ups Are Turning Into Cold Leads
             <span className="text-red-500 ml-1">*</span>
           </label>
@@ -175,13 +175,13 @@ function SalesFeedbackForm() {
             maxLength={2000}
             className="resize-none"
           />
-          <p className="text-xs text-slate-400 text-right">
+          <p className="text-xs text-muted-foreground/60 text-right">
             {form.followUpColdReasons.length}/2000
           </p>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium text-foreground">
             Suggestions to Make More Conversions
             <span className="text-red-500 ml-1">*</span>
           </label>
@@ -195,7 +195,7 @@ function SalesFeedbackForm() {
             maxLength={2000}
             className="resize-none"
           />
-          <p className="text-xs text-slate-400 text-right">
+          <p className="text-xs text-muted-foreground/60 text-right">
             {form.conversionSuggestions.length}/2000
           </p>
         </div>
@@ -235,7 +235,7 @@ function SalesFeedbackHistory() {
     return (
       <div className="space-y-3 mt-6">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-14 bg-slate-100 rounded-lg animate-pulse" />
+          <div key={i} className="h-14 bg-muted rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -245,7 +245,7 @@ function SalesFeedbackHistory() {
 
   return (
     <div className="space-y-3 mt-2">
-      <h3 className="text-sm font-semibold text-slate-700">
+      <h3 className="text-sm font-semibold text-foreground">
         Last 30 Days History
       </h3>
       {feedbacks.map((item) => (
@@ -254,20 +254,20 @@ function SalesFeedbackHistory() {
             onClick={() =>
               setExpandedId(expandedId === item.id ? null : item.id)
             }
-            className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 transition-colors text-left"
+            className="w-full flex items-center justify-between px-4 py-3 bg-muted/50 hover:bg-muted transition-colors text-left"
           >
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-foreground">
               {format(new Date(item.date), "dd MMM yyyy")}
             </span>
             {expandedId === item.id ? (
-              <ChevronUp className="h-4 w-4 text-slate-400" />
+              <ChevronUp className="h-4 w-4 text-muted-foreground/60" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-slate-400" />
+              <ChevronDown className="h-4 w-4 text-muted-foreground/60" />
             )}
           </button>
 
           {expandedId === item.id && (
-            <div className="px-4 py-4 space-y-4 bg-white">
+            <div className="px-4 py-4 space-y-4 bg-card">
               {[
                 {
                   label: "Reasons Customers Showed Interest",
@@ -287,10 +287,10 @@ function SalesFeedbackHistory() {
                 },
               ].map((field) => (
                 <div key={field.label} className="space-y-1">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                     {field.label}
                   </p>
-                  <p className="text-sm text-slate-700 whitespace-pre-wrap">
+                  <p className="text-sm text-foreground whitespace-pre-wrap">
                     {field.value}
                   </p>
                 </div>
@@ -344,7 +344,7 @@ function OtherFeedbackPanel() {
     <div className="space-y-6">
       {/* Submit new issue */}
       <div className="space-y-3">
-        <label className="text-sm font-medium text-slate-700">
+        <label className="text-sm font-medium text-foreground">
           Describe your issue or concern
         </label>
         <Textarea
@@ -356,7 +356,7 @@ function OtherFeedbackPanel() {
           className="resize-none"
         />
         <div className="flex items-center justify-between">
-          <p className="text-xs text-slate-400">{message.length}/2000</p>
+          <p className="text-xs text-muted-foreground/60">{message.length}/2000</p>
           <Button
             onClick={handleSubmit}
             disabled={submitMutation.isPending}
@@ -370,46 +370,46 @@ function OtherFeedbackPanel() {
 
       {/* My issues list */}
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-slate-700">My Issues</h3>
+        <h3 className="text-sm font-semibold text-foreground">My Issues</h3>
 
         {isLoading ? (
           <div className="space-y-3">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-20 bg-slate-100 rounded-lg animate-pulse" />
+              <div key={i} className="h-20 bg-muted rounded-lg animate-pulse" />
             ))}
           </div>
         ) : !myIssues?.length ? (
-          <p className="text-sm text-slate-400">No issues submitted yet.</p>
+          <p className="text-sm text-muted-foreground/60">No issues submitted yet.</p>
         ) : (
           myIssues.map((item) => (
             <div key={item.id} className="border rounded-lg p-4 space-y-3">
               <div className="flex items-start justify-between gap-2">
-                <p className="text-sm text-slate-700">{item.message}</p>
+                <p className="text-sm text-foreground">{item.message}</p>
                 <Badge
                   className={
                     item.status === "resolved"
-                      ? "bg-green-100 text-green-700 shrink-0"
-                      : "bg-yellow-100 text-yellow-700 shrink-0"
+                      ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400 shrink-0"
+                      : "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400 shrink-0"
                   }
                 >
                   {item.status === "resolved" ? "Replied" : "Pending"}
                 </Badge>
               </div>
 
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground/60">
                 {formatDistanceToNow(new Date(item.createdAt), {
                   addSuffix: true,
                 })}
               </p>
 
               {item.reply && (
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 space-y-1">
-                  <p className="text-xs font-semibold text-blue-700">
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 space-y-1">
+                  <p className="text-xs font-semibold text-blue-600 dark:text-blue-400">
                     Reply from {item.repliedBy?.name || "Admin"}
                   </p>
-                  <p className="text-sm text-slate-700">{item.reply}</p>
+                  <p className="text-sm text-foreground">{item.reply}</p>
                   {item.repliedAt && (
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-muted-foreground/60">
                       {formatDistanceToNow(new Date(item.repliedAt), {
                         addSuffix: true,
                       })}
@@ -444,7 +444,7 @@ function AdminSalesFeedbackView() {
     return (
       <div className="space-y-3">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-14 bg-slate-100 rounded-lg animate-pulse" />
+          <div key={i} className="h-14 bg-muted rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -452,7 +452,7 @@ function AdminSalesFeedbackView() {
 
   if (!data?.feedbacks?.length) {
     return (
-      <p className="text-sm text-slate-400">No sales feedback submitted yet.</p>
+      <p className="text-sm text-muted-foreground/60">No sales feedback submitted yet.</p>
     );
   }
 
@@ -464,25 +464,25 @@ function AdminSalesFeedbackView() {
             onClick={() =>
               setExpandedId(expandedId === item.id ? null : item.id)
             }
-            className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 transition-colors text-left"
+            className="w-full flex items-center justify-between px-4 py-3 bg-muted/50 hover:bg-muted transition-colors text-left"
           >
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-blue-950">
+              <span className="text-sm font-semibold text-foreground">
                 {typeof item.userId === "object" ? item.userId.name : ""}
               </span>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-muted-foreground/60">
                 {format(new Date(item.date), "dd MMM yyyy")}
               </span>
             </div>
             {expandedId === item.id ? (
-              <ChevronUp className="h-4 w-4 text-slate-400" />
+              <ChevronUp className="h-4 w-4 text-muted-foreground/60" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-slate-400" />
+              <ChevronDown className="h-4 w-4 text-muted-foreground/60" />
             )}
           </button>
 
           {expandedId === item.id && (
-            <div className="px-4 py-4 space-y-4 bg-white">
+            <div className="px-4 py-4 space-y-4 bg-card">
               {[
                 {
                   label: "Reasons Customers Showed Interest",
@@ -502,10 +502,10 @@ function AdminSalesFeedbackView() {
                 },
               ].map((field) => (
                 <div key={field.label} className="space-y-1">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                     {field.label}
                   </p>
-                  <p className="text-sm text-slate-700 whitespace-pre-wrap">
+                  <p className="text-sm text-foreground whitespace-pre-wrap">
                     {field.value}
                   </p>
                 </div>
@@ -561,7 +561,7 @@ function AdminOtherFeedbackView() {
     return (
       <div className="space-y-3">
         {[...Array(5)].map((_, i) => (
-          <div key={i} className="h-20 bg-slate-100 rounded-lg animate-pulse" />
+          <div key={i} className="h-20 bg-muted rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -569,7 +569,7 @@ function AdminOtherFeedbackView() {
 
   if (!data?.feedbacks?.length) {
     return (
-      <p className="text-sm text-slate-400">No issues submitted yet.</p>
+      <p className="text-sm text-muted-foreground/60">No issues submitted yet.</p>
     );
   }
 
@@ -580,20 +580,20 @@ function AdminOtherFeedbackView() {
           <div className="flex items-start justify-between gap-2">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-blue-950">
+                <span className="text-sm font-semibold text-foreground">
                   {typeof item.userId === "object" ? item.userId.name : ""}
                 </span>
                 <Badge
                   className={
                     item.status === "resolved"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-yellow-100 text-yellow-700"
+                      ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                      : "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400"
                   }
                 >
                   {item.status === "resolved" ? "Resolved" : "Pending"}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground/60">
                 {formatDistanceToNow(new Date(item.createdAt), {
                   addSuffix: true,
                 })}
@@ -614,17 +614,17 @@ function AdminOtherFeedbackView() {
             )}
           </div>
 
-          <p className="text-sm text-slate-700">{item.message}</p>
+          <p className="text-sm text-foreground">{item.message}</p>
 
           {/* Existing reply */}
           {item.reply && (
-            <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 space-y-1">
-              <p className="text-xs font-semibold text-blue-700">
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 space-y-1">
+              <p className="text-xs font-semibold text-blue-600 dark:text-blue-400">
                 Your reply · {item.repliedBy?.name || "Admin"}
               </p>
-              <p className="text-sm text-slate-700">{item.reply}</p>
+              <p className="text-sm text-foreground">{item.reply}</p>
               {item.repliedAt && (
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-muted-foreground/60">
                   {formatDistanceToNow(new Date(item.repliedAt), {
                     addSuffix: true,
                   })}
@@ -706,7 +706,7 @@ export default function FeedbackPage() {
 
           {/* Regarding Sales tab */}
           <TabsContent value="sales" className="space-y-6">
-            <div className="bg-white rounded-xl border p-6">
+            <div className="bg-card rounded-xl border p-6">
               {isSales() ? (
                 <SalesFeedbackForm />
               ) : (
@@ -717,7 +717,7 @@ export default function FeedbackPage() {
 
           {/* Other Issues tab */}
           <TabsContent value="other" className="space-y-6">
-            <div className="bg-white rounded-xl border p-6">
+            <div className="bg-card rounded-xl border p-6">
               {isSales() ? (
                 <OtherFeedbackPanel />
               ) : (

@@ -198,7 +198,7 @@ export default function ProfilePage() {
                           : <span className="text-sm">{user?.name}</span>}
                         <button
                           onClick={startEditName}
-                          className="text-muted-foreground hover:text-blue-950 transition-colors"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
                           title="Edit name"
                         >
                           <Pencil className="h-3.5 w-3.5" />

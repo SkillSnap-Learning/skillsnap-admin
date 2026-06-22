@@ -170,8 +170,8 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
     <div className="space-y-6 max-w-5xl mx-auto">
 
       {/* Identity */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Identity</h2>
+      <div className="bg-card rounded-xl border border-border p-6 space-y-5">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Identity</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5 sm:col-span-2">
             <Label>Heading *</Label>
@@ -180,7 +180,7 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
           <div className="space-y-1.5">
             <Label>Slug *</Label>
             <Input value={slug} onChange={e => setSlug(e.target.value)} placeholder="sip-calculator" />
-            <p className="text-xs text-slate-400">URL: /calculators/{slug || "..."}</p>
+            <p className="text-xs text-muted-foreground/60">URL: /calculators/{slug || "..."}</p>
           </div>
           <div className="space-y-1.5">
             <Label>Subheading</Label>
@@ -203,12 +203,12 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
                 {FORMULA_TYPES.map(t => <SelectItem key={t} value={t}>{t.toUpperCase()}</SelectItem>)}
               </SelectContent>
             </Select>
-            <p className="text-xs text-slate-400">Which math formula to use for calculations</p>
+            <p className="text-xs text-muted-foreground/60">Which math formula to use for calculations</p>
           </div>
         </div>
 
         {/* Variant section */}
-        <div className="border-t border-slate-100 pt-4 space-y-3">
+        <div className="border-t border-border pt-4 space-y-3">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
@@ -216,8 +216,8 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
               onChange={e => setIsVariant(e.target.checked)}
               className="accent-blue-950 w-4 h-4"
             />
-            <span className="text-sm font-medium text-slate-700">This is an SEO variant</span>
-            <span className="text-xs text-slate-400">(e.g. HDFC SIP Calculator)</span>
+            <span className="text-sm font-medium text-foreground">This is an SEO variant</span>
+            <span className="text-xs text-muted-foreground/60">(e.g. HDFC SIP Calculator)</span>
           </label>
           {isVariant && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pl-6">
@@ -228,7 +228,7 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
               <div className="space-y-1.5">
                 <Label>Canonical URL</Label>
                 <Input value={canonical} onChange={e => setCanonical(e.target.value)} placeholder="/calculators/sip-calculator" />
-                <p className="text-xs text-slate-400">Should point to the core calculator</p>
+                <p className="text-xs text-muted-foreground/60">Should point to the core calculator</p>
               </div>
             </div>
           )}
@@ -236,40 +236,40 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
       </div>
 
       {/* SEO */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">SEO</h2>
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">SEO</h2>
         <div className="space-y-1.5">
           <Label>Meta Title</Label>
           <Input value={metaTitle} onChange={e => setMetaTitle(e.target.value)} placeholder="SIP Calculator — Calculate SIP Returns Online Free" />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Recommended: 50–60 chars.{" "}
-            <span className={metaTitle.length > 60 ? "text-red-500" : "text-slate-400"}>{metaTitle.length}/60</span>
+            <span className={metaTitle.length > 60 ? "text-red-500" : "text-muted-foreground/60"}>{metaTitle.length}/60</span>
           </p>
         </div>
         <div className="space-y-1.5">
           <Label>Meta Description</Label>
           <Textarea value={metaDescription} onChange={e => setMetaDescription(e.target.value)} placeholder="Calculate how your monthly SIP grows..." rows={2} />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Recommended: 150–160 chars.{" "}
-            <span className={metaDescription.length > 160 ? "text-red-500" : "text-slate-400"}>{metaDescription.length}/160</span>
+            <span className={metaDescription.length > 160 ? "text-red-500" : "text-muted-foreground/60"}>{metaDescription.length}/160</span>
           </p>
         </div>
       </div>
 
       {/* Inputs */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Calculator Inputs</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Calculator Inputs</h2>
           <Button type="button" variant="outline" size="sm" onClick={addInput}>
             <Plus className="h-3 w-3 mr-1" /> Add Input
           </Button>
         </div>
-        <p className="text-xs text-slate-400">Each input becomes a slider or number field in the calculator.</p>
+        <p className="text-xs text-muted-foreground/60">Each input becomes a slider or number field in the calculator.</p>
 
         {inputs.map((inp, i) => (
-          <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+          <div key={i} className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">Input {i + 1}</span>
+              <span className="text-xs font-semibold text-muted-foreground">Input {i + 1}</span>
               <Button type="button" variant="ghost" size="sm"
                 onClick={() => removeInput(i)}
                 className="text-red-500 hover:text-red-700 hover:bg-red-50"
@@ -281,17 +281,17 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
               <div className="space-y-1">
                 <Label className="text-xs">ID *</Label>
                 <Input value={inp.id} onChange={e => updateInput(i, "id", e.target.value)}
-                  placeholder="monthlyAmount" className="bg-white text-xs h-8" />
+                  placeholder="monthlyAmount" className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Label *</Label>
                 <Input value={inp.label} onChange={e => updateInput(i, "label", e.target.value)}
-                  placeholder="Monthly Investment" className="bg-white text-xs h-8" />
+                  placeholder="Monthly Investment" className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Type</Label>
                 <Select value={inp.type} onValueChange={val => updateInput(i, "type", val)}>
-                  <SelectTrigger className="bg-white h-8 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectTrigger className="bg-card h-8 text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {INPUT_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
                   </SelectContent>
@@ -300,32 +300,32 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
               <div className="space-y-1">
                 <Label className="text-xs">Min</Label>
                 <Input type="number" value={inp.min} onChange={e => updateInput(i, "min", parseFloat(e.target.value))}
-                  className="bg-white text-xs h-8" />
+                  className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Max</Label>
                 <Input type="number" value={inp.max} onChange={e => updateInput(i, "max", parseFloat(e.target.value))}
-                  className="bg-white text-xs h-8" />
+                  className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Step</Label>
                 <Input type="number" value={inp.step} onChange={e => updateInput(i, "step", parseFloat(e.target.value))}
-                  className="bg-white text-xs h-8" />
+                  className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Default</Label>
                 <Input type="number" value={inp.default} onChange={e => updateInput(i, "default", parseFloat(e.target.value))}
-                  className="bg-white text-xs h-8" />
+                  className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Prefix (e.g. ₹)</Label>
                 <Input value={inp.prefix ?? ""} onChange={e => updateInput(i, "prefix", e.target.value || null)}
-                  placeholder="₹" className="bg-white text-xs h-8" />
+                  placeholder="₹" className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Unit (e.g. %)</Label>
                 <Input value={inp.unit ?? ""} onChange={e => updateInput(i, "unit", e.target.value || null)}
-                  placeholder="%" className="bg-white text-xs h-8" />
+                  placeholder="%" className="bg-card text-xs h-8" />
               </div>
             </div>
           </div>
@@ -333,19 +333,19 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
       </div>
 
       {/* Outputs */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Calculator Outputs</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Calculator Outputs</h2>
           <Button type="button" variant="outline" size="sm" onClick={addOutput}>
             <Plus className="h-3 w-3 mr-1" /> Add Output
           </Button>
         </div>
-        <p className="text-xs text-slate-400">Exactly one output must be highlighted — this becomes the big primary result number.</p>
+        <p className="text-xs text-muted-foreground/60">Exactly one output must be highlighted — this becomes the big primary result number.</p>
 
         {outputs.map((o, i) => (
-          <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+          <div key={i} className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">Output {i + 1}</span>
+              <span className="text-xs font-semibold text-muted-foreground">Output {i + 1}</span>
               <Button type="button" variant="ghost" size="sm"
                 onClick={() => removeOutput(i)}
                 className="text-red-500 hover:text-red-700 hover:bg-red-50"
@@ -357,17 +357,17 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
               <div className="space-y-1">
                 <Label className="text-xs">ID *</Label>
                 <Input value={o.id} onChange={e => updateOutput(i, "id", e.target.value)}
-                  placeholder="totalValue" className="bg-white text-xs h-8" />
+                  placeholder="totalValue" className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Label *</Label>
                 <Input value={o.label} onChange={e => updateOutput(i, "label", e.target.value)}
-                  placeholder="Total Value" className="bg-white text-xs h-8" />
+                  placeholder="Total Value" className="bg-card text-xs h-8" />
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Format</Label>
                 <Select value={o.format} onValueChange={val => updateOutput(i, "format", val)}>
-                  <SelectTrigger className="bg-white h-8 text-xs"><SelectValue /></SelectTrigger>
+                  <SelectTrigger className="bg-card h-8 text-xs"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {OUTPUT_FORMATS.map(f => <SelectItem key={f} value={f}>{f}</SelectItem>)}
                   </SelectContent>
@@ -393,11 +393,11 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
       </div>
 
       {/* Article */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Article Content
         </h2>
-        <p className="text-xs text-slate-400">This appears below the calculator. Use headings, lists, and tables to explain how the calculator works.</p>
+        <p className="text-xs text-muted-foreground/60">This appears below the calculator. Use headings, lists, and tables to explain how the calculator works.</p>
         <TipTapEditor
           value={article}
           onChange={setArticle}
@@ -406,14 +406,14 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
       </div>
 
       {/* Related Articles */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Related Articles</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Related Articles</h2>
           <Button type="button" variant="outline" size="sm" onClick={addArticle}>
             <Plus className="h-3 w-3 mr-1" /> Add Article
           </Button>
         </div>
-        <p className="text-xs text-slate-400">These appear in the sidebar on the calculator page.</p>
+        <p className="text-xs text-muted-foreground/60">These appear in the sidebar on the calculator page.</p>
 
         {relatedArticles.map((a, i) => (
           <div key={i} className="flex gap-3 items-start">
@@ -442,7 +442,7 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
       </div>
 
       {/* Status + Actions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-center justify-between">
+      <div className="bg-card rounded-xl border border-border p-6 flex items-center justify-between">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -450,7 +450,7 @@ export function CalculatorForm({ calculator, onSubmit, isSubmitting, onCancel }:
             onChange={e => setIsActive(e.target.checked)}
             className="accent-blue-950 w-4 h-4"
           />
-          <span className="text-sm font-medium text-slate-700">Active (visible on site)</span>
+          <span className="text-sm font-medium text-foreground">Active (visible on site)</span>
         </label>
         <div className="flex gap-3">
           <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>

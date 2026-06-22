@@ -65,8 +65,8 @@ function CategoryForm({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
-      <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+    <div className="bg-card rounded-xl border border-border p-6 space-y-4">
+      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
         {initial ? "Edit Category" : "New Category"}
       </h3>
 
@@ -116,7 +116,7 @@ function CategoryForm({
               onChange={(e) => setIsActive(e.target.checked)}
               className="accent-blue-950 w-4 h-4"
             />
-            <span className="text-sm text-slate-700">Active</span>
+            <span className="text-sm text-foreground">Active</span>
           </label>
         </div>
       </div>
@@ -235,15 +235,15 @@ export default function CategoriesPage() {
 
         {/* Table */}
         {isLoading ? (
-          <p className="text-slate-500 text-sm">Loading categories...</p>
+          <p className="text-muted-foreground text-sm">Loading categories...</p>
         ) : categories.length === 0 ? (
-          <div className="rounded-lg border border-slate-200 p-8 text-center text-slate-500 text-sm">
+          <div className="rounded-lg border border-border p-8 text-center text-muted-foreground text-sm">
             No categories yet. Create one to get started.
           </div>
         ) : (
-          <div className="rounded-lg border border-slate-200 overflow-hidden">
+          <div className="rounded-lg border border-border overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-muted/50 border-b border-border">
                 <tr>
                   <th className="px-4 py-3 text-left text-muted-foreground font-medium">
                     Order
@@ -265,25 +265,25 @@ export default function CategoriesPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-border">
                 {categories.map((cat) => (
-                  <tr key={cat._id} className="hover:bg-slate-50">
-                    <td className="px-4 py-3 text-slate-500">{cat.order}</td>
-                    <td className="px-4 py-3 font-medium text-slate-900">
+                  <tr key={cat._id} className="hover:bg-muted/50">
+                    <td className="px-4 py-3 text-muted-foreground">{cat.order}</td>
+                    <td className="px-4 py-3 font-medium text-foreground">
                       {cat.name}
                     </td>
-                    <td className="px-4 py-3 text-slate-500 font-mono text-xs">
+                    <td className="px-4 py-3 text-muted-foreground font-mono text-xs">
                       {cat.slug}
                     </td>
-                    <td className="px-4 py-3 text-slate-500 max-w-[200px] truncate">
+                    <td className="px-4 py-3 text-muted-foreground max-w-[200px] truncate">
                       {cat.description || "—"}
                     </td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           cat.isActive
-                            ? "bg-green-100 text-green-700"
-                            : "bg-slate-100 text-slate-500"
+                            ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                            : "bg-muted text-muted-foreground"
                         }`}
                       >
                         {cat.isActive ? "Active" : "Inactive"}
@@ -304,7 +304,7 @@ export default function CategoriesPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10 dark:hover:text-red-400"
                           onClick={() => setDeletingCategory(cat)}
                         >
                           <Trash2 className="h-4 w-4" />

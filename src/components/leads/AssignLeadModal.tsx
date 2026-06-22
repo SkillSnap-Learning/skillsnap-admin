@@ -76,12 +76,12 @@ export function AssignLeadModal({
         </DialogHeader>
 
         <div className="py-4">
-          <label className="text-sm font-medium text-slate-700 mb-2 block">
+          <label className="text-sm font-medium text-foreground mb-2 block">
             Select User
           </label>
           {isLoading ? (
             <div className="flex items-center justify-center py-4">
-              <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground/60" />
             </div>
           ) : (
             <Select value={selectedUserId} onValueChange={setSelectedUserId}>
@@ -93,7 +93,7 @@ export function AssignLeadModal({
                   <SelectItem key={user._id} value={user._id}>
                     <div className="flex flex-col">
                       <span>{user.name}</span>
-                      <span className="text-xs text-slate-400 capitalize">
+                      <span className="text-xs text-muted-foreground/60 capitalize">
                         {user.role?.replace("-", " ")}
                       </span>
                     </div>
@@ -104,7 +104,7 @@ export function AssignLeadModal({
           )}
 
           {lead?.assignedTo && (
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               Currently assigned to: <strong>{lead.assignedTo.name}</strong>
             </p>
           )}

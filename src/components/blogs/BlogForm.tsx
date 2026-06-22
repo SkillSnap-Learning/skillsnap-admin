@@ -262,8 +262,8 @@ export function BlogForm({
     <div className="space-y-8 max-w-5xl mx-auto">
 
       {/* Basic Info */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-5">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Basic Info
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -291,7 +291,7 @@ export function BlogForm({
               </SelectTrigger>
               <SelectContent>
                 {categories.length === 0 ? (
-                  <div className="px-2 py-3 text-sm text-slate-400 text-center">
+                  <div className="px-2 py-3 text-sm text-muted-foreground/60 text-center">
                     No categories yet — create one first
                   </div>
                 ) : (
@@ -333,12 +333,12 @@ export function BlogForm({
       </div>
 
       {/* Cover Image */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Cover Image
         </h2>
         {!blogId ? (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Save the blog first to enable cover image upload.
           </p>
         ) : (
@@ -382,12 +382,12 @@ export function BlogForm({
       </div>
 
       {/* Content Editor */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           Content
         </h2>
         {!blogId && (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Save the blog first to enable inline image uploads inside the editor.
           </p>
         )}
@@ -401,8 +401,8 @@ export function BlogForm({
 
       {/* Related Posts */}
       {otherBlogs.length > 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+        <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
             Related Posts
           </h2>
           <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -417,8 +417,8 @@ export function BlogForm({
                   onChange={() => toggleRelated(b._id)}
                   className="accent-blue-950"
                 />
-                <span className="text-sm text-slate-700">{b.title}</span>
-                <span className="text-xs text-slate-400 ml-auto capitalize">
+                <span className="text-sm text-foreground">{b.title}</span>
+                <span className="text-xs text-muted-foreground/60 ml-auto capitalize">
                   {typeof b.category === "object" ? b.category.name : b.category}
                 </span>
               </label>
@@ -428,8 +428,8 @@ export function BlogForm({
       )}
 
       {/* FAQs */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           FAQs
         </h2>
 
@@ -440,18 +440,18 @@ export function BlogForm({
             value={faqsTitle}
             onChange={(e) => setFaqsTitle(e.target.value)}
             placeholder="Frequently asked questions"
-            className="bg-white"
+            className="bg-card"
           />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Leave empty to use default: "Frequently asked questions"
           </p>
         </div>
 
 
         {faqs.map((faq, i) => (
-          <div key={i} className="border border-slate-200 rounded-lg p-4 space-y-3 bg-slate-50">
+          <div key={i} className="border border-border rounded-lg p-4 space-y-3 bg-muted/50">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">FAQ {i + 1}</span>
+              <span className="text-xs font-semibold text-muted-foreground">FAQ {i + 1}</span>
               <Button type="button" variant="ghost" size="sm"
                 onClick={() => removeFaq(i)}
                 className="text-red-500 hover:text-red-700 hover:bg-red-50"
@@ -461,8 +461,8 @@ export function BlogForm({
             </div>
             <div className="space-y-2">
               <Input value={faq.question} onChange={(e) => updateFaq(i, "question", e.target.value)}
-                placeholder="Question" className="bg-white" />
-              <div className="bg-white rounded-lg">
+                placeholder="Question" className="bg-card" />
+              <div className="bg-card rounded-lg">
                 <TipTapEditor
                   value={faq.answer}
                   onChange={(htmlValue) => updateFaq(i, "answer", htmlValue)}
@@ -482,8 +482,8 @@ export function BlogForm({
       </div>
 
       {/* SEO */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-4">
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+      <div className="bg-card rounded-xl border border-border p-6 space-y-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
           SEO
         </h2>
         <div className="space-y-1.5">
@@ -492,11 +492,11 @@ export function BlogForm({
             value={metaTitle}
             onChange={(e) => setMetaTitle(e.target.value)}
             placeholder="Leave empty to use blog title"
-            className="bg-white"
+            className="bg-card"
           />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Recommended: 50–60 characters.{" "}
-            <span className={metaTitle.length > 60 ? "text-red-500" : "text-slate-400"}>
+            <span className={metaTitle.length > 60 ? "text-red-500" : "text-muted-foreground/60"}>
               {metaTitle.length}/60
             </span>
           </p>
@@ -508,11 +508,11 @@ export function BlogForm({
             onChange={(e) => setMetaDescription(e.target.value)}
             placeholder="Leave empty to use excerpt"
             rows={3}
-            className="bg-white text-sm"
+            className="bg-card text-sm"
           />
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground/60">
             Recommended: 150–160 characters.{" "}
-            <span className={metaDescription.length > 160 ? "text-red-500" : "text-slate-400"}>
+            <span className={metaDescription.length > 160 ? "text-red-500" : "text-muted-foreground/60"}>
               {metaDescription.length}/160
             </span>
           </p>
@@ -520,7 +520,7 @@ export function BlogForm({
       </div>
 
       {/* Publish + Actions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-center justify-between">
+      <div className="bg-card rounded-xl border border-border p-6 flex items-center justify-between">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -528,7 +528,7 @@ export function BlogForm({
             onChange={(e) => setIsPublished(e.target.checked)}
             className="accent-blue-950 w-4 h-4"
           />
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-foreground">
             Publish immediately
           </span>
         </label>

@@ -63,7 +63,7 @@ export default function CalculatorsPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-between">
           <div className="flex flex-col sm:flex-row gap-3 flex-1">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
               <Input
                 placeholder="Search calculators..."
                 value={search}
@@ -103,40 +103,40 @@ export default function CalculatorsPage() {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-muted/50 border-b border-border">
               <tr>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Heading</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Slug</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Type</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Variant</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Status</th>
-                <th className="text-right px-4 py-3 text-slate-500 font-semibold">Actions</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Heading</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Slug</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Type</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Variant</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Status</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border">
               {isLoading ? (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">Loading...</td></tr>
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground/60">Loading...</td></tr>
               ) : calculators.length === 0 ? (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">No calculators found</td></tr>
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground/60">No calculators found</td></tr>
               ) : calculators.map(calc => (
-                <tr key={calc._id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-800">{calc.heading}</td>
-                  <td className="px-4 py-3 text-slate-500 font-mono text-xs">{calc.slug}</td>
+                <tr key={calc._id} className="hover:bg-muted/50">
+                  <td className="px-4 py-3 font-medium text-foreground">{calc.heading}</td>
+                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{calc.slug}</td>
                   <td className="px-4 py-3">
-                    <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-semibold uppercase">
+                    <span className="bg-blue-500/10 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded text-xs font-semibold uppercase">
                       {calc.type}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-500 text-xs">
-                    {calc.variant || <span className="text-slate-300">—</span>}
+                  <td className="px-4 py-3 text-muted-foreground text-xs">
+                    {calc.variant || <span className="text-muted-foreground/40">—</span>}
                   </td>
                   <td className="px-4 py-3">
                     <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
                       calc.isActive
                         ? "bg-green-50 text-green-700"
-                        : "bg-slate-100 text-slate-500"
+                        : "bg-muted text-muted-foreground"
                     }`}>
                       {calc.isActive ? "Active" : "Inactive"}
                     </span>
@@ -147,21 +147,21 @@ export default function CalculatorsPage() {
                         href={`http://localhost:3000/calculators/${calc.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1.5 text-slate-400 hover:text-slate-700 rounded"
+                        className="p-1.5 text-muted-foreground/60 hover:text-foreground rounded"
                         title="Preview"
                       >
                         <ExternalLink className="h-4 w-4" />
                       </a>
                       <button
                         onClick={() => router.push(`/calculators/${calc._id}/edit`)}
-                        className="p-1.5 text-slate-400 hover:text-blue-600 rounded"
+                        className="p-1.5 text-muted-foreground/60 hover:text-blue-600 rounded"
                         title="Edit"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => { setSelected(calc); setDeleteOpen(true); }}
-                        className="p-1.5 text-slate-400 hover:text-red-600 rounded"
+                        className="p-1.5 text-muted-foreground/60 hover:text-red-600 rounded"
                         title="Delete"
                       >
                         <Trash2 className="h-4 w-4" />

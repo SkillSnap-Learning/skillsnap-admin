@@ -24,20 +24,20 @@ interface UsersTableProps {
 }
 
 const roleColors: Record<string, string> = {
-  superadmin: "bg-purple-100 text-purple-700",
-  admin: "bg-blue-100 text-blue-700",
-  "sales-manager": "bg-indigo-100 text-indigo-700",
-  "team-lead": "bg-teal-100 text-teal-700",
-  sales: "bg-green-100 text-green-700",
-  support: "bg-yellow-100 text-yellow-700",
-  instructor: "bg-orange-100 text-orange-700",
-  student: "bg-slate-100 text-slate-700",
+  superadmin: "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400",
+  admin: "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+  "sales-manager": "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+  "team-lead": "bg-teal-100 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400",
+  sales: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  support: "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400",
+  instructor: "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
+  student: "bg-muted text-muted-foreground",
 };
 
 const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-700",
-  inactive: "bg-slate-100 text-slate-700",
-  suspended: "bg-red-100 text-red-700",
+  active: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  inactive: "bg-muted text-muted-foreground",
+  suspended: "bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400",
 };
 
 export function UsersTable({
@@ -68,7 +68,7 @@ export function UsersTable({
   if (users.length === 0) {
     return (
       <div className="bg-card rounded-xl border p-12 text-center">
-        <p className="text-slate-500">No users found</p>
+        <p className="text-muted-foreground">No users found</p>
       </div>
     );
   }
@@ -79,28 +79,28 @@ export function UsersTable({
         <table className="w-full">
           <thead className="bg-muted/50 border-b">
             <tr>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3">
                 User
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden sm:table-cell">
                 Email
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3">
                 Role
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden md:table-cell">
                 Team
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Status
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Created
               </th>
               <th className="w-12 px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-border">
             {users.map((user, index) => (
               <tr
                 key={user._id || user.id || index}
@@ -114,8 +114,8 @@ export function UsersTable({
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-slate-900">{user.name}</p>
-                      <p className="text-xs text-slate-400 sm:hidden">
+                      <p className="font-medium text-foreground">{user.name}</p>
+                      <p className="text-xs text-muted-foreground/60 sm:hidden">
                         {user.email}
                       </p>
                     </div>
@@ -138,7 +138,7 @@ export function UsersTable({
                       {user.team.name}
                     </span>
                   ) : (
-                    <span className="text-sm text-slate-400">-</span>
+                    <span className="text-sm text-muted-foreground/60">-</span>
                   )}
                 </td>
                 <td className="px-4 py-3 hidden lg:table-cell">
@@ -150,7 +150,7 @@ export function UsersTable({
                   </Badge>
                 </td>
                 <td className="px-4 py-3 hidden lg:table-cell">
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-muted-foreground">
                     {formatDate(user.createdAt)}
                   </span>
                 </td>

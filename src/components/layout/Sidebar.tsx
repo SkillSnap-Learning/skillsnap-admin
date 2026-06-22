@@ -201,7 +201,7 @@ function SidebarPanel({
       {/* Product switcher */}
       {!collapsed && (
         <div className="px-3 pt-4 pb-2 flex-shrink-0">
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-1 mb-2">
+          <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest px-1 mb-2">
             Product
           </p>
           <div className="flex rounded-lg border overflow-hidden bg-muted p-0.5 gap-0.5">
@@ -264,7 +264,7 @@ function SidebarPanel({
       {/* Section label */}
       {!collapsed && (
         <div className="px-4 pb-1">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">
             {product === "learning" ? "SkillSnap Learning" : "SkillSnap Finance"}
           </p>
         </div>
@@ -274,7 +274,7 @@ function SidebarPanel({
       <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
         {activeNav.length === 0 ? (
           !collapsed && (
-            <p className="text-xs text-slate-400 px-3 py-4 text-center">
+            <p className="text-xs text-muted-foreground/60 px-3 py-4 text-center">
               No items available
             </p>
           )

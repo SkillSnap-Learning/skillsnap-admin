@@ -56,7 +56,7 @@ export function ChaptersTable({
   if (chapters.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No chapters found</p>
+        <p className="text-muted-foreground">No chapters found</p>
       </div>
     );
   }
@@ -85,14 +85,14 @@ export function ChaptersTable({
                     <Badge variant="outline">Ch {chapter.chapterNumber}</Badge>
                   </TableCell>
                   <TableCell className="font-medium">{chapter.title}</TableCell>
-                  <TableCell className="text-sm text-slate-500 max-w-xs truncate">
+                  <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
                     {chapter.description || "—"}
                   </TableCell>
                   <TableCell>
                     <Badge
                       className={
                         chapter.notesUrl
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
                           : "bg-muted text-muted-foreground"
                       }
                     >
@@ -103,7 +103,7 @@ export function ChaptersTable({
                     <Badge
                       className={
                         chapter.assessmentUrl
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
                           : "bg-muted text-muted-foreground"
                       }
                     >
@@ -114,14 +114,14 @@ export function ChaptersTable({
                     <Badge
                       className={
                         chapter.isActive
-                          ? "bg-green-100 text-green-700"
-                          : "bg-slate-100 text-slate-700"
+                          ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                          : "bg-muted text-muted-foreground"
                       }
                     >
                       {chapter.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-sm text-slate-500">
+                  <TableCell className="text-sm text-muted-foreground">
                     {chapter.createdAt
                       ? formatDistanceToNow(new Date(chapter.createdAt), {
                           addSuffix: true,
@@ -137,7 +137,7 @@ export function ChaptersTable({
                         onClick={() => handleUpload(chapter)}
                         className={
                           uploadingChapterId === chapter._id
-                            ? "bg-blue-50 text-blue-600"
+                            ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
                             : ""
                         }
                       >
@@ -178,7 +178,7 @@ export function ChaptersTable({
                 {/* Inline upload panel */}
                 {uploadingChapterId === chapter._id && (
                   <TableRow key={`${chapter._id}-upload`}>
-                    <TableCell colSpan={8} className="p-3 bg-slate-50">
+                    <TableCell colSpan={8} className="p-3 bg-muted/50">
                       <ChapterNotesUploadPanel
                         chapter={chapter}
                         subjectId={subjectId}

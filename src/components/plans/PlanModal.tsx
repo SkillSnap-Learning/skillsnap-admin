@@ -123,7 +123,7 @@ export function PlanModal({ open, onClose, plan }: PlanModalProps) {
               {...register("slug", { required: "Slug is required" })}
               placeholder="e.g., basic"
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Lowercase, no spaces (e.g. basic, advanced, elite, guest)
             </p>
             {errors.slug && (

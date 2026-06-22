@@ -37,7 +37,7 @@ export function PlansTable({ plans, isLoading, onEdit, onDelete }: PlansTablePro
   if (plans.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No plans found</p>
+        <p className="text-muted-foreground">No plans found</p>
       </div>
     );
   }
@@ -61,20 +61,20 @@ export function PlansTable({ plans, isLoading, onEdit, onDelete }: PlansTablePro
             <TableRow key={plan._id}>
               <TableCell className="font-medium">{plan.name}</TableCell>
               <TableCell>
-                <code className="text-xs bg-slate-100 px-2 py-1 rounded">
+                <code className="text-xs bg-muted px-2 py-1 rounded">
                   {plan.slug}
                 </code>
               </TableCell>
               <TableCell>
                 {plan.isGuestPlan ? (
-                  <Badge className="bg-orange-100 text-orange-700">Guest</Badge>
+                  <Badge className="bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400">Guest</Badge>
                 ) : (
-                  <Badge className="bg-blue-100 text-blue-700">Paid</Badge>
+                  <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">Paid</Badge>
                 )}
               </TableCell>
               <TableCell>
                 {plan.isGuestPlan ? (
-                  <span className="text-slate-400 text-sm">Free</span>
+                  <span className="text-muted-foreground/60 text-sm">Free</span>
                 ) : (
                   <span className="text-sm">
                     ₹{plan.price.amount.toLocaleString()}
@@ -85,14 +85,14 @@ export function PlansTable({ plans, isLoading, onEdit, onDelete }: PlansTablePro
                 <Badge
                   className={
                     plan.isActive
-                      ? "bg-green-100 text-green-700"
-                      : "bg-slate-100 text-slate-700"
+                      ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                      : "bg-muted text-muted-foreground"
                   }
                 >
                   {plan.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>
-              <TableCell className="text-sm text-slate-500">
+              <TableCell className="text-sm text-muted-foreground">
                 {plan.createdAt
                     ? formatDistanceToNow(new Date(plan.createdAt), { addSuffix: true })
                     : "—"}

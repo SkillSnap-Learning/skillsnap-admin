@@ -144,7 +144,7 @@ export function TeamMembersModal({
                   <SelectItem key={user._id || user.id!} value={user._id || user.id!}>
                     <div className="flex items-center gap-2">
                       <span>{user.name}</span>
-                      <span className="text-xs text-slate-400 capitalize">
+                      <span className="text-xs text-muted-foreground/60 capitalize">
                         ({user.role.replace("-", " ")})
                       </span>
                     </div>
@@ -174,18 +174,18 @@ export function TeamMembersModal({
           <div className="border rounded-lg divide-y max-h-[300px] overflow-y-auto">
             {membersLoading ? (
               <div className="p-8 text-center">
-                <Loader2 className="h-6 w-6 animate-spin mx-auto text-slate-400" />
+                <Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground/60" />
               </div>
             ) : members?.length === 0 ? (
-              <div className="p-8 text-center text-slate-500">
-                <UserCircle className="h-8 w-8 mx-auto mb-2 text-slate-300" />
+              <div className="p-8 text-center text-muted-foreground">
+                <UserCircle className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
                 <p>No members in this team</p>
               </div>
             ) : (
               members?.map((member: User) => (
                 <div
                   key={member._id || member.id}
-                  className="flex items-center justify-between p-3 hover:bg-slate-50"
+                  className="flex items-center justify-between p-3 hover:bg-muted/50"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-blue-950 rounded-full flex items-center justify-center">
@@ -195,7 +195,7 @@ export function TeamMembersModal({
                     </div>
                     <div>
                       <p className="text-sm font-medium">{member.name}</p>
-                      <p className="text-xs text-slate-400 capitalize">
+                      <p className="text-xs text-muted-foreground/60 capitalize">
                         {member.role.replace("-", " ")}
                       </p>
                     </div>
@@ -203,7 +203,7 @@ export function TeamMembersModal({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50"
+                    className="h-8 w-8 text-muted-foreground/60 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                     onClick={() => handleRemoveMember(member._id || member.id!)}
                     disabled={removeMemberMutation.isPending}
                   >
@@ -214,7 +214,7 @@ export function TeamMembersModal({
             )}
           </div>
 
-          <p className="text-xs text-slate-400 text-center">
+          <p className="text-xs text-muted-foreground/60 text-center">
             {members?.length || 0} member{members?.length !== 1 ? "s" : ""} in this team
           </p>
         </div>

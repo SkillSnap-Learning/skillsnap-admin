@@ -180,7 +180,7 @@ export function TeamModal({
               {errors.description && (
                 <p className="text-xs text-red-500">{errors.description}</p>
               )}
-              <p className="text-xs text-slate-400 ml-auto">
+              <p className="text-xs text-muted-foreground/60 ml-auto">
                 {formData.description?.length || 0}/200
               </p>
             </div>

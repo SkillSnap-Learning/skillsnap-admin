@@ -144,7 +144,7 @@ export default function DashboardPage() {
                 ))}
               </div>
             ) : salesStats?.recentReplies?.length === 0 ? (
-              <p className="text-sm text-slate-400">No replies yet.</p>
+              <p className="text-sm text-muted-foreground/60">No replies yet.</p>
             ) : (
               <div className="space-y-3">
                 {salesStats?.recentReplies?.map((item: OtherFeedback) => (
@@ -156,14 +156,14 @@ export default function DashboardPage() {
                       <p className="text-sm font-medium text-foreground line-clamp-1">
                         {item.message}
                       </p>
-                      <Badge className="bg-green-100 text-green-700 text-xs shrink-0 ml-2">
+                      <Badge className="bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400 text-xs shrink-0 ml-2">
                         Replied
                       </Badge>
                     </div>
-                    <p className="text-sm text-slate-500 line-clamp-2">
+                    <p className="text-sm text-muted-foreground line-clamp-2">
                       {item.reply}
                     </p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-muted-foreground/60">
                       {item.repliedAt
                         ? formatDistanceToNow(new Date(item.repliedAt), {
                             addSuffix: true,

@@ -81,7 +81,7 @@ export default function QuestionsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Questions</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Manage MCQ questions by subject and class
           </p>
         </div>
@@ -160,7 +160,7 @@ export default function QuestionsPage() {
         )}
 
         {data && (
-          <span className="text-sm text-slate-400 ml-auto">
+          <span className="text-sm text-muted-foreground/60 ml-auto">
             {data.length} question{data.length !== 1 ? "s" : ""}
           </span>
         )}

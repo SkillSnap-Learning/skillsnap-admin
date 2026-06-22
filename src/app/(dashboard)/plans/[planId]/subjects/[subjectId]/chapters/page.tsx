@@ -68,25 +68,25 @@ export default function ChaptersPage() {
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
-        <Link href="/plans" className="hover:text-blue-950">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
+        <Link href="/plans" className="hover:text-foreground">
           Plans
         </Link>
         <ChevronRight className="h-4 w-4" />
         <Link
           href={`/plans/${planId}/subjects`}
-          className="hover:text-blue-950"
+          className="hover:text-foreground"
         >
           {plan?.name || "..."}
         </Link>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-blue-950 font-medium">{subjectLabel}</span>
+        <span className="text-foreground font-medium">{subjectLabel}</span>
       </div>
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-blue-950">Chapters</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Chapters</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             {plan?.name} — {subjectLabel}
           </p>
         </div>

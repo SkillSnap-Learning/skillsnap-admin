@@ -25,13 +25,13 @@ interface SubjectsTableProps {
 }
 
 const subjectColors: Record<string, string> = {
-  maths: "bg-blue-100 text-blue-700",
-  science: "bg-green-100 text-green-700",
-  english: "bg-purple-100 text-purple-700",
-  social_science: "bg-orange-100 text-orange-700",
-  coding: "bg-pink-100 text-pink-700",
-  life_skills: "bg-teal-100 text-teal-700",
-  general: "bg-slate-100 text-slate-700",
+  maths: "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+  science: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  english: "bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400",
+  social_science: "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
+  coding: "bg-pink-100 text-pink-700 dark:bg-pink-500/10 dark:text-pink-400",
+  life_skills: "bg-teal-100 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400",
+  general: "bg-muted text-foreground",
 };
 
 export function SubjectsTable({
@@ -54,7 +54,7 @@ export function SubjectsTable({
   if (subjects.length === 0) {
     return (
       <div className="text-center py-12 border rounded-lg">
-        <p className="text-slate-500">No subjects found</p>
+        <p className="text-muted-foreground">No subjects found</p>
       </div>
     );
   }
@@ -78,7 +78,7 @@ export function SubjectsTable({
               <TableCell>
                 <Badge
                   className={
-                    subjectColors[subject.name] || "bg-slate-100 text-slate-700"
+                    subjectColors[subject.name] || "bg-muted text-foreground"
                   }
                 >
                   {subject.name
@@ -89,21 +89,21 @@ export function SubjectsTable({
               <TableCell>
                 <Badge variant="outline">Class {subject.class}</Badge>
               </TableCell>
-              <TableCell className="text-sm text-slate-500 max-w-xs truncate">
+              <TableCell className="text-sm text-muted-foreground max-w-xs truncate">
                 {subject.description || "—"}
               </TableCell>
               <TableCell>
                 <Badge
                   className={
                     subject.isActive
-                      ? "bg-green-100 text-green-700"
-                      : "bg-slate-100 text-slate-700"
+                      ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400"
+                      : "bg-muted text-muted-foreground"
                   }
                 >
                   {subject.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>
-              <TableCell className="text-sm text-slate-500">
+              <TableCell className="text-sm text-muted-foreground">
                 {subject.createdAt
                     ? formatDistanceToNow(new Date(subject.createdAt), { addSuffix: true })
                     : "—"}

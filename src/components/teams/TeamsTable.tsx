@@ -24,8 +24,8 @@ interface TeamsTableProps {
 }
 
 const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-700",
-  inactive: "bg-slate-100 text-slate-700",
+  active: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  inactive: "bg-muted text-muted-foreground",
 };
 
 export function TeamsTable({
@@ -56,8 +56,8 @@ export function TeamsTable({
   if (teams.length === 0) {
     return (
       <div className="bg-card rounded-xl border p-12 text-center">
-        <p className="text-slate-500">No teams found</p>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-muted-foreground">No teams found</p>
+        <p className="text-sm text-muted-foreground/60 mt-1">
           Create your first team to get started
         </p>
       </div>
@@ -70,25 +70,25 @@ export function TeamsTable({
         <table className="w-full">
           <thead className="bg-muted/50 border-b">
             <tr>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3">
                 Team
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden sm:table-cell">
                 Team Lead
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3">
                 Members
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden md:table-cell">
                 Status
               </th>
-              <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
+              <th className="text-left text-xs font-medium text-muted-foreground uppercase tracking-wider px-4 py-3 hidden lg:table-cell">
                 Created
               </th>
               <th className="w-12 px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-border">
             {teams.map((team, index) => {
               const teamLead = typeof team.teamLead === "object" ? team.teamLead : null;
               
@@ -99,13 +99,13 @@ export function TeamsTable({
                 >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-9 h-9 bg-blue-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Users className="h-4 w-4 text-blue-600" />
                       </div>
                       <div>
-                        <p className="font-medium text-slate-900">{team.name}</p>
+                        <p className="font-medium text-foreground">{team.name}</p>
                         {team.description && (
-                          <p className="text-xs text-slate-400 truncate max-w-[200px]">
+                          <p className="text-xs text-muted-foreground/60 truncate max-w-[200px]">
                             {team.description}
                           </p>
                         )}
@@ -115,7 +115,7 @@ export function TeamsTable({
                   <td className="px-4 py-3 hidden sm:table-cell">
                     {teamLead ? (
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 bg-slate-200 rounded-full flex items-center justify-center">
+                        <div className="w-7 h-7 bg-muted rounded-full flex items-center justify-center">
                           <span className="text-xs font-medium text-muted-foreground">
                             {getInitials(teamLead.name)}
                           </span>
@@ -125,7 +125,7 @@ export function TeamsTable({
                         </span>
                       </div>
                     ) : (
-                      <span className="text-sm text-slate-400">Not assigned</span>
+                      <span className="text-sm text-muted-foreground/60">Not assigned</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -142,7 +142,7 @@ export function TeamsTable({
                     </Badge>
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-muted-foreground">
                       {formatDate(team.createdAt)}
                     </span>
                   </td>
