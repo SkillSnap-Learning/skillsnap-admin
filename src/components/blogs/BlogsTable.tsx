@@ -10,10 +10,34 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Copy, Check } from "lucide-react";
 import { Blog } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { TextTooltip } from "../ui/text-tooltip";
+import { useState } from "react";
+
+function SlugCell({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(`/${slug}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className="mt-1 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-muted hover:bg-muted/80 transition-colors cursor-pointer max-w-fit"
+      title="Copy slug"
+    >
+      <span className="text-xs text-muted-foreground font-mono break-all">/{slug}</span>
+      {copied
+        ? <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
+        : <Copy className="h-3 w-3 text-muted-foreground/60 flex-shrink-0" />}
+    </button>
+  );
+}
 
 interface BlogsTableProps {
   blogs: Blog[];
@@ -72,9 +96,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
                 <TextTooltip text={blog.excerpt}>
                   <p className="text-xs text-muted-foreground/60 truncate mt-0.5">{blog.excerpt}</p>
                 </TextTooltip>
-                <TextTooltip text={`/${blog.slug}`}>
-                  <p className="text-xs text-muted-foreground/60 mt-0.5">/{blog.slug}</p>
-                </TextTooltip>
+                <SlugCell slug={blog.slug} />
               </TableCell>
 
               {/* Category */}
