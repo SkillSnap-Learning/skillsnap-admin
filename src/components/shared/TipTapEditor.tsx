@@ -16,6 +16,7 @@ import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { Pdf } from "./extensions/PdfExtension";
+import { Youtube, toEmbedUrl } from "./extensions/YoutubeExtension";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +31,7 @@ import {
   Table as TableIcon, Trash2, Columns3, Rows3,
   ArrowLeftToLine, ArrowRightToLine, ArrowUpToLine, ArrowDownToLine,
   Merge, Split, Heading as HeadingIcon, Pilcrow,
-  FileText,
+  FileText, Clapperboard,
 } from "lucide-react";
 import CodeMirror from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
@@ -80,6 +81,7 @@ export function TipTapEditor({
       TableHeader,
       TableCell,
       Pdf,
+      Youtube,
     ],
     editorProps: {
       transformPastedHTML(html) {
@@ -155,6 +157,17 @@ export function TipTapEditor({
     } catch (e) {
       console.error("PDF upload failed", e);
     }
+  };
+
+  const handleYoutubeInsert = () => {
+    const url = window.prompt("Enter YouTube URL");
+    if (!url) return;
+    const embedUrl = toEmbedUrl(url.trim());
+    if (!embedUrl) {
+      window.alert("Could not recognise a YouTube URL. Please use a youtube.com/watch or youtu.be link.");
+      return;
+    }
+    editor.chain().focus().setYoutube({ src: embedUrl }).run();
   };
 
   const setLink = () => {
@@ -447,6 +460,9 @@ export function TipTapEditor({
               />
             </>
           )}
+          <ToolbarButton title="Insert YouTube Video" onClick={handleYoutubeInsert}>
+            <Clapperboard className="h-4 w-4" />
+          </ToolbarButton>
 
           <Divider />
 
