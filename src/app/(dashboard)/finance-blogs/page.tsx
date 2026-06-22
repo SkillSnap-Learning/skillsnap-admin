@@ -136,7 +136,7 @@ export default function FinanceBlogsPage() {
           <div className="flex justify-center gap-2">
             {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(p => (
               <button key={p} onClick={() => setPage(p)}
-                className={`px-3 py-1.5 rounded text-sm font-medium ${p === page ? "bg-blue-950 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}>
+                className={`px-3 py-1.5 rounded text-sm font-medium ${p === page ? "bg-blue-950 text-white" : "bg-white border border-slate-200 text-muted-foreground hover:bg-slate-50"}`}>
                 {p}
               </button>
             ))}

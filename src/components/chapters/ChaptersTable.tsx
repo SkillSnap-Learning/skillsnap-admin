@@ -93,7 +93,7 @@ export function ChaptersTable({
                       className={
                         chapter.notesUrl
                           ? "bg-green-100 text-green-700"
-                          : "bg-slate-100 text-slate-600"
+                          : "bg-muted text-muted-foreground"
                       }
                     >
                       {chapter.notesUrl ? "Uploaded" : "None"}
@@ -104,7 +104,7 @@ export function ChaptersTable({
                       className={
                         chapter.assessmentUrl
                           ? "bg-green-100 text-green-700"
-                          : "bg-slate-100 text-slate-600"
+                          : "bg-muted text-muted-foreground"
                       }
                     >
                       {chapter.assessmentUrl ? "Uploaded" : "None"}

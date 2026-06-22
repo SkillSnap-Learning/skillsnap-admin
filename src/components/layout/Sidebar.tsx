@@ -314,7 +314,7 @@ function SidebarPanel({
           variant="ghost"
           onClick={onLogout}
           className={cn(
-            "w-full justify-start text-slate-600 hover:text-red-600 hover:bg-red-50",
+            "w-full justify-start text-muted-foreground hover:text-red-600 hover:bg-red-50",
             collapsed && "justify-center px-2"
           )}
         >

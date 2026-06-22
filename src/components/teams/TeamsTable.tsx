@@ -116,11 +116,11 @@ export function TeamsTable({
                     {teamLead ? (
                       <div className="flex items-center gap-2">
                         <div className="w-7 h-7 bg-slate-200 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-medium text-slate-600">
+                          <span className="text-xs font-medium text-muted-foreground">
                             {getInitials(teamLead.name)}
                           </span>
                         </div>
-                        <span className="text-sm text-slate-600">
+                        <span className="text-sm text-muted-foreground">
                           {teamLead.name}
                         </span>
                       </div>
@@ -129,7 +129,7 @@ export function TeamsTable({
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-sm font-medium text-slate-600">
+                    <span className="text-sm font-medium text-muted-foreground">
                       {team.membersCount || 0}
                     </span>
                   </td>

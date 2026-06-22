@@ -95,7 +95,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
                       {lead.phone}
                     </p>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-600 hidden sm:table-cell">
+                  <td className="px-4 py-3 text-sm text-muted-foreground hidden sm:table-cell">
                     {lead.phone}
                   </td>
                   <td className="px-4 py-3">
@@ -106,7 +106,7 @@ export function RecentLeadsTable({ leads, isLoading }: RecentLeadsTableProps) {
                       {lead.status}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-600 hidden md:table-cell">
+                  <td className="px-4 py-3 text-sm text-muted-foreground hidden md:table-cell">
                     {lead.assignedTo?.name || (
                       <span className="text-slate-400">Unassigned</span>
                     )}

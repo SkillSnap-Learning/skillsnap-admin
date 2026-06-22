@@ -245,22 +245,22 @@ export default function CategoriesPage() {
             <table className="w-full text-sm">
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-slate-600 font-medium">
+                  <th className="px-4 py-3 text-left text-muted-foreground font-medium">
                     Order
                   </th>
-                  <th className="px-4 py-3 text-left text-slate-600 font-medium">
+                  <th className="px-4 py-3 text-left text-muted-foreground font-medium">
                     Name
                   </th>
-                  <th className="px-4 py-3 text-left text-slate-600 font-medium">
+                  <th className="px-4 py-3 text-left text-muted-foreground font-medium">
                     Slug
                   </th>
-                  <th className="px-4 py-3 text-left text-slate-600 font-medium">
+                  <th className="px-4 py-3 text-left text-muted-foreground font-medium">
                     Description
                   </th>
-                  <th className="px-4 py-3 text-left text-slate-600 font-medium">
+                  <th className="px-4 py-3 text-left text-muted-foreground font-medium">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-right text-slate-600 font-medium">
+                  <th className="px-4 py-3 text-right text-muted-foreground font-medium">
                     Actions
                   </th>
                 </tr>

@@ -165,7 +165,7 @@ export default function ResourcePagesPage() {
               </div>
               <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg">
                 <span className="w-2 h-2 rounded-full bg-slate-400" />
-                <span className="text-sm font-medium text-slate-600">
+                <span className="text-sm font-medium text-muted-foreground">
                   {statsData?.drafts ?? "—"} Drafts
                 </span>
               </div>

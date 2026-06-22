@@ -44,7 +44,7 @@ export default function EditCalculatorPage() {
       <Header title="Edit Calculator" description={data?.heading} />
       <div className="p-6 space-y-6">
         <Button variant="ghost" onClick={() => router.push("/calculators")}
-          className="text-slate-600 hover:text-slate-900 -ml-2">
+          className="text-muted-foreground hover:text-slate-900 -ml-2">
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back to Calculators
         </Button>

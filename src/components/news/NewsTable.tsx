@@ -74,7 +74,7 @@ export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps)
               </TableCell>
 
               <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isPublished ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"}`}>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isPublished ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}>
                   {item.isPublished ? "Published" : "Draft"}
                 </span>
               </TableCell>
@@ -82,7 +82,7 @@ export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps)
               <TableCell>
                 <div className="flex flex-wrap gap-1 max-w-[160px]">
                   {item.tags.slice(0, 2).map((tag) => (
-                    <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-600">
+                    <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground">
                       {tag}
                     </span>
                   ))}
@@ -92,15 +92,15 @@ export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps)
                 </div>
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {item.readTime ?? "—"}
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {item.publishedAt ? formatDate(item.publishedAt) : "—"}
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {item.createdAt ? formatDate(item.createdAt) : "—"}
               </TableCell>
 

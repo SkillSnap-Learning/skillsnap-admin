@@ -133,7 +133,7 @@ export function QASubjectModal({ open, onClose, subject }: QASubjectModalProps) 
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                     classLevels.includes(cls)
                       ? "bg-blue-600 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      : "bg-muted text-muted-foreground hover:bg-slate-200"
                   }`}
                 >
                   Class {cls}

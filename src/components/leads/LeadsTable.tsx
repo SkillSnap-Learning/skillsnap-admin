@@ -130,7 +130,7 @@ export function LeadsTable({
                   </p>
                 </td>
                 <td className="px-4 py-3 hidden sm:table-cell">
-                  <p className="text-sm text-slate-600">{formatPhone(lead.phone)}</p>
+                  <p className="text-sm text-muted-foreground">{formatPhone(lead.phone)}</p>
                   {lead.email && (
                     <p className="text-xs text-slate-400 truncate max-w-[200px]">
                       {lead.email}
@@ -138,12 +138,12 @@ export function LeadsTable({
                   )}
                 </td>
                 <td className="px-4 py-3 hidden lg:table-cell">
-                  <span className="text-sm text-slate-600 capitalize">
+                  <span className="text-sm text-muted-foreground capitalize">
                     {lead.source?.replace("_", " ") || "-"}
                   </span>
                 </td>
                 <td className="px-4 py-3 hidden lg:table-cell">
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-muted-foreground">
                     {lead.board || "-"}
                   </span>
                 </td>
@@ -156,7 +156,7 @@ export function LeadsTable({
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell">
                   {lead.assignedTo ? (
-                    <span className="text-sm text-slate-600">
+                    <span className="text-sm text-muted-foreground">
                       {lead.assignedTo.name}
                     </span>
                   ) : (

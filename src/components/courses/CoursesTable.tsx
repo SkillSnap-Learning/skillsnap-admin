@@ -104,12 +104,12 @@ export function CoursesTable({ courses, isLoading, onEdit, onDelete }: CoursesTa
               </TableCell>
 
               <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${course.isPublished ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"}`}>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${course.isPublished ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}>
                   {course.isPublished ? "Published" : "Draft"}
                 </span>
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {course.createdAt ? formatDate(course.createdAt) : "—"}
               </TableCell>
 

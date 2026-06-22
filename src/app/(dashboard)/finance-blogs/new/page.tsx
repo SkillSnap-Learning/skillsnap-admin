@@ -45,7 +45,7 @@ export default function NewFinanceBlogPage() {
       <Header title="New Finance Blog" description="Create a new article for SkillSnap Finance" />
       <div className="p-6 space-y-6">
         <Button variant="ghost" onClick={() => router.push("/finance-blogs")}
-          className="text-slate-600 hover:text-slate-900 -ml-2">
+          className="text-muted-foreground hover:text-slate-900 -ml-2">
           <ArrowLeft className="h-4 w-4 mr-1" /> Back to Finance Blogs
         </Button>
         <FinanceBlogForm

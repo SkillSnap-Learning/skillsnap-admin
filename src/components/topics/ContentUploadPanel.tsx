@@ -117,7 +117,7 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
                   ? "bg-green-100 text-green-700"
                   : topic.videoStatus === "uploading"
                   ? "bg-yellow-100 text-yellow-700"
-                  : "bg-slate-100 text-slate-600"
+                  : "bg-muted text-muted-foreground"
               }
             >
               {topic.videoStatus === "ready" ? (
@@ -153,7 +153,7 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
 
           {videoFile ? (
             <div className="space-y-2">
-              <div className="text-xs text-slate-600 bg-white border rounded px-3 py-2 space-y-0.5">
+              <div className="text-xs text-muted-foreground bg-card border rounded px-3 py-2 space-y-0.5">
                 <p><strong>File:</strong> {videoFile.name}</p>
                 <p><strong>Size:</strong> {(videoFile.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
@@ -237,7 +237,7 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
               className={
                 topic.notesUrl
                   ? "bg-green-100 text-green-700"
-                  : "bg-slate-100 text-slate-600"
+                  : "bg-muted text-muted-foreground"
               }
             >
               {topic.notesUrl ? (
@@ -271,7 +271,7 @@ export function ContentUploadPanel({ topic, chapterId }: ContentUploadPanelProps
 
           {notesFile ? (
             <div className="space-y-2">
-              <div className="text-xs text-slate-600 bg-white border rounded px-3 py-2 space-y-0.5">
+              <div className="text-xs text-muted-foreground bg-card border rounded px-3 py-2 space-y-0.5">
                 <p><strong>File:</strong> {notesFile.name}</p>
                 <p><strong>Size:</strong> {(notesFile.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>

@@ -122,7 +122,7 @@ export function UsersTable({
                   </div>
                 </td>
                 <td className="px-4 py-3 hidden sm:table-cell">
-                  <p className="text-sm text-slate-600">{user.email}</p>
+                  <p className="text-sm text-muted-foreground">{user.email}</p>
                 </td>
                 <td className="px-4 py-3">
                   <Badge
@@ -134,7 +134,7 @@ export function UsersTable({
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell">
                   {typeof user.team === "object" && user.team ? (
-                    <span className="text-sm text-slate-600">
+                    <span className="text-sm text-muted-foreground">
                       {user.team.name}
                     </span>
                   ) : (

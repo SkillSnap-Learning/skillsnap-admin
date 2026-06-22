@@ -108,7 +108,7 @@ export function NotesTimeline({ notes, onAddNote, isAdding }: NotesTimelineProps
                       </p>
                       <div className="flex items-center gap-2 mt-3 pt-3 border-t">
                         <div className="w-6 h-6 bg-slate-200 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-medium text-slate-600">
+                          <span className="text-xs font-medium text-muted-foreground">
                             {getInitials(author.name || "S")}
                           </span>
                         </div>

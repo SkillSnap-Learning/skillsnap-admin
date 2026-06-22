@@ -101,16 +101,16 @@ export function ResourcePagesTable({
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     page.isPublished
                       ? "bg-green-100 text-green-700"
-                      : "bg-slate-100 text-slate-600"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   {page.isPublished ? "Published" : "Draft"}
                 </span>
               </TableCell>
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {page.createdAt ? formatDate(page.createdAt) : "—"}
               </TableCell>
-              <TableCell className="text-sm text-slate-600">  {/* ← add this */}
+              <TableCell className="text-sm text-muted-foreground">  {/* ← add this */}
                 {page.createdBy?.name ?? "—"}
                 </TableCell>
               <TableCell className="text-right">

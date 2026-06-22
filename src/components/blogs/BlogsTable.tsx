@@ -92,7 +92,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     blog.isPublished
                       ? "bg-green-100 text-green-700"
-                      : "bg-slate-100 text-slate-600"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   {blog.isPublished ? "Published" : "Draft"}
@@ -105,7 +105,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
                   {blog.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-600"
+                      className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground"
                     >
                       {tag}
                     </span>
@@ -119,22 +119,22 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
               </TableCell>
 
               {/* Read Time */}
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {blog.readTime ?? "—"}
               </TableCell>
 
               {/* Created At */}
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {blog.createdAt ? formatDate(blog.createdAt) : "—"}
               </TableCell>
 
               {/* Updated At */}
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {blog.updatedAt ? formatDate(blog.updatedAt) : "—"}
               </TableCell>
 
               {/* Published At */}
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {blog.publishedAt ? formatDate(blog.publishedAt) : "—"}
               </TableCell>
 

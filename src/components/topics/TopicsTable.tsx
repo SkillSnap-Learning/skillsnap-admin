@@ -25,7 +25,7 @@ interface TopicsTableProps {
 }
 
 const videoStatusColors: Record<string, string> = {
-  none: "bg-slate-100 text-slate-600",
+  none: "bg-muted text-muted-foreground",
   uploading: "bg-yellow-100 text-yellow-700",
   ready: "bg-green-100 text-green-700",
 };

@@ -160,7 +160,7 @@ function CardPicker({
               className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
                 isActive
                   ? "bg-blue-950 text-white border-blue-950"
-                  : "bg-white text-slate-600 border-slate-200 hover:border-blue-950 hover:text-blue-950"
+                  : "bg-card text-muted-foreground border-border hover:border-blue-950 hover:text-blue-950"
               }`}
             >
               {opt.label}
@@ -179,7 +179,7 @@ function SlugPreview({ slug }: { slug: string }) {
   return (
     <p className="text-xs text-slate-400">
       URL:{" "}
-      <span className="font-mono text-slate-600">
+      <span className="font-mono text-muted-foreground">
         skillsnaplearning.com/{slug}
       </span>
     </p>

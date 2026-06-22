@@ -89,7 +89,7 @@ export function TemplatesTable({ templates, isLoading, onEdit, onToggleActive }:
               <TableCell className="font-medium max-w-xs truncate">
                 {template.title}
               </TableCell>
-              <TableCell className="max-w-md truncate text-sm text-slate-600">
+              <TableCell className="max-w-md truncate text-sm text-muted-foreground">
                 {template.message}
               </TableCell>
               <TableCell>

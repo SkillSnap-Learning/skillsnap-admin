@@ -18,7 +18,7 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
       <CardContent className="space-y-4">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-slate-100 rounded-lg">
-            <Phone className="h-4 w-4 text-slate-600" />
+            <Phone className="h-4 w-4 text-muted-foreground" />
           </div>
           <div>
             <p className="text-xs text-slate-500">Phone</p>
@@ -29,7 +29,7 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
         {lead.email && (
           <div className="flex items-center gap-3">
             <div className="p-2 bg-slate-100 rounded-lg">
-              <Mail className="h-4 w-4 text-slate-600" />
+              <Mail className="h-4 w-4 text-muted-foreground" />
             </div>
             <div>
               <p className="text-xs text-slate-500">Email</p>
@@ -40,7 +40,7 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
 
         <div className="flex items-center gap-3">
           <div className="p-2 bg-slate-100 rounded-lg">
-            <Globe className="h-4 w-4 text-slate-600" />
+            <Globe className="h-4 w-4 text-muted-foreground" />
           </div>
           <div>
             <p className="text-xs text-slate-500">Source</p>
@@ -53,7 +53,7 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
         {lead.board && (
           <div className="flex items-center gap-3">
             <div className="p-2 bg-slate-100 rounded-lg">
-              <Building2 className="h-4 w-4 text-slate-600" />
+              <Building2 className="h-4 w-4 text-muted-foreground" />
             </div>
             <div>
               <p className="text-xs text-slate-500">Board</p>
@@ -68,7 +68,7 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
 
         <div className="flex items-center gap-3">
           <div className="p-2 bg-slate-100 rounded-lg">
-            <Calendar className="h-4 w-4 text-slate-600" />
+            <Calendar className="h-4 w-4 text-muted-foreground" />
           </div>
           <div>
             <p className="text-xs text-slate-500">Created</p>
@@ -79,7 +79,7 @@ export function LeadInfoCard({ lead }: LeadInfoCardProps) {
         {lead.team && (
           <div className="flex items-center gap-3">
             <div className="p-2 bg-slate-100 rounded-lg">
-              <Building2 className="h-4 w-4 text-slate-600" />
+              <Building2 className="h-4 w-4 text-muted-foreground" />
             </div>
             <div>
               <p className="text-xs text-slate-500">Team</p>

@@ -229,7 +229,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   questionType === "mcq" || !questionType
                     ? "bg-[#1A3A8F] text-white border-[#1A3A8F]"
-                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                    : "bg-white text-muted-foreground border-slate-200 hover:border-slate-300"
                 }`}
               >
                 MCQ
@@ -240,7 +240,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${
                   questionType === "descriptive"
                     ? "bg-[#1A3A8F] text-white border-[#1A3A8F]"
-                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+                    : "bg-white text-muted-foreground border-slate-200 hover:border-slate-300"
                 }`}
               >
                 Descriptive
@@ -272,7 +272,7 @@ export function QuestionModal({ open, onClose, question }: QuestionModalProps) {
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 transition-colors ${
                       Number(correctAnswer) === i
                         ? "bg-green-600 text-white"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        : "bg-muted text-muted-foreground hover:bg-slate-200"
                     }`}
                   >
                     {label}
