@@ -103,7 +103,11 @@ export default function ProfilePage() {
     <div>
       <Header title="Profile" description="Manage your account details and security" />
 
-      <div className="p-6 max-w-3xl space-y-6">
+      <div className="p-6 max-w-5xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        {/* ── Left column ── */}
+        <div className="lg:col-span-2 space-y-6">
 
         {/* Identity card */}
         <div className="bg-white rounded-xl border p-6">
@@ -205,36 +209,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Permissions */}
-        <div className="bg-white rounded-xl border p-6">
-          <h2 className="text-sm font-semibold text-blue-950 mb-4">Permissions</h2>
-          {isLoading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-8 bg-slate-100 rounded animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {Object.entries(user?.permissions ?? {}).map(([key, granted]) => (
-                <div
-                  key={key}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium border ${
-                    granted
-                      ? "bg-green-50 border-green-200 text-green-700"
-                      : "bg-slate-50 border-slate-200 text-slate-400"
-                  }`}
-                >
-                  {granted
-                    ? <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
-                    : <ShieldOff className="h-3.5 w-3.5 shrink-0" />}
-                  {PERMISSION_LABELS[key] ?? key}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         {/* Change password */}
         <div className="bg-white rounded-xl border p-6">
           <h2 className="text-sm font-semibold text-blue-950 mb-1 flex items-center gap-2">
@@ -244,7 +218,7 @@ export default function ProfilePage() {
             Choose a strong password of at least 6 characters.
           </p>
 
-          <div className="space-y-4 max-w-sm">
+          <div className="space-y-4">
             {(["current", "next", "confirm"] as const).map((field) => {
               const labels = { current: "Current Password", next: "New Password", confirm: "Confirm New Password" };
               return (
@@ -290,6 +264,43 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        </div>{/* end left column */}
+
+        {/* ── Right column — Permissions ── */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-xl border p-6 sticky top-6">
+            <h2 className="text-sm font-semibold text-blue-950 mb-4 flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4" /> Permissions
+            </h2>
+            {isLoading ? (
+              <div className="space-y-2">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="h-8 bg-slate-100 rounded animate-pulse" />
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-1.5">
+                {Object.entries(user?.permissions ?? {}).map(([key, granted]) => (
+                  <div
+                    key={key}
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium border ${
+                      granted
+                        ? "bg-green-50 border-green-200 text-green-700"
+                        : "bg-slate-50 border-slate-200 text-slate-400"
+                    }`}
+                  >
+                    {granted
+                      ? <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+                      : <ShieldOff className="h-3.5 w-3.5 shrink-0" />}
+                    <span>{PERMISSION_LABELS[key] ?? key}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        </div>{/* end grid */}
       </div>
     </div>
   );
