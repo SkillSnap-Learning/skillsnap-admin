@@ -79,7 +79,7 @@ export default function TopicsPage() {
     : "...";
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
         <Link href="/plans" className="hover:text-foreground">

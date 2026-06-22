@@ -7,7 +7,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { AuthUser } from "@/types";
 import {
   LayoutDashboard, Users, UserCircle, Building2,
-  LogOut, ChevronLeft, Menu, BookOpen, FileText,
+  LogOut, ChevronLeft, BookOpen, FileText,
   HelpCircle, Newspaper, MessageSquare, Tag, Library,
   Calculator, Bell, GraduationCap, Layers, TrendingUp,
 } from "lucide-react";
@@ -332,12 +332,13 @@ function SidebarPanel({
 interface SidebarProps {
   collapsed: boolean;
   onCollapsedChange: (v: boolean) => void;
+  mobileOpen: boolean;
+  onMobileOpenChange: (v: boolean) => void;
 }
 
-export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
+export function Sidebar({ collapsed, onCollapsedChange, mobileOpen, onMobileOpenChange }: SidebarProps) {
   const pathname = usePathname();
   const { user, logout, hasRole } = useAuthStore();
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const FINANCE_PATHS = ["/calculators", "/finance-categories", "/finance-blogs"];
   const isFinancePath = FINANCE_PATHS.some(p => pathname.startsWith(p));
@@ -364,7 +365,7 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
     collapsed,
     onCollapsedChange,
     mobileOpen,
-    onMobileClose: () => setMobileOpen(false),
+    onMobileClose: () => onMobileOpenChange(false),
     product,
     onProductChange: setProduct,
     activeNav,
@@ -375,21 +376,11 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile menu button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-[14px] left-3 z-40"
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
-
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setMobileOpen(false)}
+          onClick={() => onMobileOpenChange(false)}
         />
       )}
 
