@@ -61,7 +61,7 @@ export default function FinanceBlogsPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-between">
           <div className="flex gap-3 flex-1">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
               <Input placeholder="Search blogs..." value={search}
                 onChange={e => { setSearch(e.target.value); setPage(1); }} className="pl-10" />
             </div>
@@ -80,31 +80,31 @@ export default function FinanceBlogsPage() {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-muted/50 border-b border-border">
               <tr>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Title</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Slug</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Category</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Status</th>
-                <th className="text-right px-4 py-3 text-slate-500 font-semibold">Actions</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Title</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Slug</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Category</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Status</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border">
               {isLoading ? (
-                <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-400">Loading...</td></tr>
+                <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground/60">Loading...</td></tr>
               ) : blogs.length === 0 ? (
-                <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-400">No blogs yet</td></tr>
+                <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground/60">No blogs yet</td></tr>
               ) : blogs.map(blog => (
-                <tr key={blog._id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-800 max-w-xs truncate">{blog.title}</td>
-                  <td className="px-4 py-3 font-mono text-xs text-slate-500">{blog.slug}</td>
-                  <td className="px-4 py-3 text-slate-500 text-xs">
+                <tr key={blog._id} className="hover:bg-muted/50">
+                  <td className="px-4 py-3 font-medium text-foreground max-w-xs truncate">{blog.title}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{blog.slug}</td>
+                  <td className="px-4 py-3 text-muted-foreground text-xs">
                     {typeof blog.category === "object" ? blog.category.name : blog.category}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${blog.isPublished ? "bg-green-50 text-green-700" : "bg-slate-100 text-slate-500"}`}>
+                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${blog.isPublished ? "bg-green-50 text-green-700" : "bg-muted text-muted-foreground"}`}>
                       {blog.isPublished ? "Published" : "Draft"}
                     </span>
                   </td>
@@ -112,15 +112,15 @@ export default function FinanceBlogsPage() {
                     <div className="flex items-center justify-end gap-2">
                       <a href={`http://localhost:3000/${typeof blog.category === "object" ? blog.category.slug : "blog"}/${blog.slug}`}
                         target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 text-slate-400 hover:text-slate-700 rounded" title="Preview">
+                        className="p-1.5 text-muted-foreground/60 hover:text-foreground rounded" title="Preview">
                         <ExternalLink className="h-4 w-4" />
                       </a>
                       <button onClick={() => router.push(`/finance-blogs/${blog._id}/edit`)}
-                        className="p-1.5 text-slate-400 hover:text-blue-600 rounded" title="Edit">
+                        className="p-1.5 text-muted-foreground/60 hover:text-blue-600 rounded" title="Edit">
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button onClick={() => { setSelected(blog); setDeleteOpen(true); }}
-                        className="p-1.5 text-slate-400 hover:text-red-600 rounded" title="Delete">
+                        className="p-1.5 text-muted-foreground/60 hover:text-red-600 rounded" title="Delete">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -136,7 +136,7 @@ export default function FinanceBlogsPage() {
           <div className="flex justify-center gap-2">
             {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(p => (
               <button key={p} onClick={() => setPage(p)}
-                className={`px-3 py-1.5 rounded text-sm font-medium ${p === page ? "bg-blue-950 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}>
+                className={`px-3 py-1.5 rounded text-sm font-medium ${p === page ? "bg-blue-950 text-white" : "bg-card border border-border text-muted-foreground hover:bg-muted/50"}`}>
                 {p}
               </button>
             ))}

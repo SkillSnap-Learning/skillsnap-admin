@@ -21,15 +21,15 @@ interface NewsTableProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  featured: "bg-blue-100 text-blue-700",
-  new: "bg-green-100 text-green-700",
-  hot: "bg-orange-100 text-orange-700",
+  featured: "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+  new: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  hot: "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
 };
 
 export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps) {
   if (isLoading) {
     return (
-      <div className="rounded-lg border border-slate-200 p-8 text-center text-slate-500">
+      <div className="rounded-lg border border-border p-8 text-center text-muted-foreground">
         Loading news...
       </div>
     );
@@ -37,17 +37,17 @@ export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps)
 
   if (news.length === 0) {
     return (
-      <div className="rounded-lg border border-slate-200 p-8 text-center text-slate-500">
+      <div className="rounded-lg border border-border p-8 text-center text-muted-foreground">
         No news found.
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-slate-200 overflow-hidden">
+    <div className="rounded-lg border border-border overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="bg-slate-50">
+          <TableRow className="bg-muted/50">
             <TableHead>Title</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Status</TableHead>
@@ -62,19 +62,19 @@ export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps)
           {news.map((item) => (
             <TableRow key={item._id}>
               <TableCell className="max-w-[260px]">
-                <p className="font-medium text-slate-900 truncate">{item.title}</p>
-                <p className="text-xs text-slate-400 truncate mt-0.5">{item.excerpt}</p>
-                <p className="text-xs text-slate-400 mt-0.5">/{item.slug}</p>
+                <p className="font-medium text-foreground truncate">{item.title}</p>
+                <p className="text-xs text-muted-foreground/60 truncate mt-0.5">{item.excerpt}</p>
+                <p className="text-xs text-muted-foreground/60 mt-0.5">/{item.slug}</p>
               </TableCell>
 
               <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[item.category] ?? "bg-slate-100 text-slate-700"}`}>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[item.category] ?? "bg-muted text-foreground"}`}>
                   {item.category}
                 </span>
               </TableCell>
 
               <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isPublished ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-600"}`}>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isPublished ? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400" : "bg-muted text-muted-foreground"}`}>
                   {item.isPublished ? "Published" : "Draft"}
                 </span>
               </TableCell>
@@ -82,25 +82,25 @@ export function NewsTable({ news, isLoading, onEdit, onDelete }: NewsTableProps)
               <TableCell>
                 <div className="flex flex-wrap gap-1 max-w-[160px]">
                   {item.tags.slice(0, 2).map((tag) => (
-                    <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-600">
+                    <span key={tag} className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground">
                       {tag}
                     </span>
                   ))}
                   {item.tags.length > 2 && (
-                    <span className="text-xs text-slate-400">+{item.tags.length - 2}</span>
+                    <span className="text-xs text-muted-foreground/60">+{item.tags.length - 2}</span>
                   )}
                 </div>
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {item.readTime ?? "—"}
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {item.publishedAt ? formatDate(item.publishedAt) : "—"}
               </TableCell>
 
-              <TableCell className="text-sm text-slate-600">
+              <TableCell className="text-sm text-muted-foreground">
                 {item.createdAt ? formatDate(item.createdAt) : "—"}
               </TableCell>
 

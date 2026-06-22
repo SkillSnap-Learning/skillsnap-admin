@@ -55,7 +55,7 @@ export default function EditBlogPage() {
     return (
       <div>
         <Header title="Edit Blog" />
-        <div className="p-6 text-slate-500">Loading...</div>
+        <div className="p-6 text-muted-foreground">Loading...</div>
       </div>
     );
   }
@@ -67,7 +67,7 @@ export default function EditBlogPage() {
         <Button
           variant="ghost"
           onClick={() => router.push("/blogs")}
-          className="text-slate-600 hover:text-slate-900 -ml-2"
+          className="text-muted-foreground hover:text-foreground -ml-2"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back to Blogs

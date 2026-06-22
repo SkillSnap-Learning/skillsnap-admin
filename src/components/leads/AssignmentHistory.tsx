@@ -11,9 +11,9 @@ interface AssignmentHistoryProps {
 }
 
 const reasonColors: Record<string, string> = {
-  manual: "bg-blue-100 text-blue-700",
-  auto: "bg-green-100 text-green-700",
-  reassigned: "bg-yellow-100 text-yellow-700",
+  manual: "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+  auto: "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400",
+  reassigned: "bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400",
 };
 
 export function AssignmentHistory({ history }: AssignmentHistoryProps) {
@@ -27,8 +27,8 @@ export function AssignmentHistory({ history }: AssignmentHistoryProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-slate-500">
-            <UserCheck className="h-8 w-8 mx-auto mb-2 text-slate-300" />
+          <div className="text-center py-8 text-muted-foreground">
+            <UserCheck className="h-8 w-8 mx-auto mb-2 text-muted-foreground/40" />
             <p>No assignment history</p>
           </div>
         </CardContent>
@@ -57,7 +57,7 @@ export function AssignmentHistory({ history }: AssignmentHistoryProps) {
             return (
               <div
                 key={item._id || index}
-                className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg"
+                className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg"
               >
                 <div className="w-8 h-8 bg-blue-950 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-xs font-medium text-white">
@@ -76,7 +76,7 @@ export function AssignmentHistory({ history }: AssignmentHistoryProps) {
                       {item.reason}
                     </Badge>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Assigned by {assignedBy.name || "System"} •{" "}
                     {formatDateTime(item.assignedAt)}
                   </p>

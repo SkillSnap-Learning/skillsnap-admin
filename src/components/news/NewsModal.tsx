@@ -247,7 +247,7 @@ export function NewsModal({
           <div className="space-y-2">
             <Label>Cover Image</Label>
             {!newsId ? (
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground/60">
                 Save the news first to enable cover image upload.
               </p>
             ) : (
@@ -294,7 +294,7 @@ export function NewsModal({
           <div className="space-y-2">
             <Label>Content</Label>
             {!newsId && (
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground/60">
                 Save the news first to enable inline image uploads inside the editor.
               </p>
             )}
@@ -310,7 +310,7 @@ export function NewsModal({
           {otherNews.length > 0 && (
             <div className="space-y-2">
               <Label>Related News</Label>
-              <div className="border border-slate-200 rounded-lg p-3 space-y-2 max-h-40 overflow-y-auto">
+              <div className="border border-border rounded-lg p-3 space-y-2 max-h-40 overflow-y-auto">
                 {otherNews.map((n) => (
                   <label
                     key={n._id}
@@ -322,8 +322,8 @@ export function NewsModal({
                       onChange={() => toggleRelated(n._id)}
                       className="accent-blue-950"
                     />
-                    <span className="text-sm text-slate-700">{n.title}</span>
-                    <span className="text-xs text-slate-400 ml-auto capitalize">
+                    <span className="text-sm text-foreground">{n.title}</span>
+                    <span className="text-xs text-muted-foreground/60 ml-auto capitalize">
                       {n.category}
                     </span>
                   </label>
@@ -340,7 +340,7 @@ export function NewsModal({
               onChange={(e) => setIsPublished(e.target.checked)}
               className="accent-blue-950 w-4 h-4"
             />
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-foreground">
               Publish immediately
             </span>
           </label>
@@ -359,7 +359,7 @@ export function NewsModal({
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="bg-blue-950 hover:bg-blue-900"
+              className="bg-blue-950 hover:bg-blue-900 text-white"
             >
               {isSubmitting && (
                 <Loader2 className="h-4 w-4 mr-1 animate-spin" />

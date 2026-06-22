@@ -180,7 +180,7 @@ export function TeamModal({
               {errors.description && (
                 <p className="text-xs text-red-500">{errors.description}</p>
               )}
-              <p className="text-xs text-slate-400 ml-auto">
+              <p className="text-xs text-muted-foreground/60 ml-auto">
                 {formData.description?.length || 0}/200
               </p>
             </div>
@@ -240,7 +240,7 @@ export function TeamModal({
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             {isSubmitting && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             {isEditing ? "Save Changes" : "Create Team"}

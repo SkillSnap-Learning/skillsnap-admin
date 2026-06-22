@@ -154,10 +154,10 @@ export default function LeadsPage() {
             {canAssignLeads() && (
               <Button
                 onClick={handleAutoAssign}
-                className="bg-blue-950 hover:bg-blue-900"
+                className="bg-blue-950 hover:bg-blue-900 text-white"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
-                Auto-Assign
+                Auto-Assign Leads
               </Button>
             )}
             {canExportLeads() && (
@@ -170,8 +170,8 @@ export default function LeadsPage() {
 
           {/* Bulk Actions */}
           {selectedLeads.length > 0 && canAssignLeads() && (
-            <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-lg">
-              <span className="text-sm text-blue-700">
+            <div className="flex items-center gap-2 bg-muted px-4 py-2 rounded-lg border">
+              <span className="text-sm font-medium text-foreground">
                 {selectedLeads.length} selected
               </span>
               <Button

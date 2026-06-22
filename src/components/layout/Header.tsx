@@ -2,10 +2,11 @@
 
 import { useAuthStore } from "@/stores/authStore";
 import { getInitials } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/lib/api";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 import { ChangePasswordModal } from "@/components/profile/ChangePasswordModal";
 import {
   DropdownMenu,
@@ -16,11 +17,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, KeyRound } from "lucide-react";
+import { LogOut, User, KeyRound, Sun, Moon } from "lucide-react";
+import Link from "next/link";
 
 interface HeaderProps {
   title: string;
   description?: string;
+}
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className="w-9 h-9" />;
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="text-muted-foreground hover:text-foreground"
+    >
+      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </Button>
+  );
 }
 
 export function Header({ title, description }: HeaderProps) {
@@ -50,59 +70,65 @@ export function Header({ title, description }: HeaderProps) {
   };
 
   return (
-    <header className="h-16 border-b bg-white flex items-center justify-between px-6">
+    <header className="h-16 border-b bg-card flex items-center justify-between px-4 lg:px-6">
       <div>
-        <h1 className="text-xl font-semibold text-blue-950">{title}</h1>
+        <h1 className="text-xl font-semibold text-blue-950 dark:text-foreground">{title}</h1>
         {description && (
-          <p className="text-sm text-slate-500">{description}</p>
+          <p className="text-sm text-muted-foreground">{description}</p>
         )}
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2 hover:bg-slate-100"
-          >
-            <div className="w-8 h-8 bg-blue-950 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">
-                {user ? getInitials(user.name) : "?"}
+      <div className="flex items-center gap-1">
+        <ThemeToggle />
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 hover:bg-accent"
+            >
+              <div className="w-8 h-8 bg-blue-950 rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-medium">
+                  {user ? getInitials(user.name) : "?"}
+                </span>
+              </div>
+              <span className="hidden sm:inline text-sm font-medium">
+                {user?.name}
               </span>
-            </div>
-            <span className="hidden sm:inline text-sm font-medium">
-              {user?.name}
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>
-            <div>
-              <p className="font-medium">{user?.name}</p>
-              <p className="text-xs text-slate-500">{user?.email}</p>
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setChangePasswordOpen(true)}
-            className="cursor-pointer"
-          >
-            <KeyRound className="mr-2 h-4 w-4" />
-            Change Password
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={handleLogout}
-            className="cursor-pointer text-red-600 focus:text-red-600"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>
+              <div>
+                <p className="font-medium">{user?.name}</p>
+                <p className="text-xs text-muted-foreground">{user?.email}</p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href="/profile">
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setChangePasswordOpen(true)}
+              className="cursor-pointer"
+            >
+              <KeyRound className="mr-2 h-4 w-4" />
+              Change Password
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="cursor-pointer text-destructive focus:text-destructive"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <ChangePasswordModal
         open={changePasswordOpen}

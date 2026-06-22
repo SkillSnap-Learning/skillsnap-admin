@@ -114,7 +114,7 @@ export function QASubjectModal({ open, onClose, subject }: QASubjectModalProps) 
 
           {/* Icon */}
           <div className="space-y-1.5">
-            <Label>Icon <span className="text-slate-400 text-xs">(emoji, optional)</span></Label>
+            <Label>Icon <span className="text-muted-foreground/60 text-xs">(emoji, optional)</span></Label>
             <Input
               {...register("icon")}
               placeholder="e.g. 🔬 or ➕"
@@ -133,7 +133,7 @@ export function QASubjectModal({ open, onClose, subject }: QASubjectModalProps) 
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                     classLevels.includes(cls)
                       ? "bg-blue-600 text-white"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      : "bg-muted text-muted-foreground hover:bg-muted"
                   }`}
                 >
                   Class {cls}
@@ -143,7 +143,7 @@ export function QASubjectModal({ open, onClose, subject }: QASubjectModalProps) 
             {classLevels.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-1">
                 {classLevels.map((cls) => (
-                  <Badge key={cls} className="bg-blue-100 text-blue-700 gap-1">
+                  <Badge key={cls} className="bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 gap-1">
                     Class {cls}
                     <X className="w-3 h-3 cursor-pointer" onClick={() => toggleClass(cls)} />
                   </Badge>

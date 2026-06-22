@@ -86,7 +86,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
       {/* Search and Filter Toggle */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
           <Input
             placeholder="Search by name, email, or phone..."
             value={search}
@@ -98,7 +98,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
-            className={showFilters ? "bg-slate-100" : ""}
+            className={showFilters ? "bg-muted" : ""}
           >
             <Filter className="h-4 w-4 mr-2" />
             Filters
@@ -117,10 +117,10 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
       {/* Filter Dropdowns */}
       {showFilters && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-4 bg-slate-50 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 p-4 bg-muted/50 rounded-lg">
           {/* Status Filter */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-500">Status</label>
+            <label className="text-xs font-medium text-muted-foreground">Status</label>
             <Select
               value={filters.status || "all"}
               onValueChange={(value) => handleFilterChange("status", value)}
@@ -140,7 +140,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
           {/* Source Filter */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-500">Source</label>
+            <label className="text-xs font-medium text-muted-foreground">Source</label>
             <Select
               value={filters.source || "all"}
               onValueChange={(value) => handleFilterChange("source", value)}
@@ -163,7 +163,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
           {/* Assigned To Filter */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-500">Assigned To</label>
+            <label className="text-xs font-medium text-muted-foreground">Assigned To</label>
             <Select
               value={filters.assignedTo || "all"}
               onValueChange={(value) => handleFilterChange("assignedTo", value)}
@@ -186,7 +186,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
           {/* Team Filter */}
           {canManageTeams() && (
             <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-500">Team</label>
+              <label className="text-xs font-medium text-muted-foreground">Team</label>
               <Select
                 value={filters.team || "all"}
                 onValueChange={(value) => handleFilterChange("team", value)}
@@ -208,7 +208,7 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
           {/* Board Filter */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-500">Board</label>
+            <label className="text-xs font-medium text-muted-foreground">Board</label>
             <Select
               value={filters.board || "all"}
               onValueChange={(value) => handleFilterChange("board", value)}
@@ -227,9 +227,9 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
           {/* Start Date Filter */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-500">From Date</label>
+            <label className="text-xs font-medium text-muted-foreground">From Date</label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
               <Input
                 type="date"
                 value={filters.startDate || ""}
@@ -241,9 +241,9 @@ export function LeadFilters({ filters, onFiltersChange }: LeadFiltersProps) {
 
           {/* End Date Filter */}
           <div className="space-y-1">
-            <label className="text-xs font-medium text-slate-500">To Date</label>
+            <label className="text-xs font-medium text-muted-foreground">To Date</label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
               <Input
                 type="date"
                 value={filters.endDate || ""}

@@ -146,7 +146,7 @@ export default function TeamsPage() {
           <div className="flex flex-col sm:flex-row gap-3 flex-1">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
               <Input
                 placeholder="Search teams..."
                 value={search}
@@ -180,7 +180,7 @@ export default function TeamsPage() {
           {/* Create Button */}
           <Button
             onClick={handleCreateTeam}
-            className="bg-blue-950 hover:bg-blue-900"
+            className="bg-blue-950 hover:bg-blue-900 text-white"
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Team

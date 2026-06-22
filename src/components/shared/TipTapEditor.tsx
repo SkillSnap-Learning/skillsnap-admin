@@ -211,8 +211,8 @@ export function TipTapEditor({
       type="button"
       title={title}
       onClick={onClick}
-      className={`p-1.5 rounded hover:bg-slate-200 transition-colors ${
-        active ? "bg-slate-200 text-blue-950" : "text-slate-600"
+      className={`p-1.5 rounded hover:bg-muted transition-colors ${
+        active ? "bg-muted text-foreground" : "text-muted-foreground"
       }`}
     >
       {children}
@@ -228,7 +228,7 @@ export function TipTapEditor({
           editor={editor}
           shouldShow={({ editor }) => editor.isActive("table")}
           options={{ placement: "top" }}
-          className="flex flex-wrap items-center gap-0.5 p-1 rounded-lg border border-slate-200 bg-white shadow-md"
+          className="flex flex-wrap items-center gap-0.5 p-1 rounded-lg border border-border bg-card shadow-md"
         >
           {/* Columns */}
           <ToolbarButton title="Add Column Before" onClick={() => editor.chain().focus().addColumnBefore().run()}>
@@ -313,9 +313,9 @@ export function TipTapEditor({
         cursor: col-resize;
       }
     `}</style>
-      <div className="border border-slate-200 rounded-lg overflow-hidden">
+      <div className="border border-border rounded-lg overflow-hidden">
         {/* Toolbar */}
-        <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-slate-200 bg-slate-50 sticky top-0 z-10">
+        <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-border bg-muted/50 sticky top-0 z-10">
 
           {/* History */}
           <ToolbarButton title="Undo" onClick={() => editor.chain().focus().undo().run()}>
@@ -504,26 +504,26 @@ export function TipTapEditor({
         <EditorContent
           editor={editor}
           style={{ minHeight, maxHeight }}
-          className="prose prose-sm max-w-none p-4 overflow-y-auto focus-within:outline-none text-slate-800
+          className="prose prose-sm max-w-none p-4 overflow-y-auto focus-within:outline-none text-foreground
             [&_.ProseMirror]:outline-none
             [&_.ProseMirror_h1]:text-3xl
             [&_.ProseMirror_h1]:font-bold
-            [&_.ProseMirror_h1]:text-slate-900
+            [&_.ProseMirror_h1]:text-foreground
             [&_.ProseMirror_h1]:my-3
             [&_.ProseMirror_h2]:text-2xl
             [&_.ProseMirror_h2]:font-bold
-            [&_.ProseMirror_h2]:text-slate-900
+            [&_.ProseMirror_h2]:text-foreground
             [&_.ProseMirror_h2]:my-2
             [&_.ProseMirror_h3]:text-xl
             [&_.ProseMirror_h3]:font-bold
-            [&_.ProseMirror_h3]:text-slate-900
+            [&_.ProseMirror_h3]:text-foreground
             [&_.ProseMirror_h3]:my-2
             [&_.ProseMirror_h4]:text-lg
             [&_.ProseMirror_h4]:font-bold
-            [&_.ProseMirror_h4]:text-slate-900
+            [&_.ProseMirror_h4]:text-foreground
             [&_.ProseMirror_h4]:my-2
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]
-            [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-slate-400
+            [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-muted-foreground/60
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none
             [&_.ProseMirror_p.is-editor-empty:first-child::before]:float-left
             [&_.ProseMirror_a]:text-blue-600
@@ -534,25 +534,25 @@ export function TipTapEditor({
             [&_.ProseMirror_iframe]:w-full
             [&_.ProseMirror_iframe]:rounded-lg
             [&_.ProseMirror_iframe]:border
-            [&_.ProseMirror_iframe]:border-slate-200
+            [&_.ProseMirror_iframe]:border-border
             [&_.ProseMirror_iframe]:my-3
             [&_.ProseMirror_blockquote]:border-l-4
             [&_.ProseMirror_blockquote]:border-slate-300
             [&_.ProseMirror_blockquote]:pl-4
             [&_.ProseMirror_blockquote]:italic
-            [&_.ProseMirror_blockquote]:text-slate-600
+            [&_.ProseMirror_blockquote]:text-muted-foreground
             [&_.ProseMirror_ul]:list-disc
             [&_.ProseMirror_ul]:pl-6
             [&_.ProseMirror_ol]:list-decimal
             [&_.ProseMirror_ol]:pl-6
-            [&_.ProseMirror_li]:text-slate-800
+            [&_.ProseMirror_li]:text-foreground
             [&_.ProseMirror_li]:leading-7
             [&_.ProseMirror_table]:w-full
             [&_.ProseMirror_table]:border-collapse
             [&_.ProseMirror_table]:my-4
             [&_.ProseMirror_th]:border
             [&_.ProseMirror_th]:border-slate-300
-            [&_.ProseMirror_th]:bg-slate-100
+            [&_.ProseMirror_th]:bg-muted
             [&_.ProseMirror_th]:px-3
             [&_.ProseMirror_th]:py-2
             [&_.ProseMirror_th]:text-left
@@ -564,7 +564,7 @@ export function TipTapEditor({
             [&_.ProseMirror_mark]:bg-yellow-200
             [&_.ProseMirror_mark]:rounded
             [&_.ProseMirror_mark]:px-0.5
-            [&_.ProseMirror_code]:bg-slate-100
+            [&_.ProseMirror_code]:bg-muted
             [&_.ProseMirror_code]:rounded
             [&_.ProseMirror_code]:px-1
             [&_.ProseMirror_code]:text-sm
@@ -583,7 +583,7 @@ export function TipTapEditor({
         )}
 
         {/* Word / char count */}
-        <div className="flex items-center justify-end gap-4 px-4 py-2 border-t border-slate-200 bg-slate-50 text-xs text-slate-400">
+        <div className="flex items-center justify-end gap-4 px-4 py-2 border-t border-border bg-muted/50 text-xs text-muted-foreground/60">
           <span>{wordCount} words</span>
           <span>{charCount} characters</span>
         </div>

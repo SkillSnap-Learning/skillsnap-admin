@@ -61,7 +61,7 @@ export function QuickActions({ onAutoAssignComplete }: QuickActionsProps) {
         <Button
           onClick={handleAutoAssign}
           disabled={isAutoAssigning}
-          className="bg-blue-950 hover:bg-blue-900"
+          className="bg-blue-950 hover:bg-blue-900 text-white"
         >
           <RefreshCw className={`mr-2 h-4 w-4 ${isAutoAssigning ? "animate-spin" : ""}`} />
           Auto-Assign Leads

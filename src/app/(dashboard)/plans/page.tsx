@@ -57,11 +57,11 @@ export default function PlansPage() {
   ) || [];
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-blue-950">Plans</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Plans</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage learning plans and their content structure
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function PlansPage() {
 
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
           <Input
             placeholder="Search plans..."
             value={searchTerm}

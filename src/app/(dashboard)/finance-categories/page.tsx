@@ -66,7 +66,7 @@ function CategoryForm({
         <Button
           onClick={() => onSubmit({ name, slug, description, order, isActive })}
           disabled={isSubmitting || !name || !slug}
-          className="bg-blue-950 hover:bg-blue-900"
+          className="bg-blue-950 hover:bg-blue-900 text-white"
         >
           {isSubmitting && <Loader2 className="h-4 w-4 mr-1 animate-spin" />}
           {initial ? "Update" : "Create"}
@@ -127,8 +127,8 @@ export default function FinanceCategoriesPage() {
 
         {/* New category form */}
         {formOpen && (
-          <div className="bg-white rounded-xl border border-slate-200 p-6">
-            <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">New Category</h3>
+          <div className="bg-card rounded-xl border border-border p-6">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">New Category</h3>
             <CategoryForm
               onSubmit={d => createMutation.mutate(d)}
               isSubmitting={createMutation.isPending}
@@ -139,8 +139,8 @@ export default function FinanceCategoriesPage() {
 
         {/* Edit form */}
         {editing && (
-          <div className="bg-white rounded-xl border border-blue-200 p-6">
-            <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-4">Edit Category</h3>
+          <div className="bg-card rounded-xl border border-blue-200 p-6">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Edit Category</h3>
             <CategoryForm
               initial={editing}
               onSubmit={d => updateMutation.mutate(d)}
@@ -151,46 +151,46 @@ export default function FinanceCategoriesPage() {
         )}
 
         {/* Table */}
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-            <h2 className="font-semibold text-slate-800">All Categories</h2>
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+            <h2 className="font-semibold text-foreground">All Categories</h2>
             {!formOpen && !editing && (
-              <Button onClick={() => setFormOpen(true)} className="bg-blue-950 hover:bg-blue-900" size="sm">
+              <Button onClick={() => setFormOpen(true)} className="bg-blue-950 hover:bg-blue-900 text-white" size="sm">
                 <Plus className="h-4 w-4 mr-1" /> New Category
               </Button>
             )}
           </div>
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-muted/50 border-b border-border">
               <tr>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Name</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Slug</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Order</th>
-                <th className="text-left px-4 py-3 text-slate-500 font-semibold">Status</th>
-                <th className="text-right px-4 py-3 text-slate-500 font-semibold">Actions</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Name</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Slug</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Order</th>
+                <th className="text-left px-4 py-3 text-muted-foreground font-semibold">Status</th>
+                <th className="text-right px-4 py-3 text-muted-foreground font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border">
               {isLoading ? (
-                <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-400">Loading...</td></tr>
+                <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground/60">Loading...</td></tr>
               ) : data.length === 0 ? (
-                <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-400">No categories yet</td></tr>
+                <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground/60">No categories yet</td></tr>
               ) : data.map(cat => (
-                <tr key={cat._id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-800">{cat.name}</td>
-                  <td className="px-4 py-3 font-mono text-xs text-slate-500">{cat.slug}</td>
-                  <td className="px-4 py-3 text-slate-500">{cat.order}</td>
+                <tr key={cat._id} className="hover:bg-muted/50">
+                  <td className="px-4 py-3 font-medium text-foreground">{cat.name}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{cat.slug}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{cat.order}</td>
                   <td className="px-4 py-3">
-                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${cat.isActive ? "bg-green-50 text-green-700" : "bg-slate-100 text-slate-500"}`}>
+                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${cat.isActive ? "bg-green-50 text-green-700" : "bg-muted text-muted-foreground"}`}>
                       {cat.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
-                      <button onClick={() => { setEditing(cat); setFormOpen(false); }} className="p-1.5 text-slate-400 hover:text-blue-600 rounded">
+                      <button onClick={() => { setEditing(cat); setFormOpen(false); }} className="p-1.5 text-muted-foreground/60 hover:text-blue-600 rounded">
                         <Pencil className="h-4 w-4" />
                       </button>
-                      <button onClick={() => setDeleteTarget(cat)} className="p-1.5 text-slate-400 hover:text-red-600 rounded">
+                      <button onClick={() => setDeleteTarget(cat)} className="p-1.5 text-muted-foreground/60 hover:text-red-600 rounded">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
