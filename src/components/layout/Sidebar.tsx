@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Users, UserCircle, Building2,
   LogOut, ChevronLeft, Menu, BookOpen, FileText,
   HelpCircle, Newspaper, MessageSquare, Tag, Library,
-  Calculator, Bell, GraduationCap, Layers,
+  Calculator, Bell, GraduationCap, Layers, TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -238,25 +238,25 @@ function SidebarPanel({
             onClick={() => onProductChange("learning")}
             title="SkillSnap Learning"
             className={cn(
-              "w-full flex items-center justify-center py-1.5 rounded-md text-xs font-bold transition-all",
+              "w-full flex items-center justify-center py-1.5 rounded-md transition-all",
               product === "learning"
                 ? "bg-blue-950 text-white"
                 : "text-slate-400 hover:bg-slate-100"
             )}
           >
-            L
+            <GraduationCap className="h-4 w-4" />
           </button>
           <button
             onClick={() => onProductChange("finance")}
             title="SkillSnap Finance"
             className={cn(
-              "w-full flex items-center justify-center py-1.5 rounded-md text-xs font-bold transition-all",
+              "w-full flex items-center justify-center py-1.5 rounded-md transition-all",
               product === "finance"
                 ? "bg-emerald-600 text-white"
                 : "text-slate-400 hover:bg-slate-100"
             )}
           >
-            F
+            <TrendingUp className="h-4 w-4" />
           </button>
         </div>
       )}
