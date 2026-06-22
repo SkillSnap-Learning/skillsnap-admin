@@ -380,7 +380,7 @@ export function Sidebar({ collapsed, onCollapsedChange }: SidebarProps) {
         variant="ghost"
         size="icon"
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-40"
+        className="lg:hidden fixed top-[14px] left-3 z-40"
       >
         <Menu className="h-5 w-5" />
       </Button>

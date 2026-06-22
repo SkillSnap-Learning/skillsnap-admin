@@ -70,7 +70,7 @@ export function Header({ title, description }: HeaderProps) {
   };
 
   return (
-    <header className="h-16 border-b bg-card flex items-center justify-between px-6">
+    <header className="h-16 border-b bg-card flex items-center justify-between pl-14 pr-4 lg:px-6">
       <div>
         <h1 className="text-xl font-semibold text-blue-950 dark:text-foreground">{title}</h1>
         {description && (
