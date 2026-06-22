@@ -75,13 +75,13 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
         <TableHeader>
           <TableRow className="bg-muted/50">
             <TableHead>Title</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Tags</TableHead>
-            <TableHead>Read Time</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead>Updated</TableHead>
-            <TableHead>Published At</TableHead>
+            <TableHead className="whitespace-nowrap">Category</TableHead>
+            <TableHead className="whitespace-nowrap">Status</TableHead>
+            <TableHead className="whitespace-nowrap">Tags</TableHead>
+            <TableHead className="whitespace-nowrap">Read Time</TableHead>
+            <TableHead className="whitespace-nowrap">Created</TableHead>
+            <TableHead className="whitespace-nowrap">Updated</TableHead>
+            <TableHead className="whitespace-nowrap">Published At</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -100,7 +100,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
               </TableCell>
 
               {/* Category */}
-              <TableCell>
+              <TableCell className="whitespace-nowrap">
                 <span
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${CATEGORY_COLORS[typeof blog.category === "object" ? blog.category.slug : String(blog.category)] ?? "bg-muted text-foreground"}`}
                 >
@@ -109,7 +109,7 @@ export function BlogsTable({ blogs, isLoading, onEdit, onDelete }: BlogsTablePro
               </TableCell>
 
               {/* Published Status */}
-              <TableCell>
+              <TableCell className="whitespace-nowrap">
                 <span
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                     blog.isPublished
