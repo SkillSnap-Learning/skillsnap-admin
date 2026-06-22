@@ -237,7 +237,7 @@ export const topicsApi = {
 
 // Questions API (updated)
 export const questionsApi = {
-  getAll: (params?: { subject?: string; classLevel?: string; chapter?: string; difficulty?: string; isActive?: boolean }) =>
+  getAll: (params?: { subject?: string; classLevel?: string; chapter?: string; difficulty?: string; isActive?: boolean; page?: number; limit?: number }) =>
     api.get("/admin/questions", { params }),
 
   getById: (id: string) =>
